@@ -22,7 +22,9 @@ return new \Phalcon\Config([
         'migrationsDir'  => __DIR__ . '/../../app/migrations/',
         'viewsDir'       => __DIR__ . '/../../app/views/',
         'pluginsDir'     => __DIR__ . '/../../app/plugins/',
-        'libraryDir'     => __DIR__ . '/../../app/library/',    
+        'libraryDir'     => __DIR__ . '/../../app/library/', 
+        'formsDir'       => __DIR__ . '/../../app/formularios/',
+        'beansDir'       => __DIR__ . '/../../app/beans/',        
         'cacheDir'       => BASE_PATH . '/cache/',
 
         // This allows the baseUri to be understand project paths that are not in the root directory
