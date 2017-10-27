@@ -7,80 +7,80 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @var integer
      * @Primary
+     * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $codUsuario;
-
-    /**
-     *
-     * @var integer
-     * @Primary
-     * @Column(type="integer", length=11, nullable=false)
-     */
-    public $codEmpresa;
-
-    /**
-     *
-     * @var string
-     * @Column(type="string", length=200, nullable=false)
-     */
-    public $nombreUsuario;
-
-    /**
-     *
-     * @var string
-     * @Column(type="string", length=200, nullable=false)
-     */
-    public $passwordUsuario;
+    protected $codUsuario;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $cantidadIntentos;
+    protected $codEmpresa;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=200, nullable=false)
+     */
+    protected $nombreUsuario;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=200, nullable=false)
+     */
+    protected $passwordUsuario;
+
+    /**
+     *
+     * @var integer
+     * @Column(type="integer", length=11, nullable=false)
+     */
+    protected $cantidadIntentos;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=false)
      */
-    public $indicadorUsuarioAdministrador;
+    protected $indicadorUsuarioAdministrador;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=false)
      */
-    public $estadoRegistro;
+    protected $estadoRegistro;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $fechaInsercion;
+    protected $fechaInsercion;
 
     /**
      *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=false)
+     * @var string
+     * @Column(type="string", length=30, nullable=false)
      */
-    public $usuarioInsercion;
+    protected $usuarioInsercion;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    public $fechaModificacion;
+    protected $fechaModificacion;
 
     /**
      *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=true)
+     * @var string
+     * @Column(type="string", length=30, nullable=true)
      */
-    public $usuarioModificacion;
+    protected $usuarioModificacion;
 
     /**
      * Method to set the value of field codUsuario
@@ -189,7 +189,7 @@ class Usuario extends \Phalcon\Mvc\Model
     /**
      * Method to set the value of field usuarioInsercion
      *
-     * @param integer $usuarioInsercion
+     * @param string $usuarioInsercion
      * @return $this
      */
     public function setUsuarioInsercion($usuarioInsercion)
@@ -215,7 +215,7 @@ class Usuario extends \Phalcon\Mvc\Model
     /**
      * Method to set the value of field usuarioModificacion
      *
-     * @param integer $usuarioModificacion
+     * @param string $usuarioModificacion
      * @return $this
      */
     public function setUsuarioModificacion($usuarioModificacion)
@@ -308,7 +308,7 @@ class Usuario extends \Phalcon\Mvc\Model
     /**
      * Returns the value of field usuarioInsercion
      *
-     * @return integer
+     * @return string
      */
     public function getUsuarioInsercion()
     {
@@ -328,7 +328,7 @@ class Usuario extends \Phalcon\Mvc\Model
     /**
      * Returns the value of field usuarioModificacion
      *
-     * @return integer
+     * @return string
      */
     public function getUsuarioModificacion()
     {
@@ -344,6 +344,17 @@ class Usuario extends \Phalcon\Mvc\Model
         $this->setSource("usuario");
         $this->hasMany('codUsuario', 'ErroresSistema', 'codUsuario', ['alias' => 'ErroresSistema']);
         $this->hasMany('codUsuario', 'UsuarioSistema', 'codUsuario', ['alias' => 'UsuarioSistema']);
+        $this->belongsTo('codEmpresa', '\Empresa', 'codEmpresa', ['alias' => 'Empresa']);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'usuario';
     }
 
     /**
@@ -389,16 +400,6 @@ class Usuario extends \Phalcon\Mvc\Model
             'fechaModificacion' => 'fechaModificacion',
             'usuarioModificacion' => 'usuarioModificacion'
         ];
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'usuario';
     }
 
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    {{ content() }}
+    <?= $this->getContent() ?>
     <head lang="es">
         <meta charset="UTF-8">
         <title></title>
@@ -46,7 +46,7 @@
 
                 <div class="col-lg-5">
                     <section>
-                        {{ image("img/img.png", "class":"logofox") }}
+                        <?= $this->tag->image(['img/img.png', 'class' => 'logofox']) ?>
                         <h1> Nombre </h1>
                     </section>
                 </div>
@@ -54,9 +54,9 @@
                 <div class="col-lg-7">
                     <section class=" menu text-center">
                         <ul>
-                            <li>{{ image("img/home.png", "class":"img-responsive") }}<p>inicio</p>
-                            <li>{{ image("img/download_s.png", "class":"img-responsive") }}<p>descarga</p>
-                            <li>{{ image("img/questionmark.png", "class":"img-responsive") }}<p>ayuda</p>
+                            <li><?= $this->tag->image(['img/home.png', 'class' => 'img-responsive']) ?><p>inicio</p>
+                            <li><?= $this->tag->image(['img/download_s.png', 'class' => 'img-responsive']) ?><p>descarga</p>
+                            <li><?= $this->tag->image(['img/questionmark.png', 'class' => 'img-responsive']) ?><p>ayuda</p>
                         </ul>
                     </section>
                 </div>
@@ -71,34 +71,34 @@
 
                 <div class="col-sm-6 col-lg-4">
 
-                    {{ link_to('', image('img/almacen.jpg', "class":"img-responsive caja galeria")) }}
-                    {{ link_to('', image('img/asistencia.jpg', "class":"img-responsive caja galeria")) }}
+                    <?= $this->tag->linkTo(['', $this->tag->image(['img/almacen.jpg', 'class' => 'img-responsive caja galeria'])]) ?>
+                    <?= $this->tag->linkTo(['', $this->tag->image(['img/asistencia.jpg', 'class' => 'img-responsive caja galeria'])]) ?>
 
                 </div>
                 <!-- 2da Columna -->
                 <div class="col-xs-12 col-sm-6 col-lg-4">
 
                     <div class="galeria">
-                        {{ image("img/especievalorada.jpg", "class":"center-block img-responsive caja") }}
+                        <?= $this->tag->image(['img/especievalorada.jpg', 'class' => 'center-block img-responsive caja']) ?>
                     </div>
                 </div>
 
                 <!-- 3era -->
                 <div class="col-xs-12 col-sm-12 col-lg-4">
                     <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        {{ image("img/facturacion.jpg", "class":"img-responsive galeria padding_lt") }}
+                        <?= $this->tag->image(['img/facturacion.jpg', 'class' => 'img-responsive galeria padding_lt']) ?>
                     </div>
 
                     <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        {{ image("img/venta.jpg", "class":"img-responsive galeria padding_rt") }}
+                        <?= $this->tag->image(['img/venta.jpg', 'class' => 'img-responsive galeria padding_rt']) ?>
                     </div>
 
                     <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        {{ image("img/email.jpg", "class":"img-responsive galeria padding_lb") }}
+                        <?= $this->tag->image(['img/email.jpg', 'class' => 'img-responsive galeria padding_lb']) ?>
                     </div>
 
                     <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        {{ image("img/ayuda.jpg", "class":"img-responsive galeria padding_rb") }}
+                        <?= $this->tag->image(['img/ayuda.jpg', 'class' => 'img-responsive galeria padding_rb']) ?>
                     </div>
                 </div>
 
@@ -116,4 +116,4 @@
 
 
 
-{{ link_to("index/logout", "Cerrar Sesión") }}
+<?= $this->tag->linkTo(['index/logout', 'Cerrar Sesión']) ?>

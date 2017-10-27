@@ -6,7 +6,7 @@ class IndexController extends ControllerBase {
 
     private function _registerSession(Usuario $usuario) {
         $this->session->set('Usuario',
-                            array('idUsuario' => $usuario->idUsuario, 'userName' => $usuario->userName));
+                            array('codUsuario' => $usuario->codUsuario, 'nombreUsuario' => $usuario->nombreUsuario));
     }
 
     public function indexAction() {
@@ -19,10 +19,10 @@ class IndexController extends ControllerBase {
             }else {
                 $username = $this->request->getPost('username');
                 $password = $this->request->getPost('password');
-                $usuario = Usuario::find("userName = '" . $username . "'");
+                $usuario = Usuario::find("nombreUsuario = '" . $username . "'");
                 if (count($usuario) == 1) {
                     if ($this->security->checkHash($password,
-                                                   $usuario[0]->password)) {
+                                                   $usuario[0]->passwordUsuario)) {
                         $this->_registerSession($usuario[0]);
                         return $this->response->redirect('menu');
                     }else {

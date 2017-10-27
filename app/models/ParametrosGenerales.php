@@ -56,8 +56,8 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=false)
+     * @var string
+     * @Column(type="string", length=30, nullable=false)
      */
     public $usuarioInsercion;
 
@@ -70,8 +70,8 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=true)
+     * @var string
+     * @Column(type="string", length=30, nullable=true)
      */
     public $usuarioModificacion;
 
@@ -169,7 +169,7 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
     /**
      * Method to set the value of field usuarioInsercion
      *
-     * @param integer $usuarioInsercion
+     * @param string $usuarioInsercion
      * @return $this
      */
     public function setUsuarioInsercion($usuarioInsercion)
@@ -195,7 +195,7 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
     /**
      * Method to set the value of field usuarioModificacion
      *
-     * @param integer $usuarioModificacion
+     * @param string $usuarioModificacion
      * @return $this
      */
     public function setUsuarioModificacion($usuarioModificacion)
@@ -278,7 +278,7 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
     /**
      * Returns the value of field usuarioInsercion
      *
-     * @return integer
+     * @return string
      */
     public function getUsuarioInsercion()
     {
@@ -298,7 +298,7 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
     /**
      * Returns the value of field usuarioModificacion
      *
-     * @return integer
+     * @return string
      */
     public function getUsuarioModificacion()
     {

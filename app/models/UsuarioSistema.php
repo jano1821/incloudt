@@ -17,14 +17,6 @@ class UsuarioSistema extends \Phalcon\Mvc\Model
      * @Primary
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codEmpresa;
-
-    /**
-     *
-     * @var integer
-     * @Primary
-     * @Column(type="integer", length=11, nullable=false)
-     */
     protected $codSistema;
 
     /**
@@ -43,19 +35,6 @@ class UsuarioSistema extends \Phalcon\Mvc\Model
     public function setCodUsuario($codUsuario)
     {
         $this->codUsuario = $codUsuario;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field codEmpresa
-     *
-     * @param integer $codEmpresa
-     * @return $this
-     */
-    public function setCodEmpresa($codEmpresa)
-    {
-        $this->codEmpresa = $codEmpresa;
 
         return $this;
     }
@@ -94,16 +73,6 @@ class UsuarioSistema extends \Phalcon\Mvc\Model
     public function getCodUsuario()
     {
         return $this->codUsuario;
-    }
-
-    /**
-     * Returns the value of field codEmpresa
-     *
-     * @return integer
-     */
-    public function getCodEmpresa()
-    {
-        return $this->codEmpresa;
     }
 
     /**
@@ -179,7 +148,6 @@ class UsuarioSistema extends \Phalcon\Mvc\Model
     {
         return [
             'codUsuario' => 'codUsuario',
-            'codEmpresa' => 'codEmpresa',
             'codSistema' => 'codSistema',
             'estadoRegistro' => 'estadoRegistro'
         ];

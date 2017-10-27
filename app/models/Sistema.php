@@ -49,8 +49,8 @@ class Sistema extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=true)
+     * @var string
+     * @Column(type="string", length=30, nullable=true)
      */
     public $usuarioInsercion;
 
@@ -63,8 +63,8 @@ class Sistema extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=true)
+     * @var string
+     * @Column(type="string", length=30, nullable=true)
      */
     public $usuarioModificacion;
 
@@ -149,7 +149,7 @@ class Sistema extends \Phalcon\Mvc\Model
     /**
      * Method to set the value of field usuarioInsercion
      *
-     * @param integer $usuarioInsercion
+     * @param string $usuarioInsercion
      * @return $this
      */
     public function setUsuarioInsercion($usuarioInsercion)
@@ -175,7 +175,7 @@ class Sistema extends \Phalcon\Mvc\Model
     /**
      * Method to set the value of field usuarioModificacion
      *
-     * @param integer $usuarioModificacion
+     * @param string $usuarioModificacion
      * @return $this
      */
     public function setUsuarioModificacion($usuarioModificacion)
@@ -248,7 +248,7 @@ class Sistema extends \Phalcon\Mvc\Model
     /**
      * Returns the value of field usuarioInsercion
      *
-     * @return integer
+     * @return string
      */
     public function getUsuarioInsercion()
     {
@@ -268,7 +268,7 @@ class Sistema extends \Phalcon\Mvc\Model
     /**
      * Returns the value of field usuarioModificacion
      *
-     * @return integer
+     * @return string
      */
     public function getUsuarioModificacion()
     {
