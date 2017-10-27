@@ -96,6 +96,75 @@ class UsuarioSistema extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Method to set the value of field codUsuario
+     *
+     * @param integer $codUsuario
+     * @return $this
+     */
+    public function setCodUsuario($codUsuario)
+    {
+        $this->codUsuario = $codUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field codSistema
+     *
+     * @param integer $codSistema
+     * @return $this
+     */
+    public function setCodSistema($codSistema)
+    {
+        $this->codSistema = $codSistema;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field estadoRegistro
+     *
+     * @param string $estadoRegistro
+     * @return $this
+     */
+    public function setEstadoRegistro($estadoRegistro)
+    {
+        $this->estadoRegistro = $estadoRegistro;
+
+        return $this;
+    }
+
+    /**
+     * Returns the value of field codUsuario
+     *
+     * @return integer
+     */
+    public function getCodUsuario()
+    {
+        return $this->codUsuario;
+    }
+
+    /**
+     * Returns the value of field codSistema
+     *
+     * @return integer
+     */
+    public function getCodSistema()
+    {
+        return $this->codSistema;
+    }
+
+    /**
+     * Returns the value of field estadoRegistro
+     *
+     * @return string
+     */
+    public function getEstadoRegistro()
+    {
+        return $this->estadoRegistro;
+    }
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
@@ -104,16 +173,6 @@ class UsuarioSistema extends \Phalcon\Mvc\Model
         $this->setSource("usuario_sistema");
         $this->belongsTo('codSistema', '\Sistema', 'codSistema', ['alias' => 'Sistema']);
         $this->belongsTo('codUsuario', '\Usuario', 'codUsuario', ['alias' => 'Usuario']);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'usuario_sistema';
     }
 
     /**
@@ -151,6 +210,16 @@ class UsuarioSistema extends \Phalcon\Mvc\Model
             'codSistema' => 'codSistema',
             'estadoRegistro' => 'estadoRegistro'
         ];
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'usuario_sistema';
     }
 
 }

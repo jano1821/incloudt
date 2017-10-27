@@ -17,6 +17,14 @@ class LoginForm extends Form {
         $username->addValidator(new PresenceOf(array('message' => 'El Usuario es Requerido')));
         //hacemos que se pueda llamar a nuestro campo usuario
         $this->add($username);
+        
+        //añadimos el campo identificador de empresa
+        $idenEmpresa = new Text('idenEmpresa',
+                             array('placeholder' => 'ID Empresa', 'class' => 'form-control'));
+        //añadimos la validación como campo requerido
+        $idenEmpresa->addValidator(new PresenceOf(array('message' => 'El Identificador de Empresa es Requerido')));
+        //hacemos que se pueda llamar a nuestro campo usuario
+        $this->add($idenEmpresa);
 
         //añadimos el campo password
         $password = new Password('password',

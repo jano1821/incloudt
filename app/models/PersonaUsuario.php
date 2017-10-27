@@ -1,6 +1,6 @@
 <?php
 
-class Empresa extends \Phalcon\Mvc\Model
+class PersonaUsuario extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -10,21 +10,42 @@ class Empresa extends \Phalcon\Mvc\Model
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $codEmpresa;
+    public $codPersonaUsuario;
 
     /**
      *
      * @var string
      * @Column(type="string", length=500, nullable=false)
      */
-    public $nombreEmpresa;
-    
+    public $nombresPersona;
+
     /**
      *
      * @var string
-     * @Column(type="string", length=30, nullable=false)
+     * @Column(type="string", length=500, nullable=false)
      */
-    public $identificadorEmpresa;
+    public $apellidosPersona;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=25, nullable=false)
+     */
+    public $numeroDocumento;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=30, nullable=true)
+     */
+    public $numeroCelular;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=30, nullable=true)
+     */
+    public $numeroAnexo;
 
     /**
      *
@@ -62,40 +83,79 @@ class Empresa extends \Phalcon\Mvc\Model
     public $usuarioModificacion;
 
     /**
-     * Method to set the value of field codEmpresa
+     * Method to set the value of field codPersonaUsuario
      *
-     * @param integer $codEmpresa
+     * @param integer $codPersonaUsuario
      * @return $this
      */
-    public function setCodEmpresa($codEmpresa)
+    public function setCodPersonaUsuario($codPersonaUsuario)
     {
-        $this->codEmpresa = $codEmpresa;
+        $this->codPersonaUsuario = $codPersonaUsuario;
 
         return $this;
     }
 
     /**
-     * Method to set the value of field nombreEmpresa
+     * Method to set the value of field nombresPersona
      *
-     * @param string $nombreEmpresa
+     * @param string $nombresPersona
      * @return $this
      */
-    public function setNombreEmpresa($nombreEmpresa)
+    public function setNombresPersona($nombresPersona)
     {
-        $this->nombreEmpresa = $nombreEmpresa;
+        $this->nombresPersona = $nombresPersona;
 
         return $this;
     }
-    
+
     /**
-     * Method to set the value of field nombreEmpresa
+     * Method to set the value of field apellidosPersona
      *
-     * @param string $nombreEmpresa
+     * @param string $apellidosPersona
      * @return $this
      */
-    public function setIdentificadorEmpresa($identificadorEmpresa)
+    public function setApellidosPersona($apellidosPersona)
     {
-        $this->identificadorEmpresa = $identificadorEmpresa;
+        $this->apellidosPersona = $apellidosPersona;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field numeroDocumento
+     *
+     * @param string $numeroDocumento
+     * @return $this
+     */
+    public function setNumeroDocumento($numeroDocumento)
+    {
+        $this->numeroDocumento = $numeroDocumento;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field numeroCelular
+     *
+     * @param string $numeroCelular
+     * @return $this
+     */
+    public function setNumeroCelular($numeroCelular)
+    {
+        $this->numeroCelular = $numeroCelular;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field numeroAnexo
+     *
+     * @param string $numeroAnexo
+     * @return $this
+     */
+    public function setNumeroAnexo($numeroAnexo)
+    {
+        $this->numeroAnexo = $numeroAnexo;
 
         return $this;
     }
@@ -166,33 +226,63 @@ class Empresa extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Returns the value of field codEmpresa
+     * Returns the value of field codPersonaUsuario
      *
      * @return integer
      */
-    public function getCodEmpresa()
+    public function getCodPersonaUsuario()
     {
-        return $this->codEmpresa;
+        return $this->codPersonaUsuario;
     }
 
     /**
-     * Returns the value of field nombreEmpresa
+     * Returns the value of field nombresPersona
      *
      * @return string
      */
-    public function getNombreEmpresa()
+    public function getNombresPersona()
     {
-        return $this->nombreEmpresa;
+        return $this->nombresPersona;
     }
-    
+
     /**
-     * Returns the value of field identificadorEmpresa
+     * Returns the value of field apellidosPersona
      *
      * @return string
      */
-    public function getIdentificadorEmpresa()
+    public function getApellidosPersona()
     {
-        return $this->identificadorEmpresa;
+        return $this->apellidosPersona;
+    }
+
+    /**
+     * Returns the value of field numeroDocumento
+     *
+     * @return string
+     */
+    public function getNumeroDocumento()
+    {
+        return $this->numeroDocumento;
+    }
+
+    /**
+     * Returns the value of field numeroCelular
+     *
+     * @return string
+     */
+    public function getNumeroCelular()
+    {
+        return $this->numeroCelular;
+    }
+
+    /**
+     * Returns the value of field numeroAnexo
+     *
+     * @return string
+     */
+    public function getNumeroAnexo()
+    {
+        return $this->numeroAnexo;
     }
 
     /**
@@ -251,19 +341,15 @@ class Empresa extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->setSchema("incloudt");
-        $this->setSource("empresa");
-        $this->hasMany('codEmpresa', 'DatosEmpresa', 'codEmpresa', ['alias' => 'DatosEmpresa']);
-        $this->hasMany('codEmpresa', 'EmpresaSistema', 'codEmpresa', ['alias' => 'EmpresaSistema']);
-        $this->hasMany('codEmpresa', 'ErroresSistema', 'codEmpresa', ['alias' => 'ErroresSistema']);
-        $this->hasMany('codEmpresa', 'ParametrosGenerales', 'codEmpresa', ['alias' => 'ParametrosGenerales']);
-        $this->hasMany('codEmpresa', 'Usuario', 'codEmpresa', ['alias' => 'Usuario']);
+        $this->setSource("persona_usuario");
+        $this->hasMany('codPersonaUsuario', 'Usuario', 'codPersonaUsuario', ['alias' => 'Usuario']);
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Empresa[]|Empresa|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return PersonaUsuario[]|PersonaUsuario|\Phalcon\Mvc\Model\ResultSetInterface
      */
     public static function find($parameters = null)
     {
@@ -274,7 +360,7 @@ class Empresa extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Empresa|\Phalcon\Mvc\Model\ResultInterface
+     * @return PersonaUsuario|\Phalcon\Mvc\Model\ResultInterface
      */
     public static function findFirst($parameters = null)
     {
@@ -290,9 +376,12 @@ class Empresa extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return [
-            'codEmpresa' => 'codEmpresa',
-            'nombreEmpresa' => 'nombreEmpresa',
-            'identificadorEmpresa' => 'identificadorEmpresa',
+            'codPersonaUsuario' => 'codPersonaUsuario',
+            'nombresPersona' => 'nombresPersona',
+            'ApellidosPersona' => 'ApellidosPersona',
+            'numeroDocumento' => 'numeroDocumento',
+            'numeroCelular' => 'numeroCelular',
+            'numeroAnexo' => 'numeroAnexo',
             'estadoRegistro' => 'estadoRegistro',
             'fechaInsercion' => 'fechaInsercion',
             'usuarioInsercion' => 'usuarioInsercion',
@@ -308,7 +397,7 @@ class Empresa extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'empresa';
+        return 'persona_usuario';
     }
 
 }

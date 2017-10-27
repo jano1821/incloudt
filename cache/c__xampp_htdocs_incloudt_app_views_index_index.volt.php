@@ -20,6 +20,14 @@
                     <div class="form-group">
                         <p>
                             <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
+                                <?= $form->render('idenEmpresa') ?>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <p>
+                            <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                                 <?= $form->render('password') ?>
                             </div>

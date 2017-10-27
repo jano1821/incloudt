@@ -1,6 +1,7 @@
+<?= $this->getContent() ?>
 <!DOCTYPE html>
 <html>
-    <?= $this->getContent() ?>
+    
     <head lang="es">
         <meta charset="UTF-8">
         <title></title>
@@ -24,18 +25,29 @@
     <body class="fondo">
         
     <?php
+        $usuario = "";
         $username = "";
+        $nombreEmpresa = "";
+        $nombresPersona = "";
+        $tiempoSesion = "";
         if ($this->session->has("Usuario")) {
-            $usuario = $this->session->get("Usuario");
-            $username=$usuario['nombreUsuario'];
+            $usuario        =   $this->session->get("Usuario");
+            
+            $username       =   $usuario['nombreUsuario'];
+            $nombreEmpresa  =   $usuario['nombreEmpresa'];
+            $nombresPersona =   $usuario['nombresPersona'];
+            $tiempoSesion   =   $usuario['tiempoSesion'];
         }
                 ?>
         <div class="container">
             <div class="row caja">
                 <header class="dato">
 
-                    <div class="col-xs-6 col-sm-6 col-md-6">Usuario : <?php echo $username;?></div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 text-right"> tiempo : 12:22 </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6">Usuario : <?php echo $nombresPersona;?></div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 text-right"> Tiempo Restante :   <div id="hora">
+                                                                                                
+                                                                                            </div> 
+                    </div>
 
                 </header>
             </div>
@@ -47,7 +59,7 @@
                 <div class="col-lg-5">
                     <section>
                         <?= $this->tag->image(['img/img.png', 'class' => 'logofox']) ?>
-                        <h1> Nombre </h1>
+                        <h1> Empresa : <?php echo $nombreEmpresa;?></h1>
                     </section>
                 </div>
 
@@ -55,8 +67,8 @@
                     <section class=" menu text-center">
                         <ul>
                             <li><?= $this->tag->image(['img/home.png', 'class' => 'img-responsive']) ?><p>inicio</p>
-                            <li><?= $this->tag->image(['img/download_s.png', 'class' => 'img-responsive']) ?><p>descarga</p>
                             <li><?= $this->tag->image(['img/questionmark.png', 'class' => 'img-responsive']) ?><p>ayuda</p>
+                            <li><?= $this->tag->linkTo(['index/logout', $this->tag->image(['img/logout.png', 'class' => 'img-responsive'])]) ?><p>Cerrar</p>
                         </ul>
                     </section>
                 </div>
@@ -104,16 +116,37 @@
 
             </div>
         </div>
+        <script>
+        var segundo = 0;
+        var tiempo = <?php echo $tiempoSesion;?>;
+        window.setTimeout('mostrar()', 100);
+        function mostrar() {
+            var etiqueta;
+            
+            if (tiempo == 0 && segundo==0){
+                document.location.href = "index/logout";
+            }
+            
+            etiqueta =  completar(2,""+tiempo,"0")+":"+completar(2,""+segundo,"0");
 
+            if (segundo==0){
+                tiempo--;
+                segundo = 60;
+            }
+            
+            segundo--;
+    
+            document.getElementById('hora').innerHTML = etiqueta;
+            window.setTimeout('mostrar()', 1000);
+        }
+        function completar(len, cadena, caracter){
+            while(cadena.length< len){
+                cadena= caracter + cadena;
+            }
+            return cadena;
+        }
+        </script>
     </body>
     <script src="js/creartjava.js"></script>
     <script src="js/bootstrap.min.js"></script>
-
 </html>
-
-
-
-
-
-
-<?= $this->tag->linkTo(['index/logout', 'Cerrar Sesión']) ?>

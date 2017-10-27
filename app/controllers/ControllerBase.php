@@ -6,7 +6,7 @@ class ControllerBase extends Controller {
 
     public function validarSession() {
         if (!$this->session->has("Usuario")) {
-            $this->response->redirect('login');
+            $this->response->redirect('index');
         }
     }
 

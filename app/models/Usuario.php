@@ -1,8 +1,6 @@
 <?php
 
-class Usuario extends \Phalcon\Mvc\Model
-{
-
+class Usuario extends \Phalcon\Mvc\Model {
     /**
      *
      * @var integer
@@ -11,70 +9,66 @@ class Usuario extends \Phalcon\Mvc\Model
      * @Column(type="integer", length=11, nullable=false)
      */
     protected $codUsuario;
-
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
     protected $codEmpresa;
-
+    /**
+     *
+     * @var integer
+     * @Column(type="integer", length=11, nullable=false)
+     */
+    protected $codPersonaUsuario;
     /**
      *
      * @var string
      * @Column(type="string", length=200, nullable=false)
      */
     protected $nombreUsuario;
-
     /**
      *
      * @var string
      * @Column(type="string", length=200, nullable=false)
      */
     protected $passwordUsuario;
-
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
     protected $cantidadIntentos;
-
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=false)
      */
     protected $indicadorUsuarioAdministrador;
-
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=false)
      */
     protected $estadoRegistro;
-
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
     protected $fechaInsercion;
-
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
     protected $usuarioInsercion;
-
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
     protected $fechaModificacion;
-
     /**
      *
      * @var string
@@ -88,8 +82,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param integer $codUsuario
      * @return $this
      */
-    public function setCodUsuario($codUsuario)
-    {
+    public function setCodUsuario($codUsuario) {
         $this->codUsuario = $codUsuario;
 
         return $this;
@@ -101,9 +94,20 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param integer $codEmpresa
      * @return $this
      */
-    public function setCodEmpresa($codEmpresa)
-    {
+    public function setCodEmpresa($codEmpresa) {
         $this->codEmpresa = $codEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field codEmpresa
+     *
+     * @param integer $codPersonaUsuario
+     * @return $this
+     */
+    public function setCodPersonaUsuario($codPersonaUsuario) {
+        $this->codPersonaUsuario = $codPersonaUsuario;
 
         return $this;
     }
@@ -114,8 +118,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param string $nombreUsuario
      * @return $this
      */
-    public function setNombreUsuario($nombreUsuario)
-    {
+    public function setNombreUsuario($nombreUsuario) {
         $this->nombreUsuario = $nombreUsuario;
 
         return $this;
@@ -127,8 +130,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param string $passwordUsuario
      * @return $this
      */
-    public function setPasswordUsuario($passwordUsuario)
-    {
+    public function setPasswordUsuario($passwordUsuario) {
         $this->passwordUsuario = $passwordUsuario;
 
         return $this;
@@ -140,8 +142,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param integer $cantidadIntentos
      * @return $this
      */
-    public function setCantidadIntentos($cantidadIntentos)
-    {
+    public function setCantidadIntentos($cantidadIntentos) {
         $this->cantidadIntentos = $cantidadIntentos;
 
         return $this;
@@ -153,8 +154,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param string $indicadorUsuarioAdministrador
      * @return $this
      */
-    public function setIndicadorUsuarioAdministrador($indicadorUsuarioAdministrador)
-    {
+    public function setIndicadorUsuarioAdministrador($indicadorUsuarioAdministrador) {
         $this->indicadorUsuarioAdministrador = $indicadorUsuarioAdministrador;
 
         return $this;
@@ -166,8 +166,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param string $estadoRegistro
      * @return $this
      */
-    public function setEstadoRegistro($estadoRegistro)
-    {
+    public function setEstadoRegistro($estadoRegistro) {
         $this->estadoRegistro = $estadoRegistro;
 
         return $this;
@@ -179,8 +178,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param string $fechaInsercion
      * @return $this
      */
-    public function setFechaInsercion($fechaInsercion)
-    {
+    public function setFechaInsercion($fechaInsercion) {
         $this->fechaInsercion = $fechaInsercion;
 
         return $this;
@@ -192,8 +190,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param string $usuarioInsercion
      * @return $this
      */
-    public function setUsuarioInsercion($usuarioInsercion)
-    {
+    public function setUsuarioInsercion($usuarioInsercion) {
         $this->usuarioInsercion = $usuarioInsercion;
 
         return $this;
@@ -205,8 +202,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param string $fechaModificacion
      * @return $this
      */
-    public function setFechaModificacion($fechaModificacion)
-    {
+    public function setFechaModificacion($fechaModificacion) {
         $this->fechaModificacion = $fechaModificacion;
 
         return $this;
@@ -218,8 +214,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param string $usuarioModificacion
      * @return $this
      */
-    public function setUsuarioModificacion($usuarioModificacion)
-    {
+    public function setUsuarioModificacion($usuarioModificacion) {
         $this->usuarioModificacion = $usuarioModificacion;
 
         return $this;
@@ -230,8 +225,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return integer
      */
-    public function getCodUsuario()
-    {
+    public function getCodUsuario() {
         return $this->codUsuario;
     }
 
@@ -240,9 +234,17 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return integer
      */
-    public function getCodEmpresa()
-    {
+    public function getCodEmpresa() {
         return $this->codEmpresa;
+    }
+
+    /**
+     * Returns the value of field codPersonaUsuario
+     *
+     * @return integer
+     */
+    public function getCodPersonaUsuario() {
+        return $this->codPersonaUsuario;
     }
 
     /**
@@ -250,8 +252,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getNombreUsuario()
-    {
+    public function getNombreUsuario() {
         return $this->nombreUsuario;
     }
 
@@ -260,8 +261,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getPasswordUsuario()
-    {
+    public function getPasswordUsuario() {
         return $this->passwordUsuario;
     }
 
@@ -270,8 +270,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return integer
      */
-    public function getCantidadIntentos()
-    {
+    public function getCantidadIntentos() {
         return $this->cantidadIntentos;
     }
 
@@ -280,8 +279,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getIndicadorUsuarioAdministrador()
-    {
+    public function getIndicadorUsuarioAdministrador() {
         return $this->indicadorUsuarioAdministrador;
     }
 
@@ -290,8 +288,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getEstadoRegistro()
-    {
+    public function getEstadoRegistro() {
         return $this->estadoRegistro;
     }
 
@@ -300,8 +297,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getFechaInsercion()
-    {
+    public function getFechaInsercion() {
         return $this->fechaInsercion;
     }
 
@@ -310,8 +306,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getUsuarioInsercion()
-    {
+    public function getUsuarioInsercion() {
         return $this->usuarioInsercion;
     }
 
@@ -320,8 +315,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getFechaModificacion()
-    {
+    public function getFechaModificacion() {
         return $this->fechaModificacion;
     }
 
@@ -330,21 +324,32 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getUsuarioModificacion()
-    {
+    public function getUsuarioModificacion() {
         return $this->usuarioModificacion;
     }
 
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
+    public function initialize() {
         $this->setSchema("incloudt");
         $this->setSource("usuario");
-        $this->hasMany('codUsuario', 'ErroresSistema', 'codUsuario', ['alias' => 'ErroresSistema']);
-        $this->hasMany('codUsuario', 'UsuarioSistema', 'codUsuario', ['alias' => 'UsuarioSistema']);
-        $this->belongsTo('codEmpresa', '\Empresa', 'codEmpresa', ['alias' => 'Empresa']);
+        $this->hasMany('codUsuario',
+                       'ErroresSistema',
+                       'codUsuario',
+                       ['alias' => 'ErroresSistema']);
+        $this->hasMany('codUsuario',
+                       'UsuarioSistema',
+                       'codUsuario',
+                       ['alias' => 'UsuarioSistema']);
+        $this->belongsTo('codEmpresa',
+                         '\Empresa',
+                         'codEmpresa',
+                         ['alias' => 'Empresa']);
+        $this->belongsTo('codPersonaUsuario',
+                         '\PersonaUsuario',
+                         'codPersonaUsuario',
+                         ['alias' => 'PersonaUsuario']);
     }
 
     /**
@@ -352,8 +357,7 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getSource()
-    {
+    public function getSource() {
         return 'usuario';
     }
 
@@ -363,8 +367,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param mixed $parameters
      * @return Usuario[]|Usuario|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
-    {
+    public static function find($parameters = null) {
         return parent::find($parameters);
     }
 
@@ -374,8 +377,7 @@ class Usuario extends \Phalcon\Mvc\Model
      * @param mixed $parameters
      * @return Usuario|\Phalcon\Mvc\Model\ResultInterface
      */
-    public static function findFirst($parameters = null)
-    {
+    public static function findFirst($parameters = null) {
         return parent::findFirst($parameters);
     }
 
@@ -385,21 +387,20 @@ class Usuario extends \Phalcon\Mvc\Model
      *
      * @return array
      */
-    public function columnMap()
-    {
+    public function columnMap() {
         return [
-            'codUsuario' => 'codUsuario',
-            'codEmpresa' => 'codEmpresa',
-            'nombreUsuario' => 'nombreUsuario',
-            'passwordUsuario' => 'passwordUsuario',
-            'cantidadIntentos' => 'cantidadIntentos',
-            'indicadorUsuarioAdministrador' => 'indicadorUsuarioAdministrador',
-            'estadoRegistro' => 'estadoRegistro',
-            'fechaInsercion' => 'fechaInsercion',
-            'usuarioInsercion' => 'usuarioInsercion',
-            'fechaModificacion' => 'fechaModificacion',
-            'usuarioModificacion' => 'usuarioModificacion'
+                        'codUsuario' => 'codUsuario',
+                        'codEmpresa' => 'codEmpresa',
+                        'codPersonaUsuario' => 'codPersonaUsuario',
+                        'nombreUsuario' => 'nombreUsuario',
+                        'passwordUsuario' => 'passwordUsuario',
+                        'cantidadIntentos' => 'cantidadIntentos',
+                        'indicadorUsuarioAdministrador' => 'indicadorUsuarioAdministrador',
+                        'estadoRegistro' => 'estadoRegistro',
+                        'fechaInsercion' => 'fechaInsercion',
+                        'usuarioInsercion' => 'usuarioInsercion',
+                        'fechaModificacion' => 'fechaModificacion',
+                        'usuarioModificacion' => 'usuarioModificacion'
         ];
     }
-
 }

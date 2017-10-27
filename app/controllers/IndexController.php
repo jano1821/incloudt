@@ -4,9 +4,28 @@ use LoginForm as FormLogin,
     Phalcon\Session as Session;
 class IndexController extends ControllerBase {
 
-    private function _registerSession(Usuario $usuario) {
+    private function _registerSession($usuario) {
+        $parametrosGenerales = $this->modelsManager->createBuilder()
+                                        ->columns("pg.valorParametro ")
+                                        ->addFrom('ParametrosGenerales',
+                                                  'pg')
+                                        ->andWhere('pg.identificadorParametro = :identificadorParametro: AND ' .
+                                                   'pg.estadoRegistro = :estadoRegistro: ',
+                                                    [
+                                                        'identificadorParametro' => 'TIME_OUT_SESSION',
+                                                        'estadoRegistro' => 'S',
+                                                    ]
+                                        )
+                                        ->getQuery()
+                                        ->execute();
+        
         $this->session->set('Usuario',
-                            array('codUsuario' => $usuario->codUsuario, 'nombreUsuario' => $usuario->nombreUsuario));
+                            array(  'codUsuario'    => $usuario->codUsuario,
+                                    'nombreUsuario' => $usuario->nombreUsuario,
+                                    'codEmpresa'    => $usuario->codEmpresa,
+                                    'nombresPersona'=> $usuario->nombresPersona,
+                                    'nombreEmpresa' => $usuario->nombreEmpresa,
+                                    'tiempoSesion' => $parametrosGenerales[0]->valorParametro));
     }
 
     public function indexAction() {
@@ -19,7 +38,35 @@ class IndexController extends ControllerBase {
             }else {
                 $username = $this->request->getPost('username');
                 $password = $this->request->getPost('password');
-                $usuario = Usuario::find("nombreUsuario = '" . $username . "'");
+                $idenEmpresa = $this->request->getPost('idenEmpresa');
+
+                $usuario = $this->modelsManager->createBuilder()
+                                        ->columns("us.codUsuario," .
+                                                                "us.codEmpresa," .
+                                                                "pu.nombresPersona," .
+                                                                "em.nombreEmpresa," .
+                                                                "us.nombreUsuario," .
+                                                                "us.passwordUsuario," .
+                                                                "us.cantidadIntentos," .
+                                                                "us.indicadorUsuarioAdministrador ")
+                                        ->addFrom('Usuario',
+                                                  'us')
+                                        ->innerJoin('Empresa',
+                                                    'em.codEmpresa = us.codEmpresa',
+                                                    'em')
+                                        ->innerJoin('PersonaUsuario',
+                                                    'pu.codPersonaUsuario = us.codPersonaUsuario',
+                                                    'pu')
+                                        ->andWhere('us.nombreUsuario = :nombreUsuario: AND ' .
+                                                                'em.identificadorEmpresa = :identificadorEmpresa: ',
+                                                   [
+                                                        'nombreUsuario' => $username,
+                                                        'identificadorEmpresa' => $idenEmpresa,
+                                                                ]
+                                        )
+                                        ->getQuery()
+                                        ->execute();
+
                 if (count($usuario) == 1) {
                     if ($this->security->checkHash($password,
                                                    $usuario[0]->passwordUsuario)) {
