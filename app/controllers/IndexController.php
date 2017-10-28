@@ -25,7 +25,8 @@ class IndexController extends ControllerBase {
                                     'codEmpresa'    => $usuario->codEmpresa,
                                     'nombresPersona'=> $usuario->nombresPersona,
                                     'nombreEmpresa' => $usuario->nombreEmpresa,
-                                    'tiempoSesion' => $parametrosGenerales[0]->valorParametro));
+                                    'tiempoSesion' => $parametrosGenerales[0]->valorParametro,
+                                    'indicadorUsuarioAdministrador' => $usuario->indicadorUsuarioAdministrador));
     }
 
     public function indexAction() {
@@ -57,12 +58,14 @@ class IndexController extends ControllerBase {
                                         ->innerJoin('PersonaUsuario',
                                                     'pu.codPersonaUsuario = us.codPersonaUsuario',
                                                     'pu')
-                                        ->andWhere('us.nombreUsuario = :nombreUsuario: AND ' .
-                                                                'em.identificadorEmpresa = :identificadorEmpresa: ',
-                                                   [
-                                                        'nombreUsuario' => $username,
-                                                        'identificadorEmpresa' => $idenEmpresa,
-                                                                ]
+                                        ->andWhere('us.nombreUsuario = :nombreUsuario: AND '.
+                                                   'em.identificadorEmpresa = :identificadorEmpresa: AND '.
+                                                   'us.estadoRegistro = :estadoRegistro: ',
+                                                    [
+                                                        'nombreUsuario'         => $username,
+                                                        'identificadorEmpresa'  => $idenEmpresa,
+                                                        'estadoRegistro'        => "S",
+                                                    ]
                                         )
                                         ->getQuery()
                                         ->execute();

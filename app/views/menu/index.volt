@@ -30,6 +30,7 @@
         $nombreEmpresa = "";
         $nombresPersona = "";
         $tiempoSesion = "";
+        $indicadorUsuarioAdministrador = "";
         if ($this->session->has("Usuario")) {
             $usuario        =   $this->session->get("Usuario");
             
@@ -37,6 +38,7 @@
             $nombreEmpresa  =   $usuario['nombreEmpresa'];
             $nombresPersona =   $usuario['nombresPersona'];
             $tiempoSesion   =   $usuario['tiempoSesion'];
+            $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
         }
                 ?>
         <div class="container">
@@ -66,9 +68,34 @@
                 <div class="col-lg-7">
                     <section class=" menu text-center">
                         <ul>
-                            <li>{{ image("img/home.png", "class":"img-responsive") }}<p>inicio</p>
-                            <li>{{ image("img/questionmark.png", "class":"img-responsive") }}<p>ayuda</p>
-                            <li>{{ link_to("index/logout",image('img/logout.png', "class":"img-responsive")) }}<p>Cerrar</p>
+                            <?php
+                            if ($indicadorUsuarioAdministrador=='S' || $indicadorUsuarioAdministrador=='Z'){
+                                ?>
+                                <li>{{ link_to("parametros_generales",image('img/variable.png', "class":"img-responsive")) }}<p>Datos</p>
+                                <?php
+                            }
+                            if ($indicadorUsuarioAdministrador=='Z'){
+                                ?>
+                                <li>{{ link_to("sistema/index",image('img/sistema.png', "class":"img-responsive")) }}<p>Sistemas</p>
+                                <?php
+                            }
+                            if ($indicadorUsuarioAdministrador=='Z'){
+                                ?>
+                                <li>{{ link_to("empresa/index",image('img/empresa.png', "class":"img-responsive")) }}<p>Empresas</p>
+                                <?php
+                            }
+                            if ($indicadorUsuarioAdministrador=='S' || $indicadorUsuarioAdministrador=='Z'){
+                                ?>
+                                <li>{{ link_to("datos_empresa/index",image('img/cloud.png', "class":"img-responsive")) }}<p>Inf. Emp.</p>
+                                <?php
+                            }
+                            if ($indicadorUsuarioAdministrador=='S' || $indicadorUsuarioAdministrador=='Z'){
+                                ?>
+                                <li>{{ link_to("usuario/index",image('img/usuarios2.png', "class":"img-responsive")) }}<p>Usuarios</p>
+                                <?php
+                            }
+                            ?>
+                            <li>{{ link_to("index/logout",image('img/apagar.png', "class":"img-responsive")) }}<p>Cerrar</p>
                         </ul>
                     </section>
                 </div>
@@ -91,26 +118,26 @@
                 <div class="col-xs-12 col-sm-6 col-lg-4">
 
                     <div class="galeria">
-                        {{ image("img/especievalorada.jpg", "class":"center-block img-responsive caja") }}
+                        {{ link_to('', image('img/especievalorada.jpg', "class":"center-block img-responsive caja")) }}
                     </div>
                 </div>
 
                 <!-- 3era -->
                 <div class="col-xs-12 col-sm-12 col-lg-4">
                     <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        {{ image("img/facturacion.jpg", "class":"img-responsive galeria padding_lt") }}
+                        {{ link_to('', image('img/facturacion.jpg', "class":"img-responsive galeria padding_lt")) }}
                     </div>
 
                     <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        {{ image("img/venta.jpg", "class":"img-responsive galeria padding_rt") }}
+                        {{ link_to('', image('img/venta.jpg', "class":"img-responsive galeria padding_rt")) }}
                     </div>
 
                     <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        {{ image("img/email.jpg", "class":"img-responsive galeria padding_lb") }}
+                        {{ link_to('', image('img/email.jpg', "class":"img-responsive galeria padding_lb")) }}
                     </div>
 
                     <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        {{ image("img/ayuda.jpg", "class":"img-responsive galeria padding_rb") }}
+                        {{ link_to('', image('img/ayuda.jpg', "class":"img-responsive galeria padding_rb")) }}
                     </div>
                 </div>
 

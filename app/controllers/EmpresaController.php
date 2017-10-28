@@ -112,6 +112,7 @@ class EmpresaController extends ControllerBase
 
         $empresa = new Empresa();
         $empresa->Nombreempresa = $this->request->getPost("nombreEmpresa");
+        $empresa->IdentificadorEmpresa = $this->request->getPost("identificadorEmpresa");
         $empresa->Estadoregistro = $this->request->getPost("estadoRegistro");
         $empresa->Fechainsercion = $this->request->getPost("fechaInsercion");
         $empresa->Usuarioinsercion = $this->request->getPost("usuarioInsercion");

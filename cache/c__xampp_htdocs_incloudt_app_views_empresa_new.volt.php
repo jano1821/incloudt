@@ -24,6 +24,13 @@
 </div>
 
 <div class="form-group">
+    <label for="fieldIdentificadorEmpresa" class="col-sm-2 control-label">Identificador de Empresa</label>
+    <div class="col-sm-10">
+        <?= $this->tag->textField(['identificadorEmpresa', 'size' => 30, 'class' => 'form-control', 'id' => 'identificadorEmpresa']) ?>
+    </div>
+</div>
+
+<div class="form-group">
     <label for="fieldEstadoregistro" class="col-sm-2 control-label">EstadoRegistro</label>
     <div class="col-sm-10">
         <?= $this->tag->textField(['estadoRegistro', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldEstadoregistro']) ?>

@@ -24,6 +24,13 @@
 </div>
 
 <div class="form-group">
+    <label for="fieldCodPersonaUsuario" class="col-sm-2 control-label">codPersonaUsuario</label>
+    <div class="col-sm-10">
+        <?= $this->tag->textField(['codPersonaUsuario', 'type' => 'numeric', 'class' => 'form-control', 'id' => 'codPersonaUsuario']) ?>
+    </div>
+</div>
+
+<div class="form-group">
     <label for="fieldCodempresa" class="col-sm-2 control-label">CodEmpresa</label>
     <div class="col-sm-10">
         <?= $this->tag->textField(['codEmpresa', 'type' => 'numeric', 'class' => 'form-control', 'id' => 'fieldCodempresa']) ?>

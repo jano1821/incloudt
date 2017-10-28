@@ -117,6 +117,7 @@ class UsuarioController extends ControllerBase
         $usuario = new Usuario();
         $usuario->Codusuario = $this->request->getPost("codUsuario");
         $usuario->Codempresa = $this->request->getPost("codEmpresa");
+        $usuario->CodPersonaUsuario = $this->request->getPost("codPersonaUsuario");
         $usuario->Nombreusuario = $this->request->getPost("nombreUsuario");
         $usuario->Passwordusuario = $this->request->getPost("passwordUsuario");
         $usuario->Cantidadintentos = $this->request->getPost("cantidadIntentos");
