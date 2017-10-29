@@ -6,7 +6,7 @@
                 <div class="panel-body">
                     <p>
                         <h4 class="text-center">
-                            Pulpin
+                            Credenciales
                         </h4>
                     </p>
                     <div class="form-group">
