@@ -3,17 +3,17 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-{{ link_to("menu/index", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
-{{ link_to("usuario/index", "<i class='glyphicon glyphicon-chevron-left'></i> Volver a Usuarios","class":"btn btn-info") }}
-{{ link_to("persona_usuario/new", "<i class='glyphicon glyphicon-plus'></i> Nueva Persona Usuaria","class":"btn btn-info") }}
+<?= $this->tag->linkTo(['menu/index', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
+<?= $this->tag->linkTo(['usuario/index', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver a Usuarios', 'class' => 'btn btn-info']) ?>
+<?= $this->tag->linkTo(['persona_usuario/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nueva Persona Usuaria', 'class' => 'btn btn-info']) ?>
 </div>
 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Personas Usuarias</h4>
 </div>
 <div class="page-header">
 </div>
-{{ content() }}
+<?= $this->getContent() ?>
 
-{{ form("persona_usuario/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<?= $this->tag->form(['persona_usuario/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
 
@@ -24,7 +24,7 @@
 <label for="fieldNombrespersona">NombresPersona</label>
 </div>
 <div class="col-md-4">
-{{ text_field("nombresPersona", "size" : 30, "class" : "form-control", "id" : "fieldNombrespersona") }}
+<?= $this->tag->textField(['nombresPersona', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldNombrespersona']) ?>
 </div>
 </div>
 
@@ -35,7 +35,7 @@
 <label for="fieldApellidospersona">ApellidosPersona</label>
 </div>
 <div class="col-md-4">
-{{ text_field("apellidosPersona", "size" : 30, "class" : "form-control", "id" : "fieldApellidospersona") }}
+<?= $this->tag->textField(['apellidosPersona', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldApellidospersona']) ?>
 </div>
 </div>
 
@@ -46,7 +46,7 @@
 <label for="fieldNumerodocumento">NumeroDocumento</label>
 </div>
 <div class="col-md-3">
-{{ text_field("numeroDocumento", "size" : 30, "class" : "form-control", "id" : "fieldNumerodocumento") }}
+<?= $this->tag->textField(['numeroDocumento', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldNumerodocumento']) ?>
 </div>
 </div>
 
@@ -57,7 +57,7 @@
 <label for="fieldNumerocelular">NumeroCelular</label>
 </div>
 <div class="col-md-3">
-{{ text_field("numeroCelular", "size" : 30, "class" : "form-control", "id" : "fieldNumerocelular") }}
+<?= $this->tag->textField(['numeroCelular', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldNumerocelular']) ?>
 </div>
 </div>
 
@@ -68,7 +68,7 @@
 <label for="fieldNumeroanexo">NumeroAnexo</label>
 </div>
 <div class="col-md-3">
-{{ text_field("numeroAnexo", "size" : 30, "class" : "form-control", "id" : "fieldNumeroanexo") }}
+<?= $this->tag->textField(['numeroAnexo', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldNumeroanexo']) ?>
 </div>
 </div>
 
@@ -79,7 +79,7 @@
                         <label for="fieldEstadoregistro">Estado de Registro</label>
                     </div>
                     <div class="col-md-3">
-                        {{ select_static('estadoRegistro', ['':'Seleccione Estado...', 'S' : 'Vigente', 'N' : 'No Vigente'], "class": "form-control") }}
+                        <?= $this->tag->selectStatic(['estadoRegistro', ['' => 'Seleccione Estado...', 'S' => 'Vigente', 'N' => 'No Vigente'], 'class' => 'form-control']) ?>
                     </div>
                 </div>
 
@@ -92,8 +92,8 @@
 <div class="col-md-2">
 </div>
 <div class="col-md-2">
-{{ form.render('buscar') }}
-{{ form.render('csrf', ['value': security.getToken()]) }}
+<?= $form->render('buscar') ?>
+<?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
 </div>
 </div>
 </div>

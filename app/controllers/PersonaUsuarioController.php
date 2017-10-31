@@ -11,7 +11,9 @@ class PersonaUsuarioController extends ControllerBase
      */
     public function indexAction()
     {
-        $this->persistent->parameters = null;
+        parent::validarSession();
+
+        $this->view->form = new usuarioIndexForm();
     }
 
     /**

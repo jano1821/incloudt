@@ -1,98 +1,89 @@
-<div class="page-header">
-    <h1>
-        Search usuario
-    </h1>
-    <p>
-        {{ link_to("usuario/new", "Create usuario") }}
-    </p>
-</div>
+<div class="row">
+    <div class="container">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="btn-group pull-right">
+                    {{ link_to("menu/index", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
+                    {{ link_to("usuario/new", "<i class='glyphicon glyphicon-plus'></i> Nuevo Usuario","class":"btn btn-info") }}
+                    {{ link_to("persona_usuario/new", "<i class='glyphicon glyphicon-plus'></i> Nueva Persona","class":"btn btn-info") }}
+                </div>
+                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Usuarios</h4>
+            </div>
+            <div class="page-header">
+        </div>
 
-{{ content() }}
+        {{ content() }}
 
-{{ form("usuario/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+        {{ form("usuario/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+            <div class="table">
+                <div class="form-group">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="fieldCodempresa">Empresa</label>
+                    </div>
+                    <div class="col-md-3">
+                        {% if empresa is defined %}
+                            {{ select("codEmpresa", empresa,'useEmpty': true, 'emptyText': 'Seleccione Empresa...', 'emptyValue': '', 'using': ['codEmpresa', 'nombreEmpresa'], "class" : "form-control") }}
+                        {% endif %}
+                    </div>
+                </div>
 
-<div class="form-group">
-    <label for="fieldCodusuario" class="col-sm-2 control-label">CodUsuario</label>
-    <div class="col-sm-10">
-        {{ text_field("codUsuario", "type" : "numeric", "class" : "form-control", "id" : "fieldCodusuario") }}
+                <div class="form-group">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="fieldNombreusuario">Nombre de Usuario</label>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.render('nombreUsuario') }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="fieldCantidadintentos">Cantidad Intentos</label>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.render('cantidadIntentos') }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="fieldIndicadorusuarioadministrador">Usuario Administrador</label>
+                    </div>
+                    <div class="col-md-3">
+                        {{ select_static('indicadorUsuarioAdministrador', ['':'Seleccione Indicador...', 'S' : 'Usuario Administrador', 'N' : 'Usuario Normal'], "class": "form-control") }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="fieldEstadoregistro">Estado de Registro</label>
+                    </div>
+                    <div class="col-md-3">
+                        {{ select_static('estadoRegistro', ['':'Seleccione Estado...', 'S' : 'Vigente', 'N' : 'No Vigente'], "class": "form-control") }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.render('buscar') }}
+                        {{ form.render('csrf', ['value': security.getToken()]) }}
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-
-<div class="form-group">
-    <label for="fieldCodempresa" class="col-sm-2 control-label">CodEmpresa</label>
-    <div class="col-sm-10">
-        {{ text_field("codEmpresa", "type" : "numeric", "class" : "form-control", "id" : "fieldCodempresa") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldNombreusuario" class="col-sm-2 control-label">NombreUsuario</label>
-    <div class="col-sm-10">
-        {{ text_field("nombreUsuario", "size" : 30, "class" : "form-control", "id" : "fieldNombreusuario") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldPasswordusuario" class="col-sm-2 control-label">PasswordUsuario</label>
-    <div class="col-sm-10">
-        {{ text_field("passwordUsuario", "size" : 30, "class" : "form-control", "id" : "fieldPasswordusuario") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldCantidadintentos" class="col-sm-2 control-label">CantidadIntentos</label>
-    <div class="col-sm-10">
-        {{ text_field("cantidadIntentos", "type" : "numeric", "class" : "form-control", "id" : "fieldCantidadintentos") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldIndicadorusuarioadministrador" class="col-sm-2 control-label">IndicadorUsuarioAdministrador</label>
-    <div class="col-sm-10">
-        {{ text_field("indicadorUsuarioAdministrador", "size" : 30, "class" : "form-control", "id" : "fieldIndicadorusuarioadministrador") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldEstadoregistro" class="col-sm-2 control-label">EstadoRegistro</label>
-    <div class="col-sm-10">
-        {{ text_field("estadoRegistro", "size" : 30, "class" : "form-control", "id" : "fieldEstadoregistro") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldFechainsercion" class="col-sm-2 control-label">FechaInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaInsercion", "size" : 30, "class" : "form-control", "id" : "fieldFechainsercion") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldUsuarioinsercion" class="col-sm-2 control-label">UsuarioInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioInsercion", "size" : 30, "class" : "form-control", "id" : "fieldUsuarioinsercion") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldFechamodificacion" class="col-sm-2 control-label">FechaModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaModificacion", "size" : 30, "class" : "form-control", "id" : "fieldFechamodificacion") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldUsuariomodificacion" class="col-sm-2 control-label">UsuarioModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioModificacion", "size" : 30, "class" : "form-control", "id" : "fieldUsuariomodificacion") }}
-    </div>
-</div>
-
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        {{ submit_button('Search', 'class': 'btn btn-default') }}
-    </div>
-</div>
-
-</form>

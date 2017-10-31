@@ -1,54 +1,97 @@
 <?php
- 
-use Phalcon\Mvc\Model\Criteria;
+//use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+use UsuarioIndexForm as usuarioIndexForm;
 
+class UsuarioController extends ControllerBase {
 
-class UsuarioController extends ControllerBase
-{
     /**
      * Index action
      */
-    public function indexAction()
-    {
-        $this->persistent->parameters = null;
+    public function indexAction() {
+        parent::validarSession();
+        
+        //$form = new FormLogin();
+        
+        $parameters['order'] = "nombreEmpresa ASC";
+        $empresa = Empresa::find($parameters);
+
+        $this->view->empresa = $empresa;
+        $this->view->form = new usuarioIndexForm();
     }
 
     /**
      * Searches for usuario
      */
-    public function searchAction()
-    {
+    public function searchAction() {
         $numberPage = 1;
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, 'Usuario', $_POST);
-            $this->persistent->parameters = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
+        if (!$this->request->isPost()) {
+            $numberPage = $this->request->getQuery("page",
+                                                   "int");
         }
 
-        $parameters = $this->persistent->parameters;
-        if (!is_array($parameters)) {
-            $parameters = [];
-        }
-        $parameters["order"] = "codUsuario";
+        /*$usuario = $this->modelsManager->createBuilder()
+                                ->columns("cc.idCodigo," .
+                                                        "cc.valorCodigo," .
+                                                        "cc.descripcionCodigo," .
+                                                        "DATE_FORMAT(cc.fechaRegistro, '%d/%m/%Y') fechaRegistro," .
+                                                        "cc.requerimiento requerimiento," .
+                                                        "lt.nombrePersona liderTecnico," .
+                                                        "lf.nombrePersona liderFuncional," .
+                                                        "tc.descripcionTipo," .
+                                                        "mo.descripcionModulo")
+                                ->addFrom('CatalogoCodigo',
+                                          'cc')
+                                ->innerJoin('Tipocodigo',
+                                            'tc.idTipoCodigo = cc.idTipoCodigo',
+                                            'tc')
+                                ->innerJoin('Persona',
+                                            'lt.idpersona = cc.idLiderTecnico',
+                                            'lt')
+                                ->innerJoin('Persona',
+                                            'lf.idpersona = cc.idLiderFuncional',
+                                            'lf')
+                                ->innerJoin('Modulo',
+                                            'mo.idModulo = cc.idModulo',
+                                            'mo')
+                                ->andWhere('cc.valorCodigo like :valor: AND ' .
+                                                        'cc.descripcionCodigo like :descripcion: AND ' .
+                                                        'cc.requerimiento like :requerimiento: AND ' .
+                                                        'cc.idLiderTecnico like :tecnico: AND ' .
+                                                        'cc.idLiderFuncional like :funcional: AND ' .
+                                                        'cc.idTipoCodigo like :tipo: AND ' .
+                                                        'cc.idModulo like :modulo: ',
+                                           [
+                                                'valor' => "%" . $valorcodigo . "%",
+                                                'descripcion' => "%" . $descripcioncodigo . "%",
+                                                'requerimiento' => "%" . $requerimiento . "%",
+                                                'tecnico' => $lidertecnico,
+                                                'funcional' => $liderfuncional,
+                                                'tipo' => $tipocodigo,
+                                                'modulo' => $modulo,
+                                                        ]
+                                )
+                                ->orderBy('cc.valorCodigo')
+                                ->getQuery()
+                                ->execute();*/
+        
 
-        $usuario = Usuario::find($parameters);
+        $usuario = Usuario::find();
         if (count($usuario) == 0) {
-            $this->flash->notice("The search did not find any usuario");
+            $this->flash->notice("La Búsqueda no Encontró Resultados");
 
             $this->dispatcher->forward([
-                "controller" => "usuario",
-                "action" => "index"
+                            "controller" => "usuario",
+                            "action" => "index"
             ]);
 
             return;
         }
 
         $paginator = new Paginator([
-            'data' => $usuario,
-            'limit'=> 10,
-            'page' => $numberPage
+                        'data' => $usuario,
+                        'limit' => 10,
+                        'page' => $numberPage
         ]);
 
         $this->view->page = $paginator->getPaginate();
@@ -57,9 +100,8 @@ class UsuarioController extends ControllerBase
     /**
      * Displays the creation form
      */
-    public function newAction()
-    {
-
+    public function newAction() {
+        
     }
 
     /**
@@ -67,8 +109,7 @@ class UsuarioController extends ControllerBase
      *
      * @param string $codUsuario
      */
-    public function editAction($codUsuario)
-    {
+    public function editAction($codUsuario) {
         if (!$this->request->isPost()) {
 
             $usuario = Usuario::findFirstBycodUsuario($codUsuario);
@@ -76,8 +117,8 @@ class UsuarioController extends ControllerBase
                 $this->flash->error("usuario was not found");
 
                 $this->dispatcher->forward([
-                    'controller' => "usuario",
-                    'action' => 'index'
+                                'controller' => "usuario",
+                                'action' => 'index'
                 ]);
 
                 return;
@@ -85,30 +126,39 @@ class UsuarioController extends ControllerBase
 
             $this->view->codUsuario = $usuario->codUsuario;
 
-            $this->tag->setDefault("codUsuario", $usuario->codUsuario);
-            $this->tag->setDefault("codEmpresa", $usuario->codEmpresa);
-            $this->tag->setDefault("nombreUsuario", $usuario->nombreUsuario);
-            $this->tag->setDefault("passwordUsuario", $usuario->passwordUsuario);
-            $this->tag->setDefault("cantidadIntentos", $usuario->cantidadIntentos);
-            $this->tag->setDefault("indicadorUsuarioAdministrador", $usuario->indicadorUsuarioAdministrador);
-            $this->tag->setDefault("estadoRegistro", $usuario->estadoRegistro);
-            $this->tag->setDefault("fechaInsercion", $usuario->fechaInsercion);
-            $this->tag->setDefault("usuarioInsercion", $usuario->usuarioInsercion);
-            $this->tag->setDefault("fechaModificacion", $usuario->fechaModificacion);
-            $this->tag->setDefault("usuarioModificacion", $usuario->usuarioModificacion);
-            
+            $this->tag->setDefault("codUsuario",
+                                   $usuario->codUsuario);
+            $this->tag->setDefault("codEmpresa",
+                                   $usuario->codEmpresa);
+            $this->tag->setDefault("nombreUsuario",
+                                   $usuario->nombreUsuario);
+            $this->tag->setDefault("passwordUsuario",
+                                   $usuario->passwordUsuario);
+            $this->tag->setDefault("cantidadIntentos",
+                                   $usuario->cantidadIntentos);
+            $this->tag->setDefault("indicadorUsuarioAdministrador",
+                                   $usuario->indicadorUsuarioAdministrador);
+            $this->tag->setDefault("estadoRegistro",
+                                   $usuario->estadoRegistro);
+            $this->tag->setDefault("fechaInsercion",
+                                   $usuario->fechaInsercion);
+            $this->tag->setDefault("usuarioInsercion",
+                                   $usuario->usuarioInsercion);
+            $this->tag->setDefault("fechaModificacion",
+                                   $usuario->fechaModificacion);
+            $this->tag->setDefault("usuarioModificacion",
+                                   $usuario->usuarioModificacion);
         }
     }
 
     /**
      * Creates a new usuario
      */
-    public function createAction()
-    {
+    public function createAction() {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "usuario",
-                'action' => 'index'
+                            'controller' => "usuario",
+                            'action' => 'index'
             ]);
 
             return;
@@ -127,7 +177,7 @@ class UsuarioController extends ControllerBase
         $usuario->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
         $usuario->Fechamodificacion = $this->request->getPost("fechaModificacion");
         $usuario->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-        
+
 
         if (!$usuario->save()) {
             foreach ($usuario->getMessages() as $message) {
@@ -135,8 +185,8 @@ class UsuarioController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "usuario",
-                'action' => 'new'
+                            'controller' => "usuario",
+                            'action' => 'new'
             ]);
 
             return;
@@ -145,8 +195,8 @@ class UsuarioController extends ControllerBase
         $this->flash->success("usuario was created successfully");
 
         $this->dispatcher->forward([
-            'controller' => "usuario",
-            'action' => 'index'
+                        'controller' => "usuario",
+                        'action' => 'index'
         ]);
     }
 
@@ -154,13 +204,12 @@ class UsuarioController extends ControllerBase
      * Saves a usuario edited
      *
      */
-    public function saveAction()
-    {
+    public function saveAction() {
 
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "usuario",
-                'action' => 'index'
+                            'controller' => "usuario",
+                            'action' => 'index'
             ]);
 
             return;
@@ -173,8 +222,8 @@ class UsuarioController extends ControllerBase
             $this->flash->error("usuario does not exist " . $codUsuario);
 
             $this->dispatcher->forward([
-                'controller' => "usuario",
-                'action' => 'index'
+                            'controller' => "usuario",
+                            'action' => 'index'
             ]);
 
             return;
@@ -191,7 +240,7 @@ class UsuarioController extends ControllerBase
         $usuario->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
         $usuario->Fechamodificacion = $this->request->getPost("fechaModificacion");
         $usuario->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-        
+
 
         if (!$usuario->save()) {
 
@@ -200,9 +249,9 @@ class UsuarioController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "usuario",
-                'action' => 'edit',
-                'params' => [$usuario->codUsuario]
+                            'controller' => "usuario",
+                            'action' => 'edit',
+                            'params' => [$usuario->codUsuario]
             ]);
 
             return;
@@ -211,8 +260,8 @@ class UsuarioController extends ControllerBase
         $this->flash->success("usuario was updated successfully");
 
         $this->dispatcher->forward([
-            'controller' => "usuario",
-            'action' => 'index'
+                        'controller' => "usuario",
+                        'action' => 'index'
         ]);
     }
 
@@ -221,15 +270,14 @@ class UsuarioController extends ControllerBase
      *
      * @param string $codUsuario
      */
-    public function deleteAction($codUsuario)
-    {
+    public function deleteAction($codUsuario) {
         $usuario = Usuario::findFirstBycodUsuario($codUsuario);
         if (!$usuario) {
             $this->flash->error("usuario was not found");
 
             $this->dispatcher->forward([
-                'controller' => "usuario",
-                'action' => 'index'
+                            'controller' => "usuario",
+                            'action' => 'index'
             ]);
 
             return;
@@ -242,8 +290,8 @@ class UsuarioController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "usuario",
-                'action' => 'search'
+                            'controller' => "usuario",
+                            'action' => 'search'
             ]);
 
             return;
@@ -252,9 +300,8 @@ class UsuarioController extends ControllerBase
         $this->flash->success("usuario was deleted successfully");
 
         $this->dispatcher->forward([
-            'controller' => "usuario",
-            'action' => "index"
+                        'controller' => "usuario",
+                        'action' => "index"
         ]);
     }
-
 }
