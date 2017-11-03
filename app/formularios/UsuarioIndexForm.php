@@ -22,7 +22,7 @@ class UsuarioIndexForm extends Form {
         $this->add($csrf);
 
         $submit = new Submit('buscar',
-                             array('value' => 'Buscar','class' => 'col-sm-10 btn btn-primary'));
+                             array('value' => 'Buscar','class' => 'col-sm-5 btn btn-primary'));
         $this->add($submit);
     }
 }

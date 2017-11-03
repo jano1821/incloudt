@@ -3,8 +3,8 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="btn-group pull-right">
-                    {{ link_to("menu/index", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
-                    {{ link_to("usuario/new", "<i class='glyphicon glyphicon-plus'></i> Nuevo Usuario","class":"btn btn-info") }}
+                    {{ link_to("menu", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
+                    {{ link_to("usuario/new", "<i class='glyphicon glyphicon-user'></i> Nuevo Usuario","class":"btn btn-info") }}
                     {{ link_to("persona_usuario/new", "<i class='glyphicon glyphicon-plus'></i> Nueva Persona","class":"btn btn-info") }}
                 </div>
                 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Usuarios</h4>
@@ -79,6 +79,7 @@
                     <div class="col-md-2">
                     </div>
                     <div class="col-md-2">
+                        {{ link_to("usuario/reset", "Limpiar","class":"btn btn-default") }}   
                         {{ form.render('buscar') }}
                         {{ form.render('csrf', ['value': security.getToken()]) }}
                     </div>

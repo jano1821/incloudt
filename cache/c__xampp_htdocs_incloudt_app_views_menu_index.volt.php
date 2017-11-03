@@ -1,7 +1,6 @@
-<?= $this->getContent() ?>
 <!DOCTYPE html>
 <html>
-    
+    <?= $this->getContent() ?>
     <head lang="es">
         <meta charset="UTF-8">
         <title></title>
@@ -24,32 +23,12 @@
 
     <body class="fondo">
         
-    <?php
-        $usuario = "";
-        $username = "";
-        $nombreEmpresa = "";
-        $nombresPersona = "";
-        $tiempoSesion = "";
-        $indicadorUsuarioAdministrador = "";
-        if ($this->session->has("Usuario")) {
-            $usuario        =   $this->session->get("Usuario");
-            
-            $username       =   $usuario['nombreUsuario'];
-            $nombreEmpresa  =   $usuario['nombreEmpresa'];
-            $nombresPersona =   $usuario['nombresPersona'];
-            $tiempoSesion   =   $usuario['tiempoSesion'];
-            $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
-        }
-                ?>
+    <?php require_once('files/datosSesion.php');?>
         <div class="container">
             <div class="row caja">
                 <header class="dato">
-
-                    <div class="col-xs-6 col-sm-6 col-md-6">Usuario : <?php echo $nombresPersona;?></div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 text-right"> Tiempo Restante :   <div id="hora">
-                                                                                                
-                                                                                            </div> 
-                    </div>
+                    <?php require_once('files/usuario.php');?>
+                    <?php require_once('files/reloj.php');?>
 
                 </header>
             </div>
@@ -144,31 +123,31 @@
             </div>
         </div>
         <script>
+        var tiempo = "<?php echo $tiempoSesion; ?>";
         var segundo = 0;
-        var tiempo = <?php echo $tiempoSesion;?>;
         window.setTimeout('mostrar()', 100);
         function mostrar() {
             var etiqueta;
-            
-            if (tiempo == 0 && segundo==0){
+
+            if (tiempo == 0 && segundo == 0) {
                 document.location.href = "index/logout";
             }
-            
-            etiqueta =  completar(2,""+tiempo,"0")+":"+completar(2,""+segundo,"0");
 
-            if (segundo==0){
+            etiqueta = completar(2, "" + tiempo, "0") + ":" + completar(2, "" + segundo, "0");
+
+            if (segundo == 0) {
                 tiempo--;
                 segundo = 60;
             }
-            
+
             segundo--;
-    
-            document.getElementById('hora').innerHTML = etiqueta;
+
+            document.getElementById('hora').innerHTML = 'Tiempo Restante: ' + etiqueta;
             window.setTimeout('mostrar()', 1000);
         }
-        function completar(len, cadena, caracter){
-            while(cadena.length< len){
-                cadena= caracter + cadena;
+        function completar(len, cadena, caracter) {
+            while (cadena.length < len) {
+                cadena = caracter + cadena;
             }
             return cadena;
         }

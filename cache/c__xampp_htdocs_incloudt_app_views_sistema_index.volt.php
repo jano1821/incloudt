@@ -56,7 +56,7 @@
 <div class="form-group">
     <label for="fieldUsuarioinsercion" class="col-sm-2 control-label">UsuarioInsercion</label>
     <div class="col-sm-10">
-        <?= $this->tag->textField(['usuarioInsercion', 'type' => 'numeric', 'class' => 'form-control', 'id' => 'fieldUsuarioinsercion']) ?>
+        <?= $this->tag->textField(['usuarioInsercion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldUsuarioinsercion']) ?>
     </div>
 </div>
 
@@ -70,7 +70,7 @@
 <div class="form-group">
     <label for="fieldUsuariomodificacion" class="col-sm-2 control-label">UsuarioModificacion</label>
     <div class="col-sm-10">
-        <?= $this->tag->textField(['usuarioModificacion', 'type' => 'numeric', 'class' => 'form-control', 'id' => 'fieldUsuariomodificacion']) ?>
+        <?= $this->tag->textField(['usuarioModificacion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldUsuariomodificacion']) ?>
     </div>
 </div>
 

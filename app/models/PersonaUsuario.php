@@ -378,7 +378,7 @@ class PersonaUsuario extends \Phalcon\Mvc\Model
         return [
             'codPersonaUsuario' => 'codPersonaUsuario',
             'nombresPersona' => 'nombresPersona',
-            'ApellidosPersona' => 'ApellidosPersona',
+            'apellidosPersona' => 'apellidosPersona',
             'numeroDocumento' => 'numeroDocumento',
             'numeroCelular' => 'numeroCelular',
             'numeroAnexo' => 'numeroAnexo',

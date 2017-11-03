@@ -3,12 +3,13 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="btn-group pull-right">
-                    <?= $this->tag->linkTo(['menu/index', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
-                    <?= $this->tag->linkTo(['usuario/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nuevo Usuario', 'class' => 'btn btn-info']) ?>
+                    <?= $this->tag->linkTo(['menu', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
+                    <?= $this->tag->linkTo(['usuario/new', '<i class=\'glyphicon glyphicon-user\'></i> Nuevo Usuario', 'class' => 'btn btn-info']) ?>
                     <?= $this->tag->linkTo(['persona_usuario/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nueva Persona', 'class' => 'btn btn-info']) ?>
                 </div>
                 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Usuarios</h4>
             </div>
+<?php require_once('files/reloj.php');?>
             <div class="page-header">
         </div>
 
@@ -79,6 +80,7 @@
                     <div class="col-md-2">
                     </div>
                     <div class="col-md-2">
+                        <?= $this->tag->linkTo(['usuario/reset', 'Limpiar', 'class' => 'btn btn-default']) ?>   
                         <?= $form->render('buscar') ?>
                         <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
                     </div>

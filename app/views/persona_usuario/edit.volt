@@ -1,98 +1,100 @@
 <div class="row">
-    <nav>
-        <ul class="pager">
-            <li class="previous">{{ link_to("persona_usuario", "Go Back") }}</li>
-        </ul>
-    </nav>
+<div class="container">
+<div class="panel panel-info">
+<div class="panel-heading">
+<div class="btn-group pull-right">
+        {{ link_to("persona_usuario", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
+</div>
+<h4><i class='glyphicon glyphicon-edit'></i> Editar Persona Usuaria</h4>
+</div>
+<div class="page-header">
 </div>
 
-<div class="page-header">
-    <h1>
-        Edit persona_usuario
-    </h1>
-</div>
 
 {{ content() }}
 
 {{ form("persona_usuario/save", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
+<div class="table">
 <div class="form-group">
-    <label for="fieldNombrespersona" class="col-sm-2 control-label">NombresPersona</label>
-    <div class="col-sm-10">
-        {{ text_field("nombresPersona", "size" : 30, "class" : "form-control", "id" : "fieldNombrespersona") }}
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldNombrespersona">NombresPersona</label>
+</div>
+<div class="col-md-3">
+        {{ form.render('nombresPersona') }}  
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldApellidospersona" class="col-sm-2 control-label">ApellidosPersona</label>
-    <div class="col-sm-10">
-        {{ text_field("ApellidosPersona", "size" : 30, "class" : "form-control", "id" : "fieldApellidospersona") }}
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldApellidospersona">ApellidosPersona</label>
+</div>
+<div class="col-md-3">
+{{ form.render('apellidosPersona') }} 
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldNumerodocumento" class="col-sm-2 control-label">NumeroDocumento</label>
-    <div class="col-sm-10">
-        {{ text_field("numeroDocumento", "size" : 30, "class" : "form-control", "id" : "fieldNumerodocumento") }}
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldNumerodocumento">NumeroDocumento</label>
+</div>
+<div class="col-md-3">
+{{ form.render('numeroDocumento') }} 
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldNumerocelular" class="col-sm-2 control-label">NumeroCelular</label>
-    <div class="col-sm-10">
-        {{ text_field("numeroCelular", "size" : 30, "class" : "form-control", "id" : "fieldNumerocelular") }}
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldNumerocelular">NumeroCelular</label>
+</div>
+<div class="col-md-3">
+{{ form.render('numeroCelular') }} 
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldNumeroanexo" class="col-sm-2 control-label">NumeroAnexo</label>
-    <div class="col-sm-10">
-        {{ text_field("numeroAnexo", "size" : 30, "class" : "form-control", "id" : "fieldNumeroanexo") }}
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldNumeroanexo">NumeroAnexo</label>
+</div>
+<div class="col-md-3">
+{{ form.render('numeroAnexo') }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldEstadoregistro" class="col-sm-2 control-label">EstadoRegistro</label>
-    <div class="col-sm-10">
-        {{ text_field("estadoRegistro", "size" : 30, "class" : "form-control", "id" : "fieldEstadoregistro") }}
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldEstadoregistro">EstadoRegistro</label>
+</div>
+<div class="col-md-3">
+{{ form.render('estadoRegistro', ['class' : 'form-control']) }}
     </div>
 </div>
+
+{{ hidden_field("codPersonaUsuario") }}
 
 <div class="form-group">
-    <label for="fieldFechainsercion" class="col-sm-2 control-label">FechaInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaInsercion", "size" : 30, "class" : "form-control", "id" : "fieldFechainsercion") }}
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+</div>
+<div class="col-md-2">
+        {{ form.render('save') }}
+{{ form.render('csrf', ['value': security.getToken()]) }}
     </div>
 </div>
-
-<div class="form-group">
-    <label for="fieldUsuarioinsercion" class="col-sm-2 control-label">UsuarioInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioInsercion", "size" : 30, "class" : "form-control", "id" : "fieldUsuarioinsercion") }}
-    </div>
 </div>
-
-<div class="form-group">
-    <label for="fieldFechamodificacion" class="col-sm-2 control-label">FechaModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaModificacion", "size" : 30, "class" : "form-control", "id" : "fieldFechamodificacion") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldUsuariomodificacion" class="col-sm-2 control-label">UsuarioModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioModificacion", "size" : 30, "class" : "form-control", "id" : "fieldUsuariomodificacion") }}
-    </div>
-</div>
-
-
-{{ hidden_field("id") }}
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        {{ submit_button('Send', 'class': 'btn btn-default') }}
-    </div>
-</div>
-
 </form>
+</div>
+</div>

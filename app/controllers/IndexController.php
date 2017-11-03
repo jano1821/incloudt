@@ -26,6 +26,7 @@ class IndexController extends ControllerBase {
                                     'nombresPersona'=> $usuario->nombresPersona,
                                     'nombreEmpresa' => $usuario->nombreEmpresa,
                                     'tiempoSesion' => $parametrosGenerales[0]->valorParametro,
+                                    'ultimoAcceso' => date("Y-n-j H:i:s"),        
                                     'indicadorUsuarioAdministrador' => $usuario->indicadorUsuarioAdministrador));
     }
 

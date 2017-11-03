@@ -3,12 +3,15 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-<?= $this->tag->linkTo(['menu/index', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
-<?= $this->tag->linkTo(['usuario/index', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver a Usuarios', 'class' => 'btn btn-info']) ?>
+<?= $this->tag->linkTo(['menu', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
+<?= $this->tag->linkTo(['usuario/index', '<i class=\'glyphicon glyphicon glyphicon-user\'></i> Ir a Usuarios', 'class' => 'btn btn-info']) ?>
 <?= $this->tag->linkTo(['persona_usuario/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nueva Persona Usuaria', 'class' => 'btn btn-info']) ?>
 </div>
 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Personas Usuarias</h4>
 </div>
+
+<?php require_once('files/reloj.php');?>
+
 <div class="page-header">
 </div>
 <?= $this->getContent() ?>
@@ -45,7 +48,7 @@
 <div class="col-md-2">
 <label for="fieldNumerodocumento">NumeroDocumento</label>
 </div>
-<div class="col-md-3">
+<div class="col-md-2">
 <?= $this->tag->textField(['numeroDocumento', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldNumerodocumento']) ?>
 </div>
 </div>
@@ -56,7 +59,7 @@
 <div class="col-md-2">
 <label for="fieldNumerocelular">NumeroCelular</label>
 </div>
-<div class="col-md-3">
+<div class="col-md-2">
 <?= $this->tag->textField(['numeroCelular', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldNumerocelular']) ?>
 </div>
 </div>
@@ -67,7 +70,7 @@
 <div class="col-md-2">
 <label for="fieldNumeroanexo">NumeroAnexo</label>
 </div>
-<div class="col-md-3">
+<div class="col-md-2">
 <?= $this->tag->textField(['numeroAnexo', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldNumeroanexo']) ?>
 </div>
 </div>
@@ -92,11 +95,12 @@
 <div class="col-md-2">
 </div>
 <div class="col-md-2">
+<?= $this->tag->linkTo(['persona_usuario/reset', 'Limpiar', 'class' => 'btn btn-default']) ?>   
 <?= $form->render('buscar') ?>
 <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
 </div>
 </div>
 </div>
-</form>
+    </form>
 </div>
 </div>

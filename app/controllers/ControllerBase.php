@@ -7,6 +7,20 @@ class ControllerBase extends Controller {
     public function validarSession() {
         if (!$this->session->has("Usuario")) {
             $this->response->redirect('index');
+        }else{
+            $usuario = $this->session->get("Usuario");
+            $ultimoAcceso = $usuario['ultimoAcceso'];
+            $tiempoSesion = $usuario['tiempoSesion'];
+            
+            $ahora = date("Y-n-j H:i:s");
+            $tiempo_transcurrido = (strtotime($ahora) - strtotime($ultimoAcceso));
+            
+            if ($tiempo_transcurrido >= ($tiempoSesion*60)) {
+                $this->session->destroy();
+                $this->response->redirect('index');
+            }else {
+                $_SESSION["ultimoAcceso"] = $ahora;
+            }
         }
     }
 
@@ -63,5 +77,36 @@ class ControllerBase extends Controller {
             $criteria->bind($bind);
         }
         return $criteria;
+    }
+    
+    public function _sesionActiva() {
+        
+        
+        if ($_SESSION["autenticado"] != "SI") {
+            session_destroy();
+            include("../../view/generales/SessionExpirada.php");
+            $sessionExpirada = new SessionExpirada;
+            $sessionExpirada->mostrarSessionExpirada($URL);
+            return false;
+        }else {
+            try {
+                $fechaGuardada = $_SESSION["ultimoAcceso"];
+            }catch (Exception $indexColumnas) {
+                $_SESSION["ultimoAcceso"] = date("Y-n-j H:i:s");
+            }
+            $ahora = date("Y-n-j H:i:s");
+            $tiempo_transcurrido = (strtotime($ahora) - strtotime($fechaGuardada));
+
+            if ($tiempo_transcurrido >= 1200) {
+                session_destroy();
+                include("../../view/generales/SessionExpirada.php");
+                $sessionExpirada = new SessionExpirada;
+                $sessionExpirada->mostrarSessionExpirada($URL);
+                return false;
+            }else {
+                $_SESSION["ultimoAcceso"] = $ahora;
+                return true;
+            }
+        }
     }
 }
