@@ -10,8 +10,6 @@
 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Personas Usuarias</h4>
 </div>
 
-<?php require_once('files/reloj.php');?>
-
 <div class="page-header">
 </div>
 <?= $this->getContent() ?>

@@ -8,8 +8,6 @@
 <h4><i class='glyphicon glyphicon-search'></i>Nuevo Usuario</h4>
 </div>
 
-<?php require_once('files/reloj.php');?>
-
 <div class="page-header">
 </div>
 
@@ -96,7 +94,6 @@
 <div class="col-md-2">
 </div>
 <div class="col-md-2">
-<?= $this->tag->linkTo(['usuario/resetNew', 'Limpiar', 'class' => 'btn btn-default']) ?>   
 <?= $form->render('save') ?>
 <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
 </div>

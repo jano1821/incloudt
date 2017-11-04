@@ -123,6 +123,7 @@ class UsuarioController extends ControllerBase {
      */
     public function newAction() {
         parent::validarSession();
+        
         $parameters['order'] = "nombreEmpresa ASC";
         $empresa = Empresa::find($parameters);
 
@@ -150,12 +151,15 @@ class UsuarioController extends ControllerBase {
      */
     public function editAction($codUsuario) {
         parent::validarSession();
-        
+
         if (!$this->request->isPost()) {
 
+            $parameters['order'] = "nombreEmpresa ASC";
+            $empresa = Empresa::find($parameters);
+            
             $usuario = Usuario::findFirstBycodUsuario($codUsuario);
             if (!$usuario) {
-                $this->flash->error("usuario was not found");
+                $this->flash->error("Usuario no Encontrado");
 
                 $this->dispatcher->forward([
                                 'controller' => "usuario",
@@ -174,7 +178,7 @@ class UsuarioController extends ControllerBase {
             $this->tag->setDefault("nombreUsuario",
                                    $usuario->nombreUsuario);
             $this->tag->setDefault("passwordUsuario",
-                                   $usuario->passwordUsuario);
+                                   "*****************************");
             $this->tag->setDefault("cantidadIntentos",
                                    $usuario->cantidadIntentos);
             $this->tag->setDefault("indicadorUsuarioAdministrador",
@@ -189,6 +193,9 @@ class UsuarioController extends ControllerBase {
                                    $usuario->fechaModificacion);
             $this->tag->setDefault("usuarioModificacion",
                                    $usuario->usuarioModificacion);
+            
+            $this->view->empresa = $empresa;
+            $this->view->form = new usuarioEditForm();
         }
     }
 

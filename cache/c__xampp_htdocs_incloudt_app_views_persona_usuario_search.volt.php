@@ -11,7 +11,6 @@
 <h4><i class='glyphicon glyphicon-search'></i> Resultado de Busqueda</h4>
 </div>
 
-<?php require_once('files/reloj.php');?>
 
 <div class="page-header">
 </div>
