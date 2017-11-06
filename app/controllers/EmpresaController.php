@@ -1,30 +1,30 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+class EmpresaController extends ControllerBase {
 
-
-class EmpresaController extends ControllerBase
-{
-    /**
-     * Index action
-     */
-    public function indexAction()
-    {
+    public function onConstruct(){
+        parent::validarAdministradores();
+    }
+    
+    public function indexAction() {
         $this->persistent->parameters = null;
     }
 
     /**
      * Searches for empresa
      */
-    public function searchAction()
-    {
+    public function searchAction() {
         $numberPage = 1;
         if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, 'Empresa', $_POST);
+            $query = Criteria::fromInput($this->di,
+                                         'Empresa',
+                                         $_POST);
             $this->persistent->parameters = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
+        }else {
+            $numberPage = $this->request->getQuery("page",
+                                                   "int");
         }
 
         $parameters = $this->persistent->parameters;
@@ -38,17 +38,17 @@ class EmpresaController extends ControllerBase
             $this->flash->notice("The search did not find any empresa");
 
             $this->dispatcher->forward([
-                "controller" => "empresa",
-                "action" => "index"
+                            "controller" => "empresa",
+                            "action" => "index"
             ]);
 
             return;
         }
 
         $paginator = new Paginator([
-            'data' => $empresa,
-            'limit'=> 10,
-            'page' => $numberPage
+                        'data' => $empresa,
+                        'limit' => 10,
+                        'page' => $numberPage
         ]);
 
         $this->view->page = $paginator->getPaginate();
@@ -57,9 +57,8 @@ class EmpresaController extends ControllerBase
     /**
      * Displays the creation form
      */
-    public function newAction()
-    {
-
+    public function newAction() {
+        
     }
 
     /**
@@ -67,8 +66,7 @@ class EmpresaController extends ControllerBase
      *
      * @param string $codEmpresa
      */
-    public function editAction($codEmpresa)
-    {
+    public function editAction($codEmpresa) {
         if (!$this->request->isPost()) {
 
             $empresa = Empresa::findFirstBycodEmpresa($codEmpresa);
@@ -76,8 +74,8 @@ class EmpresaController extends ControllerBase
                 $this->flash->error("empresa was not found");
 
                 $this->dispatcher->forward([
-                    'controller' => "empresa",
-                    'action' => 'index'
+                                'controller' => "empresa",
+                                'action' => 'index'
                 ]);
 
                 return;
@@ -85,26 +83,31 @@ class EmpresaController extends ControllerBase
 
             $this->view->codEmpresa = $empresa->codEmpresa;
 
-            $this->tag->setDefault("codEmpresa", $empresa->codEmpresa);
-            $this->tag->setDefault("nombreEmpresa", $empresa->nombreEmpresa);
-            $this->tag->setDefault("estadoRegistro", $empresa->estadoRegistro);
-            $this->tag->setDefault("fechaInsercion", $empresa->fechaInsercion);
-            $this->tag->setDefault("usuarioInsercion", $empresa->usuarioInsercion);
-            $this->tag->setDefault("fechaModificacion", $empresa->fechaModificacion);
-            $this->tag->setDefault("usuarioModificacion", $empresa->usuarioModificacion);
-            
+            $this->tag->setDefault("codEmpresa",
+                                   $empresa->codEmpresa);
+            $this->tag->setDefault("nombreEmpresa",
+                                   $empresa->nombreEmpresa);
+            $this->tag->setDefault("estadoRegistro",
+                                   $empresa->estadoRegistro);
+            $this->tag->setDefault("fechaInsercion",
+                                   $empresa->fechaInsercion);
+            $this->tag->setDefault("usuarioInsercion",
+                                   $empresa->usuarioInsercion);
+            $this->tag->setDefault("fechaModificacion",
+                                   $empresa->fechaModificacion);
+            $this->tag->setDefault("usuarioModificacion",
+                                   $empresa->usuarioModificacion);
         }
     }
 
     /**
      * Creates a new empresa
      */
-    public function createAction()
-    {
+    public function createAction() {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "empresa",
-                'action' => 'index'
+                            'controller' => "empresa",
+                            'action' => 'index'
             ]);
 
             return;
@@ -118,7 +121,7 @@ class EmpresaController extends ControllerBase
         $empresa->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
         $empresa->Fechamodificacion = $this->request->getPost("fechaModificacion");
         $empresa->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-        
+
 
         if (!$empresa->save()) {
             foreach ($empresa->getMessages() as $message) {
@@ -126,8 +129,8 @@ class EmpresaController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "empresa",
-                'action' => 'new'
+                            'controller' => "empresa",
+                            'action' => 'new'
             ]);
 
             return;
@@ -136,8 +139,8 @@ class EmpresaController extends ControllerBase
         $this->flash->success("empresa was created successfully");
 
         $this->dispatcher->forward([
-            'controller' => "empresa",
-            'action' => 'index'
+                        'controller' => "empresa",
+                        'action' => 'index'
         ]);
     }
 
@@ -145,13 +148,12 @@ class EmpresaController extends ControllerBase
      * Saves a empresa edited
      *
      */
-    public function saveAction()
-    {
+    public function saveAction() {
 
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "empresa",
-                'action' => 'index'
+                            'controller' => "empresa",
+                            'action' => 'index'
             ]);
 
             return;
@@ -164,8 +166,8 @@ class EmpresaController extends ControllerBase
             $this->flash->error("empresa does not exist " . $codEmpresa);
 
             $this->dispatcher->forward([
-                'controller' => "empresa",
-                'action' => 'index'
+                            'controller' => "empresa",
+                            'action' => 'index'
             ]);
 
             return;
@@ -177,7 +179,7 @@ class EmpresaController extends ControllerBase
         $empresa->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
         $empresa->Fechamodificacion = $this->request->getPost("fechaModificacion");
         $empresa->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-        
+
 
         if (!$empresa->save()) {
 
@@ -186,9 +188,9 @@ class EmpresaController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "empresa",
-                'action' => 'edit',
-                'params' => [$empresa->codEmpresa]
+                            'controller' => "empresa",
+                            'action' => 'edit',
+                            'params' => [$empresa->codEmpresa]
             ]);
 
             return;
@@ -197,8 +199,8 @@ class EmpresaController extends ControllerBase
         $this->flash->success("empresa was updated successfully");
 
         $this->dispatcher->forward([
-            'controller' => "empresa",
-            'action' => 'index'
+                        'controller' => "empresa",
+                        'action' => 'index'
         ]);
     }
 
@@ -207,15 +209,14 @@ class EmpresaController extends ControllerBase
      *
      * @param string $codEmpresa
      */
-    public function deleteAction($codEmpresa)
-    {
+    public function deleteAction($codEmpresa) {
         $empresa = Empresa::findFirstBycodEmpresa($codEmpresa);
         if (!$empresa) {
             $this->flash->error("empresa was not found");
 
             $this->dispatcher->forward([
-                'controller' => "empresa",
-                'action' => 'index'
+                            'controller' => "empresa",
+                            'action' => 'index'
             ]);
 
             return;
@@ -228,8 +229,8 @@ class EmpresaController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "empresa",
-                'action' => 'search'
+                            'controller' => "empresa",
+                            'action' => 'search'
             ]);
 
             return;
@@ -238,9 +239,8 @@ class EmpresaController extends ControllerBase
         $this->flash->success("empresa was deleted successfully");
 
         $this->dispatcher->forward([
-            'controller' => "empresa",
-            'action' => "index"
+                        'controller' => "empresa",
+                        'action' => "index"
         ]);
     }
-
 }

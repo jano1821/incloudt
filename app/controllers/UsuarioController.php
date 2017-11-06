@@ -3,12 +3,14 @@
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use UsuarioIndexForm as usuarioIndexForm;
 use UsuarioNewForm as usuarioNewForm;
+use UsuarioEditForm as usuarioEditForm;
 
 class UsuarioController extends ControllerBase {
 
-    /**
-     * Index action
-     */
+    public function onConstruct(){
+        parent::validarAdministradores();
+    }
+    
     public function indexAction() {
         parent::validarSession();
         
@@ -178,7 +180,7 @@ class UsuarioController extends ControllerBase {
             $this->tag->setDefault("nombreUsuario",
                                    $usuario->nombreUsuario);
             $this->tag->setDefault("passwordUsuario",
-                                   "*****************************");
+                                   $usuario->passwordUsuario);
             $this->tag->setDefault("cantidadIntentos",
                                    $usuario->cantidadIntentos);
             $this->tag->setDefault("indicadorUsuarioAdministrador",
@@ -213,41 +215,56 @@ class UsuarioController extends ControllerBase {
 
             return;
         }
-
-        $usuario = new Usuario();
-        $usuario->Codusuario = $this->request->getPost("codUsuario");
-        $usuario->Codempresa = $this->request->getPost("codEmpresa");
-        $usuario->CodPersonaUsuario = $this->request->getPost("codPersonaUsuario");
-        $usuario->Nombreusuario = $this->request->getPost("nombreUsuario");
-        $usuario->Passwordusuario = $this->request->getPost("passwordUsuario");
-        $usuario->Cantidadintentos = $this->request->getPost("cantidadIntentos");
-        $usuario->Indicadorusuarioadministrador = $this->request->getPost("indicadorUsuarioAdministrador");
-        $usuario->Estadoregistro = $this->request->getPost("estadoRegistro");
-        $usuario->Fechainsercion = $this->request->getPost("fechaInsercion");
-        $usuario->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
-        $usuario->Fechamodificacion = $this->request->getPost("fechaModificacion");
-        $usuario->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-
-
-        if (!$usuario->save()) {
-            foreach ($usuario->getMessages() as $message) {
+        
+        $form = new usuarioNewForm();
+        if (!$this->request->isPost() || $form->isValid($this->request->getPost()) == false) {
+            foreach ($form->getMessages() as $message) {
                 $this->flash->error($message);
             }
-
             $this->dispatcher->forward([
                             'controller' => "usuario",
-                            'action' => 'new'
+                            'action' => 'Edit'
             ]);
 
             return;
+        } else {
+            $usuarioSesion = $this->session->get("Usuario");
+            $username = $usuarioSesion['nombreUsuario'];
+            $parametrosGenerales = parent::obtenerParametros('LLAVE_HASH');
+            $password = password_hash($this->request->getPost("passwordUsuario"),PASSWORD_BCRYPT, array("cost" => 12, "salt" => $parametrosGenerales));
+            
+            $usuario = new Usuario();
+            $usuario->Codusuario = $this->request->getPost("codUsuario");
+            $usuario->Codempresa = $this->request->getPost("codEmpresa");
+            $usuario->CodPersonaUsuario = $this->request->getPost("codPersonaUsuario");
+            $usuario->Nombreusuario = $this->request->getPost("nombreUsuario");
+            $usuario->Passwordusuario = $password;
+            $usuario->Cantidadintentos = '0';
+            $usuario->Indicadorusuarioadministrador = $this->request->getPost("indicadorUsuarioAdministrador");
+            $usuario->Estadoregistro = 'S';
+            $usuario->Fechainsercion = strftime("%Y-%m-%d",time());
+            $usuario->Usuarioinsercion = $username;
+
+            if (!$usuario->save()) {
+                foreach ($usuario->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+
+                $this->dispatcher->forward([
+                                'controller' => "usuario",
+                                'action' => 'new'
+                ]);
+
+                return;
+            }
+
+            $this->flash->success("usuario was created successfully");
+
+            $this->dispatcher->forward([
+                            'controller' => "usuario",
+                            'action' => 'index'
+            ]);
         }
-
-        $this->flash->success("usuario was created successfully");
-
-        $this->dispatcher->forward([
-                        'controller' => "usuario",
-                        'action' => 'index'
-        ]);
     }
 
     /**
@@ -270,7 +287,7 @@ class UsuarioController extends ControllerBase {
         $usuario = Usuario::findFirstBycodUsuario($codUsuario);
 
         if (!$usuario) {
-            $this->flash->error("usuario does not exist " . $codUsuario);
+            $this->flash->error("El Usuario no Existe" . $codUsuario);
 
             $this->dispatcher->forward([
                             'controller' => "usuario",
@@ -280,40 +297,64 @@ class UsuarioController extends ControllerBase {
             return;
         }
 
-        $usuario->Codusuario = $this->request->getPost("codUsuario");
-        $usuario->Codempresa = $this->request->getPost("codEmpresa");
-        $usuario->Nombreusuario = $this->request->getPost("nombreUsuario");
-        $usuario->Passwordusuario = $this->request->getPost("passwordUsuario");
-        $usuario->Cantidadintentos = $this->request->getPost("cantidadIntentos");
-        $usuario->Indicadorusuarioadministrador = $this->request->getPost("indicadorUsuarioAdministrador");
-        $usuario->Estadoregistro = $this->request->getPost("estadoRegistro");
-        $usuario->Fechainsercion = $this->request->getPost("fechaInsercion");
-        $usuario->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
-        $usuario->Fechamodificacion = $this->request->getPost("fechaModificacion");
-        $usuario->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-
-
-        if (!$usuario->save()) {
-
-            foreach ($usuario->getMessages() as $message) {
+        $form = new usuarioEditForm();
+        if (!$this->request->isPost() || $form->isValid($this->request->getPost()) == false) {
+            foreach ($form->getMessages() as $message) {
                 $this->flash->error($message);
             }
-
             $this->dispatcher->forward([
                             'controller' => "usuario",
-                            'action' => 'edit',
-                            'params' => [$usuario->codUsuario]
+                            'action' => 'Edit'
             ]);
 
             return;
+        }else {
+            if ($this->session->has("Usuario")) {
+                $usuarioSesion = $this->session->get("Usuario");
+                $username = $usuarioSesion['nombreUsuario'];
+                $password = "";
+                $parametrosGenerales = parent::obtenerParametros('LLAVE_HASH');
+                if (!$this->request->getPost("passwordUsuario")==$usuario->Passwordusuario){
+                    $password = password_hash($this->request->getPost("passwordUsuario"),PASSWORD_BCRYPT, array("cost" => 12, "salt" => $parametrosGenerales));
+                }else{
+                    $password = $usuario->Passwordusuario;
+                }
+                
+                $usuario->Codusuario = $this->request->getPost("codUsuario");
+                $usuario->Codempresa = $this->request->getPost("codEmpresa");
+                $usuario->Nombreusuario = $this->request->getPost("nombreUsuario");
+                $usuario->Passwordusuario = $password;
+                $usuario->Cantidadintentos = $this->request->getPost("cantidadIntentos");
+                $usuario->Indicadorusuarioadministrador = $this->request->getPost("indicadorUsuarioAdministrador");
+                $usuario->Estadoregistro = $this->request->getPost("estadoRegistro");
+                $usuario->Fechamodificacion = strftime("%Y-%m-%d",time());
+                $usuario->Usuariomodificacion = $this->request->getPost($username);
+            }else {
+                $this->session->destroy();
+                $this->response->redirect('index');
+            }
+
+            if (!$usuario->save()) {
+                foreach ($usuario->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+
+                $this->dispatcher->forward([
+                                'controller' => "usuario",
+                                'action' => 'edit',
+                                'params' => [$usuario->codUsuario]
+                ]);
+
+                return;
+            }
+
+            $this->flash->success("Usuario Actualizado Correctamente");
+
+            $this->dispatcher->forward([
+                            'controller' => "usuario",
+                            'action' => 'index'
+            ]);
         }
-
-        $this->flash->success("usuario was updated successfully");
-
-        $this->dispatcher->forward([
-                        'controller' => "usuario",
-                        'action' => 'index'
-        ]);
     }
 
     /**

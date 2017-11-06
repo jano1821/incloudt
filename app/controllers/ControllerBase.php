@@ -9,6 +9,7 @@ class ControllerBase extends Controller {
             $this->response->redirect('index');
         }else{
             $usuario = $this->session->get("Usuario");
+            
             $ultimoAcceso = $usuario['ultimoAcceso'];
             $tiempoSesion = $usuario['tiempoSesion'];
             
@@ -79,34 +80,32 @@ class ControllerBase extends Controller {
         return $criteria;
     }
     
-    public function _sesionActiva() {
+    public function obtenerParametros($codigoParametro){
+        $parametrosGenerales = $this->modelsManager->createBuilder()
+                                        ->columns("pg.valorParametro ")
+                                        ->addFrom('ParametrosGenerales',
+                                                  'pg')
+                                        ->andWhere('pg.identificadorParametro = :identificadorParametro: AND ' .
+                                                   'pg.estadoRegistro = :estadoRegistro: ',
+                                                    [
+                                                        'identificadorParametro' => $codigoParametro,
+                                                        'estadoRegistro' => 'S',
+                                                    ]
+                                        )
+                                        ->getQuery()
+                                        ->execute();
         
+        return $parametrosGenerales[0]->valorParametro;
+    }
+    
+    public function validarAdministradores(){
+        $usuario = $this->session->get("Usuario");
         
-        if ($_SESSION["autenticado"] != "SI") {
-            session_destroy();
-            include("../../view/generales/SessionExpirada.php");
-            $sessionExpirada = new SessionExpirada;
-            $sessionExpirada->mostrarSessionExpirada($URL);
-            return false;
-        }else {
-            try {
-                $fechaGuardada = $_SESSION["ultimoAcceso"];
-            }catch (Exception $indexColumnas) {
-                $_SESSION["ultimoAcceso"] = date("Y-n-j H:i:s");
-            }
-            $ahora = date("Y-n-j H:i:s");
-            $tiempo_transcurrido = (strtotime($ahora) - strtotime($fechaGuardada));
-
-            if ($tiempo_transcurrido >= 1200) {
-                session_destroy();
-                include("../../view/generales/SessionExpirada.php");
-                $sessionExpirada = new SessionExpirada;
-                $sessionExpirada->mostrarSessionExpirada($URL);
-                return false;
-            }else {
-                $_SESSION["ultimoAcceso"] = $ahora;
-                return true;
-            }
+        $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
+        
+        if ($indicadorUsuarioAdministrador == 'N'){
+            $this->session->destroy();
+            $this->response->redirect('index');
         }
     }
 }

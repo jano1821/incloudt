@@ -11,7 +11,7 @@
 </div>
 
 {{ content() }}
-
+<?php require_once('files/datosSesion.php');?>
 {{ form("usuario/save", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
 <div class="table">
@@ -22,10 +22,10 @@
 <div class="col-md-2">
     <label for="fieldCodempresa" >Empresa</label>
 </div>
-<div class="col-md-3">
-    {% if empresa is defined %}
-                            {{ select("codEmpresa", empresa,'useEmpty': true, 'emptyText': 'Seleccione Empresa...', 'emptyValue': '', 'using': ['codEmpresa', 'nombreEmpresa'], "class" : "form-control") }}
-                        {% endif %}
+    <div class="col-md-3">
+        {% if empresa is defined %}
+            {{ select("codEmpresa", empresa,'useEmpty': true, 'emptyText': 'Seleccione Empresa...', 'emptyValue': '', 'using': ['codEmpresa', 'nombreEmpresa'], "class" : "form-control") }}
+        {% endif %}
     </div>
 </div>
 
@@ -36,7 +36,7 @@
     <label for="fieldNombreusuario" >Usuario</label>
 </div>
 <div class="col-md-3">
-        {{ text_field("nombreUsuario", "size" : 30, "class" : "form-control", "id" : "fieldNombreusuario") }}
+        {{ form.render('nombreUsuario') }}
     </div>
 </div>
 
@@ -47,7 +47,7 @@
     <label for="fieldPasswordusuario" >Password</label>
 </div>
 <div class="col-md-3">
-        {{ text_field("passwordUsuario", "size" : 30, "class" : "form-control", "id" : "fieldPasswordusuario") }}
+        {{ form.render('passwordUsuario') }}
     </div>
 </div>
 
@@ -58,7 +58,7 @@
     <label for="fieldCantidadintentos" >Intentos</label>
 </div>
 <div class="col-md-3">
-        {{ text_field("cantidadIntentos", "type" : "numeric", "class" : "form-control", "id" : "fieldCantidadintentos") }}
+        {{ form.render('cantidadIntentos') }}
     </div>
 </div>
 
@@ -69,7 +69,17 @@
     <label for="fieldIndicadorusuarioadministrador" >Administrador</label>
 </div>
 <div class="col-md-3">
-{{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'Z' : 'Super Administrador', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
+<?php
+                        if ($indicadorUsuarioAdministrador=='Z'){
+                        ?>
+                            {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'Z' : 'Super Administrador', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
+                        <?php
+                        }else{
+                        ?>
+                            {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
+                        <?php
+                        }
+                        ?>
     </div>
 </div>
 

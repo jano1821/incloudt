@@ -22,10 +22,10 @@
 <div class="col-md-2">
     <label for="fieldCodempresa" >Empresa</label>
 </div>
-<div class="col-md-3">
-    <?php if (isset($empresa)) { ?>
-                            <?= $this->tag->select(['codEmpresa', $empresa, 'useEmpty' => true, 'emptyText' => 'Seleccione Empresa...', 'emptyValue' => '', 'using' => ['codEmpresa', 'nombreEmpresa'], 'class' => 'form-control']) ?>
-                        <?php } ?>
+    <div class="col-md-3">
+        <?php if (isset($empresa)) { ?>
+            <?= $this->tag->select(['codEmpresa', $empresa, 'useEmpty' => true, 'emptyText' => 'Seleccione Empresa...', 'emptyValue' => '', 'using' => ['codEmpresa', 'nombreEmpresa'], 'class' => 'form-control']) ?>
+        <?php } ?>
     </div>
 </div>
 
@@ -36,7 +36,7 @@
     <label for="fieldNombreusuario" >Usuario</label>
 </div>
 <div class="col-md-3">
-        <?= $this->tag->textField(['nombreUsuario', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldNombreusuario']) ?>
+        <?= $form->render('nombreUsuario') ?>
     </div>
 </div>
 
@@ -47,7 +47,7 @@
     <label for="fieldPasswordusuario" >Password</label>
 </div>
 <div class="col-md-3">
-        <?= $this->tag->textField(['passwordUsuario', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldPasswordusuario']) ?>
+        <?= $form->render('passwordUsuario') ?>
     </div>
 </div>
 
@@ -58,7 +58,7 @@
     <label for="fieldCantidadintentos" >Intentos</label>
 </div>
 <div class="col-md-3">
-        <?= $this->tag->textField(['cantidadIntentos', 'type' => 'numeric', 'class' => 'form-control', 'id' => 'fieldCantidadintentos']) ?>
+        <?= $form->render('cantidadIntentos') ?>
     </div>
 </div>
 

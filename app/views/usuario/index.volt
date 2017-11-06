@@ -13,7 +13,7 @@
         </div>
 
         {{ content() }}
-
+        <?php require_once('files/datosSesion.php');?>
         {{ form("usuario/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
             <div class="table">
                 <div class="form-group">
@@ -58,7 +58,17 @@
                         <label for="fieldIndicadorusuarioadministrador">Usuario Administrador</label>
                     </div>
                     <div class="col-md-3">
-                        {{ select_static('indicadorUsuarioAdministrador', ['':'Seleccione Indicador...', 'S' : 'Usuario Administrador', 'N' : 'Usuario Normal'], "class": "form-control") }}
+                        <?php
+                        if ($indicadorUsuarioAdministrador=='Z'){
+                        ?>
+                            {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'Z' : 'Super Administrador', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
+                        <?php
+                        }else{
+                        ?>
+                            {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
 

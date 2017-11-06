@@ -13,6 +13,8 @@
 
 <?= $this->getContent() ?>
 
+<?php require_once('files/datosSesion.php');?>
+
 <?= $this->tag->form(['usuario/create', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
@@ -66,25 +68,23 @@
 </div>
 
 <div class="form-group">
-<div class="col-md-3">
-</div>
-<div class="col-md-2">
-    <label for="fieldCantidadintentos" class="col-sm-2 control-label">Intentos</label>
-</div>
-<div class="col-md-3">
-<?= $form->render('cantidadIntentos') ?>
+    <div class="col-md-3">
     </div>
-</div>
-
-<div class="form-group">
-<div class="col-md-3">
-</div>
-<div class="col-md-2">
-    <label for="fieldIndicadorusuarioadministrador" class="col-sm-2 control-label">Administrador</label>
-</div>
-<div class="col-md-3">
-        <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'Z' => 'Super Administrador', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
-        
+    <div class="col-md-2">
+        <label for="fieldIndicadorusuarioadministrador" class="col-sm-2 control-label">Administrador</label>
+    </div>
+    <div class="col-md-3">
+        <?php
+        if ($indicadorUsuarioAdministrador=='Z'){
+        ?>
+            <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'Z' => 'Super Administrador', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
+        <?php
+        }else{
+        ?>
+            <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
+        <?php
+        }
+        ?>
     </div>
 </div>
 

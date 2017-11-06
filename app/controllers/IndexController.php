@@ -5,19 +5,7 @@ use LoginForm as FormLogin,
 class IndexController extends ControllerBase {
 
     private function _registerSession($usuario) {
-        $parametrosGenerales = $this->modelsManager->createBuilder()
-                                        ->columns("pg.valorParametro ")
-                                        ->addFrom('ParametrosGenerales',
-                                                  'pg')
-                                        ->andWhere('pg.identificadorParametro = :identificadorParametro: AND ' .
-                                                   'pg.estadoRegistro = :estadoRegistro: ',
-                                                    [
-                                                        'identificadorParametro' => 'TIME_OUT_SESSION',
-                                                        'estadoRegistro' => 'S',
-                                                    ]
-                                        )
-                                        ->getQuery()
-                                        ->execute();
+        $parametrosGenerales = parent::obtenerParametros('TIME_OUT_SESSION');
         
         $this->session->set('Usuario',
                             array(  'codUsuario'    => $usuario->codUsuario,
@@ -25,7 +13,7 @@ class IndexController extends ControllerBase {
                                     'codEmpresa'    => $usuario->codEmpresa,
                                     'nombresPersona'=> $usuario->nombresPersona,
                                     'nombreEmpresa' => $usuario->nombreEmpresa,
-                                    'tiempoSesion' => $parametrosGenerales[0]->valorParametro,
+                                    'tiempoSesion' => $parametrosGenerales,
                                     'ultimoAcceso' => date("Y-n-j H:i:s"),        
                                     'indicadorUsuarioAdministrador' => $usuario->indicadorUsuarioAdministrador));
     }
@@ -75,6 +63,7 @@ class IndexController extends ControllerBase {
                     if ($this->security->checkHash($password,
                                                    $usuario[0]->passwordUsuario)) {
                         $this->_registerSession($usuario[0]);
+                        
                         return $this->response->redirect('menu');
                     }else {
                         $this->flash->error("Usuario o Password Incorrecto");

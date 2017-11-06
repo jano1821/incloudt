@@ -1,30 +1,30 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+class ParametrosGeneralesController extends ControllerBase {
 
-
-class ParametrosGeneralesController extends ControllerBase
-{
-    /**
-     * Index action
-     */
-    public function indexAction()
-    {
+    public function onConstruct(){
+        parent::validarAdministradores();
+    }
+    
+    public function indexAction() {
         $this->persistent->parameters = null;
     }
 
     /**
      * Searches for parametros_generales
      */
-    public function searchAction()
-    {
+    public function searchAction() {
         $numberPage = 1;
         if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, 'ParametrosGenerales', $_POST);
+            $query = Criteria::fromInput($this->di,
+                                         'ParametrosGenerales',
+                                         $_POST);
             $this->persistent->parameters = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
+        }else {
+            $numberPage = $this->request->getQuery("page",
+                                                   "int");
         }
 
         $parameters = $this->persistent->parameters;
@@ -38,17 +38,17 @@ class ParametrosGeneralesController extends ControllerBase
             $this->flash->notice("The search did not find any parametros_generales");
 
             $this->dispatcher->forward([
-                "controller" => "parametros_generales",
-                "action" => "index"
+                            "controller" => "parametros_generales",
+                            "action" => "index"
             ]);
 
             return;
         }
 
         $paginator = new Paginator([
-            'data' => $parametros_generales,
-            'limit'=> 10,
-            'page' => $numberPage
+                        'data' => $parametros_generales,
+                        'limit' => 10,
+                        'page' => $numberPage
         ]);
 
         $this->view->page = $paginator->getPaginate();
@@ -57,9 +57,8 @@ class ParametrosGeneralesController extends ControllerBase
     /**
      * Displays the creation form
      */
-    public function newAction()
-    {
-
+    public function newAction() {
+        
     }
 
     /**
@@ -67,8 +66,7 @@ class ParametrosGeneralesController extends ControllerBase
      *
      * @param string $codParametro
      */
-    public function editAction($codParametro)
-    {
+    public function editAction($codParametro) {
         if (!$this->request->isPost()) {
 
             $parametros_generale = ParametrosGenerales::findFirstBycodParametro($codParametro);
@@ -76,8 +74,8 @@ class ParametrosGeneralesController extends ControllerBase
                 $this->flash->error("parametros_generale was not found");
 
                 $this->dispatcher->forward([
-                    'controller' => "parametros_generales",
-                    'action' => 'index'
+                                'controller' => "parametros_generales",
+                                'action' => 'index'
                 ]);
 
                 return;
@@ -85,29 +83,37 @@ class ParametrosGeneralesController extends ControllerBase
 
             $this->view->codParametro = $parametros_generale->codParametro;
 
-            $this->tag->setDefault("codParametro", $parametros_generale->codParametro);
-            $this->tag->setDefault("codEmpresa", $parametros_generale->codEmpresa);
-            $this->tag->setDefault("identificadorParametro", $parametros_generale->identificadorParametro);
-            $this->tag->setDefault("descipcionParametro", $parametros_generale->descipcionParametro);
-            $this->tag->setDefault("valorParametro", $parametros_generale->valorParametro);
-            $this->tag->setDefault("estadoRegistro", $parametros_generale->estadoRegistro);
-            $this->tag->setDefault("fechaInsercion", $parametros_generale->fechaInsercion);
-            $this->tag->setDefault("usuarioInsercion", $parametros_generale->usuarioInsercion);
-            $this->tag->setDefault("fechaModificacion", $parametros_generale->fechaModificacion);
-            $this->tag->setDefault("usuarioModificacion", $parametros_generale->usuarioModificacion);
-            
+            $this->tag->setDefault("codParametro",
+                                   $parametros_generale->codParametro);
+            $this->tag->setDefault("codEmpresa",
+                                   $parametros_generale->codEmpresa);
+            $this->tag->setDefault("identificadorParametro",
+                                   $parametros_generale->identificadorParametro);
+            $this->tag->setDefault("descipcionParametro",
+                                   $parametros_generale->descipcionParametro);
+            $this->tag->setDefault("valorParametro",
+                                   $parametros_generale->valorParametro);
+            $this->tag->setDefault("estadoRegistro",
+                                   $parametros_generale->estadoRegistro);
+            $this->tag->setDefault("fechaInsercion",
+                                   $parametros_generale->fechaInsercion);
+            $this->tag->setDefault("usuarioInsercion",
+                                   $parametros_generale->usuarioInsercion);
+            $this->tag->setDefault("fechaModificacion",
+                                   $parametros_generale->fechaModificacion);
+            $this->tag->setDefault("usuarioModificacion",
+                                   $parametros_generale->usuarioModificacion);
         }
     }
 
     /**
      * Creates a new parametros_generale
      */
-    public function createAction()
-    {
+    public function createAction() {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "parametros_generales",
-                'action' => 'index'
+                            'controller' => "parametros_generales",
+                            'action' => 'index'
             ]);
 
             return;
@@ -123,7 +129,7 @@ class ParametrosGeneralesController extends ControllerBase
         $parametros_generale->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
         $parametros_generale->Fechamodificacion = $this->request->getPost("fechaModificacion");
         $parametros_generale->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-        
+
 
         if (!$parametros_generale->save()) {
             foreach ($parametros_generale->getMessages() as $message) {
@@ -131,8 +137,8 @@ class ParametrosGeneralesController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "parametros_generales",
-                'action' => 'new'
+                            'controller' => "parametros_generales",
+                            'action' => 'new'
             ]);
 
             return;
@@ -141,8 +147,8 @@ class ParametrosGeneralesController extends ControllerBase
         $this->flash->success("parametros_generale was created successfully");
 
         $this->dispatcher->forward([
-            'controller' => "parametros_generales",
-            'action' => 'index'
+                        'controller' => "parametros_generales",
+                        'action' => 'index'
         ]);
     }
 
@@ -150,13 +156,12 @@ class ParametrosGeneralesController extends ControllerBase
      * Saves a parametros_generale edited
      *
      */
-    public function saveAction()
-    {
+    public function saveAction() {
 
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "parametros_generales",
-                'action' => 'index'
+                            'controller' => "parametros_generales",
+                            'action' => 'index'
             ]);
 
             return;
@@ -169,8 +174,8 @@ class ParametrosGeneralesController extends ControllerBase
             $this->flash->error("parametros_generale does not exist " . $codParametro);
 
             $this->dispatcher->forward([
-                'controller' => "parametros_generales",
-                'action' => 'index'
+                            'controller' => "parametros_generales",
+                            'action' => 'index'
             ]);
 
             return;
@@ -185,7 +190,7 @@ class ParametrosGeneralesController extends ControllerBase
         $parametros_generale->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
         $parametros_generale->Fechamodificacion = $this->request->getPost("fechaModificacion");
         $parametros_generale->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-        
+
 
         if (!$parametros_generale->save()) {
 
@@ -194,9 +199,9 @@ class ParametrosGeneralesController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "parametros_generales",
-                'action' => 'edit',
-                'params' => [$parametros_generale->codParametro]
+                            'controller' => "parametros_generales",
+                            'action' => 'edit',
+                            'params' => [$parametros_generale->codParametro]
             ]);
 
             return;
@@ -205,8 +210,8 @@ class ParametrosGeneralesController extends ControllerBase
         $this->flash->success("parametros_generale was updated successfully");
 
         $this->dispatcher->forward([
-            'controller' => "parametros_generales",
-            'action' => 'index'
+                        'controller' => "parametros_generales",
+                        'action' => 'index'
         ]);
     }
 
@@ -215,15 +220,14 @@ class ParametrosGeneralesController extends ControllerBase
      *
      * @param string $codParametro
      */
-    public function deleteAction($codParametro)
-    {
+    public function deleteAction($codParametro) {
         $parametros_generale = ParametrosGenerales::findFirstBycodParametro($codParametro);
         if (!$parametros_generale) {
             $this->flash->error("parametros_generale was not found");
 
             $this->dispatcher->forward([
-                'controller' => "parametros_generales",
-                'action' => 'index'
+                            'controller' => "parametros_generales",
+                            'action' => 'index'
             ]);
 
             return;
@@ -236,8 +240,8 @@ class ParametrosGeneralesController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "parametros_generales",
-                'action' => 'search'
+                            'controller' => "parametros_generales",
+                            'action' => 'search'
             ]);
 
             return;
@@ -246,9 +250,8 @@ class ParametrosGeneralesController extends ControllerBase
         $this->flash->success("parametros_generale was deleted successfully");
 
         $this->dispatcher->forward([
-            'controller' => "parametros_generales",
-            'action' => "index"
+                        'controller' => "parametros_generales",
+                        'action' => "index"
         ]);
     }
-
 }

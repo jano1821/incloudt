@@ -16,16 +16,9 @@ class UsuarioNewForm extends Form {
         $nombreUsuario->addValidator(new PresenceOf(array('message' => 'Se Requiere Usuario')));
         $this->add($nombreUsuario);
         
-        $cantidadIntentos = new Text('cantidadIntentos',
-                             array('placeholder' => 'Cantidad de Intentos', 'class' => 'form-control'));
-        $cantidadIntentos->addValidator(new PresenceOf(array('message' => 'Se Requiere Cantidad de Intentos')));
-        $this->add($cantidadIntentos);
-
         $password = new Password('passwordUsuario',
                                  array('placeholder' => 'Password', 'class' => 'form-control'));
-        //añadimos la validación como campo requerido al password
         $password->addValidator(new PresenceOf(array('message' => 'El password es requerido')));
-        //hacemos que se pueda llamar a nuestro campo password
         $this->add($password);
 
         $csrf = new Hidden('csrf');

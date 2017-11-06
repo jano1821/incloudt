@@ -7,6 +7,10 @@ use PersonaUsuarioEditForm as personaUsuarioEditForm;
 use PersonaUsuarioIndexForm as personaUsuarioIndexForm;
 class PersonaUsuarioController extends ControllerBase {
 
+    public function onConstruct(){
+        parent::validarAdministradores();
+    }
+    
     public function indexAction() {
         parent::validarSession();
 

@@ -1,30 +1,30 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+class SistemaController extends ControllerBase {
 
-
-class SistemaController extends ControllerBase
-{
-    /**
-     * Index action
-     */
-    public function indexAction()
-    {
+    public function onConstruct(){
+        parent::validarAdministradores();
+    }
+    
+    public function indexAction() {
         $this->persistent->parameters = null;
     }
 
     /**
      * Searches for sistema
      */
-    public function searchAction()
-    {
+    public function searchAction() {
         $numberPage = 1;
         if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, 'Sistema', $_POST);
+            $query = Criteria::fromInput($this->di,
+                                         'Sistema',
+                                         $_POST);
             $this->persistent->parameters = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
+        }else {
+            $numberPage = $this->request->getQuery("page",
+                                                   "int");
         }
 
         $parameters = $this->persistent->parameters;
@@ -38,17 +38,17 @@ class SistemaController extends ControllerBase
             $this->flash->notice("The search did not find any sistema");
 
             $this->dispatcher->forward([
-                "controller" => "sistema",
-                "action" => "index"
+                            "controller" => "sistema",
+                            "action" => "index"
             ]);
 
             return;
         }
 
         $paginator = new Paginator([
-            'data' => $sistema,
-            'limit'=> 10,
-            'page' => $numberPage
+                        'data' => $sistema,
+                        'limit' => 10,
+                        'page' => $numberPage
         ]);
 
         $this->view->page = $paginator->getPaginate();
@@ -57,9 +57,8 @@ class SistemaController extends ControllerBase
     /**
      * Displays the creation form
      */
-    public function newAction()
-    {
-
+    public function newAction() {
+        
     }
 
     /**
@@ -67,8 +66,7 @@ class SistemaController extends ControllerBase
      *
      * @param string $codSistema
      */
-    public function editAction($codSistema)
-    {
+    public function editAction($codSistema) {
         if (!$this->request->isPost()) {
 
             $sistema = Sistema::findFirstBycodSistema($codSistema);
@@ -76,8 +74,8 @@ class SistemaController extends ControllerBase
                 $this->flash->error("sistema was not found");
 
                 $this->dispatcher->forward([
-                    'controller' => "sistema",
-                    'action' => 'index'
+                                'controller' => "sistema",
+                                'action' => 'index'
                 ]);
 
                 return;
@@ -85,28 +83,35 @@ class SistemaController extends ControllerBase
 
             $this->view->codSistema = $sistema->codSistema;
 
-            $this->tag->setDefault("codSistema", $sistema->codSistema);
-            $this->tag->setDefault("etiquetaSistema", $sistema->etiquetaSistema);
-            $this->tag->setDefault("urlSistema", $sistema->urlSistema);
-            $this->tag->setDefault("urlIcono", $sistema->urlIcono);
-            $this->tag->setDefault("estadoRegistro", $sistema->estadoRegistro);
-            $this->tag->setDefault("fechaInsercion", $sistema->fechaInsercion);
-            $this->tag->setDefault("usuarioInsercion", $sistema->usuarioInsercion);
-            $this->tag->setDefault("fechaModificacion", $sistema->fechaModificacion);
-            $this->tag->setDefault("usuarioModificacion", $sistema->usuarioModificacion);
-            
+            $this->tag->setDefault("codSistema",
+                                   $sistema->codSistema);
+            $this->tag->setDefault("etiquetaSistema",
+                                   $sistema->etiquetaSistema);
+            $this->tag->setDefault("urlSistema",
+                                   $sistema->urlSistema);
+            $this->tag->setDefault("urlIcono",
+                                   $sistema->urlIcono);
+            $this->tag->setDefault("estadoRegistro",
+                                   $sistema->estadoRegistro);
+            $this->tag->setDefault("fechaInsercion",
+                                   $sistema->fechaInsercion);
+            $this->tag->setDefault("usuarioInsercion",
+                                   $sistema->usuarioInsercion);
+            $this->tag->setDefault("fechaModificacion",
+                                   $sistema->fechaModificacion);
+            $this->tag->setDefault("usuarioModificacion",
+                                   $sistema->usuarioModificacion);
         }
     }
 
     /**
      * Creates a new sistema
      */
-    public function createAction()
-    {
+    public function createAction() {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "sistema",
-                'action' => 'index'
+                            'controller' => "sistema",
+                            'action' => 'index'
             ]);
 
             return;
@@ -121,7 +126,7 @@ class SistemaController extends ControllerBase
         $sistema->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
         $sistema->Fechamodificacion = $this->request->getPost("fechaModificacion");
         $sistema->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-        
+
 
         if (!$sistema->save()) {
             foreach ($sistema->getMessages() as $message) {
@@ -129,8 +134,8 @@ class SistemaController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "sistema",
-                'action' => 'new'
+                            'controller' => "sistema",
+                            'action' => 'new'
             ]);
 
             return;
@@ -139,8 +144,8 @@ class SistemaController extends ControllerBase
         $this->flash->success("sistema was created successfully");
 
         $this->dispatcher->forward([
-            'controller' => "sistema",
-            'action' => 'index'
+                        'controller' => "sistema",
+                        'action' => 'index'
         ]);
     }
 
@@ -148,13 +153,12 @@ class SistemaController extends ControllerBase
      * Saves a sistema edited
      *
      */
-    public function saveAction()
-    {
+    public function saveAction() {
 
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "sistema",
-                'action' => 'index'
+                            'controller' => "sistema",
+                            'action' => 'index'
             ]);
 
             return;
@@ -167,8 +171,8 @@ class SistemaController extends ControllerBase
             $this->flash->error("sistema does not exist " . $codSistema);
 
             $this->dispatcher->forward([
-                'controller' => "sistema",
-                'action' => 'index'
+                            'controller' => "sistema",
+                            'action' => 'index'
             ]);
 
             return;
@@ -182,7 +186,7 @@ class SistemaController extends ControllerBase
         $sistema->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
         $sistema->Fechamodificacion = $this->request->getPost("fechaModificacion");
         $sistema->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-        
+
 
         if (!$sistema->save()) {
 
@@ -191,9 +195,9 @@ class SistemaController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "sistema",
-                'action' => 'edit',
-                'params' => [$sistema->codSistema]
+                            'controller' => "sistema",
+                            'action' => 'edit',
+                            'params' => [$sistema->codSistema]
             ]);
 
             return;
@@ -202,8 +206,8 @@ class SistemaController extends ControllerBase
         $this->flash->success("sistema was updated successfully");
 
         $this->dispatcher->forward([
-            'controller' => "sistema",
-            'action' => 'index'
+                        'controller' => "sistema",
+                        'action' => 'index'
         ]);
     }
 
@@ -212,15 +216,14 @@ class SistemaController extends ControllerBase
      *
      * @param string $codSistema
      */
-    public function deleteAction($codSistema)
-    {
+    public function deleteAction($codSistema) {
         $sistema = Sistema::findFirstBycodSistema($codSistema);
         if (!$sistema) {
             $this->flash->error("sistema was not found");
 
             $this->dispatcher->forward([
-                'controller' => "sistema",
-                'action' => 'index'
+                            'controller' => "sistema",
+                            'action' => 'index'
             ]);
 
             return;
@@ -233,8 +236,8 @@ class SistemaController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "sistema",
-                'action' => 'search'
+                            'controller' => "sistema",
+                            'action' => 'search'
             ]);
 
             return;
@@ -243,9 +246,8 @@ class SistemaController extends ControllerBase
         $this->flash->success("sistema was deleted successfully");
 
         $this->dispatcher->forward([
-            'controller' => "sistema",
-            'action' => "index"
+                        'controller' => "sistema",
+                        'action' => "index"
         ]);
     }
-
 }
