@@ -6,7 +6,7 @@
 {{ link_to("usuario/index", "<i class='glyphicon glyphicon glyphicon-user'></i> Ir a Usuarios","class":"btn btn-info") }}
 {{ link_to("persona_usuario", "<i class='glyphicon glyphicon-chevron-left'></i> Volver a Búsqueda","class":"btn btn-info") }}
 </div>
-<h4><i class='glyphicon glyphicon-search'></i>Nueva Persona Usuaria</h4>
+<h4><i class='glyphicon glyphicon-record'></i>Nueva Persona Usuaria</h4>
 </div>
 
 <div class="page-header">

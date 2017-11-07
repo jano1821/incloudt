@@ -48,6 +48,3 @@ class PersonaUsuarioEditForm extends Form {
         $this->add($submit);
     }
 }
-
-
-

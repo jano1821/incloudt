@@ -2,6 +2,10 @@
 
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+use SistemaIndexForm as sistemaIndexForm;
+use SistemaNewForm as sistemaNewForm;
+use SistemaEditForm as sistemaEditForm;
+
 class SistemaController extends ControllerBase {
 
     public function onConstruct(){
@@ -9,33 +13,77 @@ class SistemaController extends ControllerBase {
     }
     
     public function indexAction() {
-        $this->persistent->parameters = null;
+        parent::validarSession();
+        
+        $this->view->form = new sistemaIndexForm();
     }
 
     /**
      * Searches for sistema
      */
     public function searchAction() {
-        $numberPage = 1;
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di,
-                                         'Sistema',
-                                         $_POST);
-            $this->persistent->parameters = $query->getParams();
-        }else {
-            $numberPage = $this->request->getQuery("page",
-                                                   "int");
+        parent::validarSession();
+        
+        $etiquetaSistema = $this->request->getPost("etiquetaSistema");
+        $urlSistema = $this->request->getPost("urlSistema");
+        $urlIcono = $this->request->getPost("urlIcono");
+        $estado = $this->request->getPost("estadoRegistro");
+        $pagina = $this->request->getPost("pagina");
+        $avance = $this->request->getPost("avance");
+
+        if ($pagina == "") {
+            $pagina = 1;
+        }
+        if ($avance == "" || $avance == "0") {
+            $pagina = 1;
         }
 
-        $parameters = $this->persistent->parameters;
-        if (!is_array($parameters)) {
-            $parameters = [];
+        $sistema = $this->modelsManager->createBuilder()
+                                ->columns("si.codSistema," .
+                                          "si.etiquetaSistema," .
+                                          "si.urlSistema," .
+                                          "si.urlIcono," .
+                                          "if(si.estadoRegistro='S','Vigente','No Vigente') as estado")
+                                ->addFrom('Sistema',
+                                          'si')
+                                ->andWhere('si.etiquetaSistema like :etiquetaSistema: AND ' .
+                                                        'si.urlSistema like :urlSistema: AND ' .
+                                                        'si.urlIcono like :urlIcono: AND ' .
+                                                        'si.estadoRegistro like :estado: ',
+                                           [
+                                                'etiquetaSistema' => "%" . $etiquetaSistema . "%",
+                                                'urlSistema' => "%" . $urlSistema . "%",
+                                                'urlIcono' => "%" . $urlIcono . "%",
+                                                'estado' => "%" . $estado . "%",
+                                                        ]
+                                )
+                                ->orderBy('si.etiquetaSistema')
+                                ->getQuery()
+                                ->execute();
+        
+        if ($pagina == "") {
+            $pagina = 1;
         }
-        $parameters["order"] = "codSistema";
+        if ($avance == "" || $avance == "0") {
+            $pagina = 1;
+        }else if ($avance == 1) {
+            if ($pagina < floor(count($sistema) / 10) + 1) {
+                $pagina = $pagina + 1;
+            }else {
+                $this->flash->notice("No hay Registros Posteriores");
+            }
+        }else if ($avance == -1) {
+            if ($pagina > 1) {
+                $pagina = $pagina - 1;
+            }else {
+                $this->flash->notice("No hay Registros Anteriores");
+            }
+        }else if ($avance == 2) {
+            $pagina = floor(count($sistema) / 10) + 1;
+        }
 
-        $sistema = Sistema::find($parameters);
         if (count($sistema) == 0) {
-            $this->flash->notice("The search did not find any sistema");
+            $this->flash->notice("La Búqueda no ha Obtenido Resultados");
 
             $this->dispatcher->forward([
                             "controller" => "sistema",
@@ -48,17 +96,22 @@ class SistemaController extends ControllerBase {
         $paginator = new Paginator([
                         'data' => $sistema,
                         'limit' => 10,
-                        'page' => $numberPage
+                        'page' => $pagina
         ]);
 
+        $this->tag->setDefault("pagina",
+                               $pagina);
         $this->view->page = $paginator->getPaginate();
+        
     }
 
     /**
      * Displays the creation form
      */
     public function newAction() {
+        parent::validarSession();
         
+        $this->view->form = new sistemaNewForm();
     }
 
     /**
@@ -67,11 +120,13 @@ class SistemaController extends ControllerBase {
      * @param string $codSistema
      */
     public function editAction($codSistema) {
+        parent::validarSession();
+        
         if (!$this->request->isPost()) {
 
             $sistema = Sistema::findFirstBycodSistema($codSistema);
             if (!$sistema) {
-                $this->flash->error("sistema was not found");
+                $this->flash->error("Sistema no Encontrado");
 
                 $this->dispatcher->forward([
                                 'controller' => "sistema",
@@ -93,14 +148,8 @@ class SistemaController extends ControllerBase {
                                    $sistema->urlIcono);
             $this->tag->setDefault("estadoRegistro",
                                    $sistema->estadoRegistro);
-            $this->tag->setDefault("fechaInsercion",
-                                   $sistema->fechaInsercion);
-            $this->tag->setDefault("usuarioInsercion",
-                                   $sistema->usuarioInsercion);
-            $this->tag->setDefault("fechaModificacion",
-                                   $sistema->fechaModificacion);
-            $this->tag->setDefault("usuarioModificacion",
-                                   $sistema->usuarioModificacion);
+            
+            $this->view->form = new sistemaEditForm();
         }
     }
 
@@ -249,5 +298,19 @@ class SistemaController extends ControllerBase {
                         'controller' => "sistema",
                         'action' => "index"
         ]);
+    }
+    
+    public function resetAction() {
+        parent::validarSession();
+
+        $form = new personaUsuarioIndexForm();
+        $this->view->form = $form;
+
+        $this->dispatcher->forward([
+                        'controller' => "sistema",
+                        'action' => 'index'
+        ]);
+
+        return;
     }
 }

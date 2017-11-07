@@ -2,6 +2,10 @@
 
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+use EmpresaIndexForm as empresaIndexForm;
+use EmpresaNewForm as empresaNewForm;
+use EmpresaEditForm as empresaEditForm;
+
 class EmpresaController extends ControllerBase {
 
     public function onConstruct(){
@@ -9,33 +13,74 @@ class EmpresaController extends ControllerBase {
     }
     
     public function indexAction() {
-        $this->persistent->parameters = null;
+        parent::validarSession();
+        
+        $this->view->form = new empresaIndexForm();
     }
 
     /**
      * Searches for empresa
      */
     public function searchAction() {
-        $numberPage = 1;
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di,
-                                         'Empresa',
-                                         $_POST);
-            $this->persistent->parameters = $query->getParams();
-        }else {
-            $numberPage = $this->request->getQuery("page",
-                                                   "int");
+        parent::validarSession();
+        
+        $nombreEmpresas = $this->request->getPost("nombreEmpresa");
+        $identificador = $this->request->getPost("identificadorEmpresa");
+        $estado = $this->request->getPost("estadoRegistro");
+        $pagina = $this->request->getPost("pagina");
+        $avance = $this->request->getPost("avance");
+
+        if ($pagina == "") {
+            $pagina = 1;
+        }
+        if ($avance == "" || $avance == "0") {
+            $pagina = 1;
         }
 
-        $parameters = $this->persistent->parameters;
-        if (!is_array($parameters)) {
-            $parameters = [];
-        }
-        $parameters["order"] = "codEmpresa";
+        $empresa = $this->modelsManager->createBuilder()
+                                ->columns("em.codEmpresa," .
+                                          "em.nombreEmpresa," .
+                                          "em.identificadorEmpresa," .
+                                          "if(em.estadoRegistro='S','Vigente','No Vigente') as estado")
+                                ->addFrom('Empresa',
+                                          'em')
+                                ->andWhere('em.nombreEmpresa like :nombreEmpresa: AND ' .
+                                                        'em.identificadorEmpresa like :identificadorEmpresa: AND ' .
+                                                        'em.estadoRegistro like :estado: ',
+                                           [
+                                                'nombreEmpresa' => "%" . $nombreEmpresas . "%",
+                                                'identificadorEmpresa' => "%" . $identificador . "%",
+                                                'estado' => "%" . $estado . "%",
+                                                        ]
+                                )
+                                ->orderBy('em.nombreEmpresa')
+                                ->getQuery()
+                                ->execute();
+        
 
-        $empresa = Empresa::find($parameters);
+        if ($pagina == "") {
+            $pagina = 1;
+        }
+        if ($avance == "" || $avance == "0") {
+            $pagina = 1;
+        }else if ($avance == 1) {
+            if ($pagina < floor(count($empresa) / 10) + 1) {
+                $pagina = $pagina + 1;
+            }else {
+                $this->flash->notice("No hay Registros Posteriores");
+            }
+        }else if ($avance == -1) {
+            if ($pagina > 1) {
+                $pagina = $pagina - 1;
+            }else {
+                $this->flash->notice("No hay Registros Anteriores");
+            }
+        }else if ($avance == 2) {
+            $pagina = floor(count($empresa) / 10) + 1;
+        }
+
         if (count($empresa) == 0) {
-            $this->flash->notice("The search did not find any empresa");
+            $this->flash->notice("La Búqueda no ha Obtenido Resultados");
 
             $this->dispatcher->forward([
                             "controller" => "empresa",
@@ -48,9 +93,11 @@ class EmpresaController extends ControllerBase {
         $paginator = new Paginator([
                         'data' => $empresa,
                         'limit' => 10,
-                        'page' => $numberPage
+                        'page' => $pagina
         ]);
 
+        $this->tag->setDefault("pagina",
+                               $pagina);
         $this->view->page = $paginator->getPaginate();
     }
 
@@ -58,7 +105,9 @@ class EmpresaController extends ControllerBase {
      * Displays the creation form
      */
     public function newAction() {
+        parent::validarSession();
         
+        $this->view->form = new empresaNewForm();
     }
 
     /**
@@ -67,11 +116,13 @@ class EmpresaController extends ControllerBase {
      * @param string $codEmpresa
      */
     public function editAction($codEmpresa) {
+        parent::validarSession();
+
         if (!$this->request->isPost()) {
 
             $empresa = Empresa::findFirstBycodEmpresa($codEmpresa);
             if (!$empresa) {
-                $this->flash->error("empresa was not found");
+                $this->flash->error("Empresa no Encontrada");
 
                 $this->dispatcher->forward([
                                 'controller' => "empresa",
@@ -85,18 +136,14 @@ class EmpresaController extends ControllerBase {
 
             $this->tag->setDefault("codEmpresa",
                                    $empresa->codEmpresa);
+            $this->tag->setDefault("identificadorEmpresa",
+                                   $empresa->identificadorEmpresa);
             $this->tag->setDefault("nombreEmpresa",
                                    $empresa->nombreEmpresa);
             $this->tag->setDefault("estadoRegistro",
                                    $empresa->estadoRegistro);
-            $this->tag->setDefault("fechaInsercion",
-                                   $empresa->fechaInsercion);
-            $this->tag->setDefault("usuarioInsercion",
-                                   $empresa->usuarioInsercion);
-            $this->tag->setDefault("fechaModificacion",
-                                   $empresa->fechaModificacion);
-            $this->tag->setDefault("usuarioModificacion",
-                                   $empresa->usuarioModificacion);
+            
+            $this->view->form = new empresaEditForm();
         }
     }
 
@@ -104,6 +151,8 @@ class EmpresaController extends ControllerBase {
      * Creates a new empresa
      */
     public function createAction() {
+        parent::validarSession();
+        
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
                             'controller' => "empresa",
@@ -112,36 +161,49 @@ class EmpresaController extends ControllerBase {
 
             return;
         }
-
-        $empresa = new Empresa();
-        $empresa->Nombreempresa = $this->request->getPost("nombreEmpresa");
-        $empresa->IdentificadorEmpresa = $this->request->getPost("identificadorEmpresa");
-        $empresa->Estadoregistro = $this->request->getPost("estadoRegistro");
-        $empresa->Fechainsercion = $this->request->getPost("fechaInsercion");
-        $empresa->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
-        $empresa->Fechamodificacion = $this->request->getPost("fechaModificacion");
-        $empresa->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-
-
-        if (!$empresa->save()) {
-            foreach ($empresa->getMessages() as $message) {
+        
+        $form = new empresaNewForm();
+        if (!$this->request->isPost() || $form->isValid($this->request->getPost()) == false) {
+            foreach ($form->getMessages() as $message) {
                 $this->flash->error($message);
             }
-
             $this->dispatcher->forward([
                             'controller' => "empresa",
                             'action' => 'new'
             ]);
 
             return;
+        } else {
+            $usuarioSesion = $this->session->get("Usuario");
+            $username = $usuarioSesion['nombreUsuario'];
+            
+            $empresa = new Empresa();
+            $empresa->Nombreempresa = $this->request->getPost("nombreEmpresa");
+            $empresa->IdentificadorEmpresa = $this->request->getPost("identificadorEmpresa");
+            $empresa->Estadoregistro = 'S';
+            $empresa->Fechainsercion = strftime("%Y-%m-%d",time());
+            $empresa->Usuarioinsercion = $username;
+
+            if (!$empresa->save()) {
+                foreach ($empresa->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+
+                $this->dispatcher->forward([
+                                'controller' => "empresa",
+                                'action' => 'new'
+                ]);
+
+                return;
+            }
+
+            $this->flash->success("Empresa Registrada Correctamente");
+
+            $this->dispatcher->forward([
+                            'controller' => "empresa",
+                            'action' => 'index'
+            ]);
         }
-
-        $this->flash->success("empresa was created successfully");
-
-        $this->dispatcher->forward([
-                        'controller' => "empresa",
-                        'action' => 'index'
-        ]);
     }
 
     /**
@@ -242,5 +304,19 @@ class EmpresaController extends ControllerBase {
                         'controller' => "empresa",
                         'action' => "index"
         ]);
+    }
+    
+    public function resetAction() {
+        parent::validarSession();
+
+        $form = new personaUsuarioIndexForm();
+        $this->view->form = $form;
+
+        $this->dispatcher->forward([
+                        'controller' => "empresa",
+                        'action' => 'index'
+        ]);
+
+        return;
     }
 }

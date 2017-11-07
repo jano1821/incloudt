@@ -3,7 +3,11 @@
 use LoginForm as FormLogin,
     Phalcon\Session as Session;
 class IndexController extends ControllerBase {
-
+    
+    public function onConstruct(){
+        
+    }
+    
     private function _registerSession($usuario) {
         $parametrosGenerales = parent::obtenerParametros('TIME_OUT_SESSION');
         
@@ -19,6 +23,7 @@ class IndexController extends ControllerBase {
     }
 
     public function indexAction() {
+        
         $form = new FormLogin();
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost()) == false) {

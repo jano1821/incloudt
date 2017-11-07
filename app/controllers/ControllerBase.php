@@ -20,7 +20,9 @@ class ControllerBase extends Controller {
                 $this->session->destroy();
                 $this->response->redirect('index');
             }else {
-                $_SESSION["ultimoAcceso"] = $ahora;
+                $usuario['ultimoAcceso'] = $ahora;
+                $this->session->set('Usuario',
+                            $usuario);
             }
         }
     }

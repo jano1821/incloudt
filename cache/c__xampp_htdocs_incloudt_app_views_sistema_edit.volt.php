@@ -3,15 +3,15 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-        {{ link_to("sistema", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
+        <?= $this->tag->linkTo(['sistema', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
             </div>
-<h4><i class='glyphicon glyphicon-edit'></i> Editar Sistema</h4>
+<h4><i class='glyphicon glyphicon-edit'></i> Editar Empresa</h4>
 </div>
 <div class="page-header">
 </div>
-{{ content() }}
+<?= $this->getContent() ?>
 
-{{ form("sistema/save", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<?= $this->tag->form(['sistema/save', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
 
@@ -22,7 +22,7 @@
     <label for="fieldEtiquetasistema">Etiqueta del Sistema</label>
 </div>
     <div class="col-md-3">
-{{ form.render('etiquetaSistema') }}
+<?= $form->render('etiquetaSistema') ?>
     </div>
 </div>
 
@@ -33,7 +33,7 @@
     <label for="fieldUrlsistema">Url Sistema</label>
 </div>
     <div class="col-md-3">
-{{ form.render('urlSistema') }}
+<?= $form->render('urlSistema') ?>
     </div>
 </div>
 
@@ -44,7 +44,7 @@
     <label for="fieldUrlicono">Url Icono</label>
 </div>
     <div class="col-md-3">
-{{ form.render('urlIcono') }}
+<?= $form->render('urlIcono') ?>
     </div>
 </div>
 
@@ -55,11 +55,11 @@
     <label for="fieldEstadoregistro">EstadoRegistro</label>
 </div>
     <div class="col-md-3">
-{{ form.render('estadoRegistro',['class' : 'form-control']) }}
+<?= $form->render('estadoRegistro', ['class' => 'form-control']) ?>
     </div>
 </div>
 
-{{ hidden_field("codSistema") }}
+<?= $this->tag->hiddenField(['codSistema']) ?>
 
 <div class="form-group">
 <div class="col-md-3">
@@ -67,8 +67,8 @@
 <div class="col-md-2">
 </div>
 <div class="col-md-2">
-        {{ form.render('save') }}
-{{ form.render('csrf', ['value': security.getToken()]) }}
+        <?= $form->render('save') ?>
+<?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
     </div>
 </div>
 </div>

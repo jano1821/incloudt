@@ -1,75 +1,55 @@
 <div class="row">
-    <nav>
-        <ul class="pager">
-            <li class="previous">{{ link_to("empresa", "Go Back") }}</li>
-        </ul>
-    </nav>
+<div class="container">
+<div class="panel panel-info">
+<div class="panel-heading">
+<div class="btn-group pull-right">
+{{ link_to("usuario", "<i class='glyphicon glyphicon-chevron-left'></i> Volver a Búsqueda","class":"btn btn-info") }}
+        </div>
+<h4><i class='glyphicon glyphicon-record'></i>Nueva Empresa</h4>
 </div>
 
 <div class="page-header">
-    <h1>
-        Create empresa
-    </h1>
 </div>
 
 {{ content() }}
 
 {{ form("empresa/create", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
+<div class="table">
+
 <div class="form-group">
-    <label for="fieldNombreempresa" class="col-sm-2 control-label">NombreEmpresa</label>
-    <div class="col-sm-10">
-        {{ text_field("nombreEmpresa", "size" : 30, "class" : "form-control", "id" : "fieldNombreempresa") }}
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldNombreempresa">Nombre de Empresa</label>
+</div>
+    <div class="col-md-3">
+{{ form.render('nombreEmpresa') }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldIdentificadorEmpresa" class="col-sm-2 control-label">Identificador de Empresa</label>
-    <div class="col-sm-10">
-        {{ text_field("identificadorEmpresa", "size" : 30, "class" : "form-control", "id" : "identificadorEmpresa") }}
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldIdentificadorEmpresa" >Identificador</label>
+</div>
+    <div class="col-md-3">
+{{ form.render('identificadorEmpresa') }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldEstadoregistro" class="col-sm-2 control-label">EstadoRegistro</label>
-    <div class="col-sm-10">
-        {{ text_field("estadoRegistro", "size" : 30, "class" : "form-control", "id" : "fieldEstadoregistro") }}
-    </div>
+<div class="col-md-3">
 </div>
-
-<div class="form-group">
-    <label for="fieldFechainsercion" class="col-sm-2 control-label">FechaInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaInsercion", "size" : 30, "class" : "form-control", "id" : "fieldFechainsercion") }}
-    </div>
+<div class="col-md-2">
 </div>
-
-<div class="form-group">
-    <label for="fieldUsuarioinsercion" class="col-sm-2 control-label">UsuarioInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioInsercion", "size" : 30, "class" : "form-control", "id" : "fieldUsuarioinsercion") }}
-    </div>
+<div class="col-md-2">
+{{ form.render('save') }}
+{{ form.render('csrf', ['value': security.getToken()]) }}
 </div>
-
-<div class="form-group">
-    <label for="fieldFechamodificacion" class="col-sm-2 control-label">FechaModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaModificacion", "size" : 30, "class" : "form-control", "id" : "fieldFechamodificacion") }}
-    </div>
 </div>
-
-<div class="form-group">
-    <label for="fieldUsuariomodificacion" class="col-sm-2 control-label">UsuarioModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioModificacion", "size" : 30, "class" : "form-control", "id" : "fieldUsuariomodificacion") }}
-    </div>
 </div>
-
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        {{ submit_button('Save', 'class': 'btn btn-default') }}
-    </div>
-</div>
-
 </form>
+</div>
+</div>

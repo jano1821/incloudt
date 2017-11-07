@@ -1,5 +1,4 @@
 <?php
-//use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use UsuarioIndexForm as usuarioIndexForm;
 use UsuarioNewForm as usuarioNewForm;
@@ -40,10 +39,6 @@ class UsuarioController extends ControllerBase {
         }
         if ($avance == "" || $avance == "0") {
             $pagina = 1;
-        }
-
-        if ($this->request->getPost('reset')){
-            echo "hola";
         }
 
         $usuario = $this->modelsManager->createBuilder()
@@ -223,7 +218,7 @@ class UsuarioController extends ControllerBase {
             }
             $this->dispatcher->forward([
                             'controller' => "usuario",
-                            'action' => 'Edit'
+                            'action' => 'new'
             ]);
 
             return;
