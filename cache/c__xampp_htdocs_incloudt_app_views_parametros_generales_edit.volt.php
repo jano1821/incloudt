@@ -1,91 +1,102 @@
 <div class="row">
-    <nav>
-        <ul class="pager">
-            <li class="previous"><?= $this->tag->linkTo(['parametros_generales', 'Go Back']) ?></li>
-        </ul>
-    </nav>
+<div class="container">
+<div class="panel panel-info">
+<div class="panel-heading">
+<div class="btn-group pull-right">
+        <?= $this->tag->linkTo(['parametros_generales', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
+            </div>
+<h4><i class='glyphicon glyphicon-edit'></i> Editar Parámetro</h4>
 </div>
-
 <div class="page-header">
-    <h1>
-        Edit parametros_generales
-    </h1>
 </div>
 
 <?= $this->getContent() ?>
 
 <?= $this->tag->form(['parametros_generales/save', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
+<div class="table">
+
 <div class="form-group">
-    <label for="fieldCodempresa" class="col-sm-2 control-label">CodEmpresa</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['codEmpresa', 'type' => 'numeric', 'class' => 'form-control', 'id' => 'fieldCodempresa']) ?>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldCodempresa" >Empresa</label>
+</div>
+    <div class="col-md-3">       
+<?php if (isset($empresa)) { ?>
+                <?= $this->tag->select(['codEmpresa', $empresa, 'useEmpty' => true, 'emptyText' => 'Seleccione Empresa...', 'emptyValue' => '', 'using' => ['codEmpresa', 'nombreEmpresa'], 'class' => 'form-control']) ?>
+            <?php } ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldIdentificadorparametro" class="col-sm-2 control-label">IdentificadorParametro</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['identificadorParametro', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldIdentificadorparametro']) ?>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldIdentificadorparametro" >ID de Parametro</label>
+</div>
+    <div class="col-md-3">
+<?= $form->render('identificadorParametro', ['class' => 'form-control']) ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldDescipcionparametro" class="col-sm-2 control-label">DescipcionParametro</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['descipcionParametro', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldDescipcionparametro']) ?>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldDescipcionparametro" >Desc de Parametro</label>
+</div>
+    <div class="col-md-3">
+<?= $form->render('descipcionParametro', ['class' => 'form-control']) ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldValorparametro" class="col-sm-2 control-label">ValorParametro</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['valorParametro', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldValorparametro']) ?>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldValorparametro" >Valor de Parametro</label>
+</div>
+    <div class="col-md-3">
+<?= $form->render('valorParametro', ['class' => 'form-control']) ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldEstadoregistro" class="col-sm-2 control-label">EstadoRegistro</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['estadoRegistro', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldEstadoregistro']) ?>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldIndicadorFijo" >Indicador Fijo</label>
+</div>
+    <div class="col-md-3">
+        <?= $form->render('indicadorFijo', ['class' => 'form-control']) ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldFechainsercion" class="col-sm-2 control-label">FechaInsercion</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['fechaInsercion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldFechainsercion']) ?>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldEstadoregistro" >Estado</label>
+</div>
+    <div class="col-md-3">
+        <?= $form->render('estadoRegistro', ['class' => 'form-control']) ?>
     </div>
 </div>
+
+<?= $this->tag->hiddenField(['codParametro']) ?>
 
 <div class="form-group">
-    <label for="fieldUsuarioinsercion" class="col-sm-2 control-label">UsuarioInsercion</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['usuarioInsercion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldUsuarioinsercion']) ?>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+</div>
+<div class="col-md-2">
+        <?= $form->render('save') ?>
+<?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
     </div>
 </div>
-
-<div class="form-group">
-    <label for="fieldFechamodificacion" class="col-sm-2 control-label">FechaModificacion</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['fechaModificacion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldFechamodificacion']) ?>
-    </div>
 </div>
-
-<div class="form-group">
-    <label for="fieldUsuariomodificacion" class="col-sm-2 control-label">UsuarioModificacion</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['usuarioModificacion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldUsuariomodificacion']) ?>
-    </div>
-</div>
-
-
-<?= $this->tag->hiddenField(['id']) ?>
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        <?= $this->tag->submitButton(['Send', 'class' => 'btn btn-default']) ?>
-    </div>
-</div>
-
 </form>
+</div>
+</div>

@@ -196,7 +196,31 @@ class EmpresaController extends ControllerBase {
 
                 return;
             }
+            
+            $parametros_generale = new ParametrosGenerales();
+            $parametros_generale->codEmpresa = $empresa->codEmpresa;
+            $parametros_generale->Identificadorparametro = 'TIME_OUT_SESSION';
+            $parametros_generale->Descipcionparametro = 'Tiempo limite de Sesion Activa';
+            $parametros_generale->Valorparametro = '5';
+            $parametros_generale->IndicadorFijo = 'S';
+            $parametros_generale->Estadoregistro = 'S';
+            $parametros_generale->Fechainsercion = strftime("%Y-%m-%d",
+                                                            time());
+            $parametros_generale->Usuarioinsercion = $username;
+            
+            if (!$parametros_generale->save()) {
+                foreach ($parametros_generale->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
 
+                $this->dispatcher->forward([
+                                'controller' => "empresa",
+                                'action' => 'new'
+                ]);
+
+                return;
+            }
+            
             $this->flash->success("Empresa Registrada Correctamente");
 
             $this->dispatcher->forward([

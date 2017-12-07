@@ -76,6 +76,13 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
     public $usuarioModificacion;
 
     /**
+     *
+     * @var string
+     * @Column(type="string", length=1, nullable=true)
+     */
+    public $indicadorFijo;
+    
+    /**
      * Method to set the value of field codParametro
      *
      * @param integer $codParametro
@@ -204,6 +211,19 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
 
         return $this;
     }
+    
+    /**
+     * Method to set the value of field indicadorFijo
+     *
+     * @param string $indicadorFijo
+     * @return $this
+     */
+    public function setIndicadorFijo($indicadorFijo)
+    {
+        $this->$indicadorFijo = $indicadorFijo;
+
+        return $this;
+    }
 
     /**
      * Returns the value of field codParametro
@@ -304,6 +324,16 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
     {
         return $this->usuarioModificacion;
     }
+    
+    /**
+     * Returns the value of field indicadorFijo
+     *
+     * @return string
+     */
+    public function getIndicadorFijo()
+    {
+        return $this->indicadorFijo;
+    }
 
     /**
      * Initialize method for model.
@@ -355,7 +385,8 @@ class ParametrosGenerales extends \Phalcon\Mvc\Model
             'fechaInsercion' => 'fechaInsercion',
             'usuarioInsercion' => 'usuarioInsercion',
             'fechaModificacion' => 'fechaModificacion',
-            'usuarioModificacion' => 'usuarioModificacion'
+            'usuarioModificacion' => 'usuarioModificacion',
+            'indicadorFijo' => 'indicadorFijo'
         ];
     }
 

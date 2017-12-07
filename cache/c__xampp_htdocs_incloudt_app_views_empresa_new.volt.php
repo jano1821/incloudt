@@ -5,7 +5,7 @@
 <div class="btn-group pull-right">
 <?= $this->tag->linkTo(['usuario', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver a Búsqueda', 'class' => 'btn btn-info']) ?>
         </div>
-<h4><i class='glyphicon glyphicon-search'></i>Nueva Empresa</h4>
+<h4><i class='glyphicon glyphicon-record'></i>Nueva Empresa</h4>
 </div>
 
 <div class="page-header">

@@ -1,91 +1,102 @@
-<div class="page-header">
-    <h1>
-        Search parametros_generales
-    </h1>
-    <p>
-        <?= $this->tag->linkTo(['parametros_generales/new', 'Create parametros_generales']) ?>
-    </p>
-</div>
+<div class="row">
+    <div class="container">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="btn-group pull-right">
+<?= $this->tag->linkTo(['menu', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
+    <?= $this->tag->linkTo(['parametros_generales/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nuevo Parametro', 'class' => 'btn btn-info']) ?>
+                </div>
+                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Parámetros</h4>
+            </div>
+            <div class="page-header">
+        </div>
 
 <?= $this->getContent() ?>
 
 <?= $this->tag->form(['parametros_generales/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
-<div class="form-group">
-    <label for="fieldCodparametro" class="col-sm-2 control-label">CodParametro</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['codParametro', 'type' => 'numeric', 'class' => 'form-control', 'id' => 'fieldCodparametro']) ?>
+<div class="table">
+
+    <div class="form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-2">
+            <label for="fieldCodempresa">Empresa</label>
+        </div>
+        <div class="col-md-3">
+            <?php if (isset($empresa)) { ?>
+                <?= $this->tag->select(['codEmpresa', $empresa, 'useEmpty' => true, 'emptyText' => 'Seleccione Empresa...', 'emptyValue' => '', 'using' => ['codEmpresa', 'nombreEmpresa'], 'class' => 'form-control']) ?>
+            <?php } ?>
+        </div>
     </div>
-</div>
 
 <div class="form-group">
-    <label for="fieldCodempresa" class="col-sm-2 control-label">CodEmpresa</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['codEmpresa', 'type' => 'numeric', 'class' => 'form-control', 'id' => 'fieldCodempresa']) ?>
-    </div>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldIdentificadorparametro">Id Parametro</label>
 </div>
-
-<div class="form-group">
-    <label for="fieldIdentificadorparametro" class="col-sm-2 control-label">IdentificadorParametro</label>
-    <div class="col-sm-10">
+                    <div class="col-md-3">
         <?= $this->tag->textField(['identificadorParametro', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldIdentificadorparametro']) ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldDescipcionparametro" class="col-sm-2 control-label">DescipcionParametro</label>
-    <div class="col-sm-10">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldDescipcionparametro">Descipción Parametro</label>
+</div>
+                    <div class="col-md-3">
         <?= $this->tag->textField(['descipcionParametro', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldDescipcionparametro']) ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldValorparametro" class="col-sm-2 control-label">ValorParametro</label>
-    <div class="col-sm-10">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldValorparametro">Valor Parametro</label>
+</div>
+                    <div class="col-md-3">
         <?= $this->tag->textField(['valorParametro', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldValorparametro']) ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldEstadoregistro" class="col-sm-2 control-label">EstadoRegistro</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['estadoRegistro', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldEstadoregistro']) ?>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldIndicadorFijo">Indicador Fijo</label>
+</div>
+                    <div class="col-md-3">
+        <?= $form->render('indicadorFijo', ['class' => 'form-control']) ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldFechainsercion" class="col-sm-2 control-label">FechaInsercion</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['fechaInsercion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldFechainsercion']) ?>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldEstadoregistro">Estado de Registro</label>
+</div>
+                    <div class="col-md-3">
+        <?= $form->render('estadoRegistro', ['class' => 'form-control']) ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldUsuarioinsercion" class="col-sm-2 control-label">UsuarioInsercion</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['usuarioInsercion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldUsuarioinsercion']) ?>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-2">
+                        <?= $this->tag->linkTo(['parametros_generales/reset', 'Limpiar', 'class' => 'btn btn-default']) ?>   
+                        <?= $form->render('buscar') ?>
+                        <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-
-<div class="form-group">
-    <label for="fieldFechamodificacion" class="col-sm-2 control-label">FechaModificacion</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['fechaModificacion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldFechamodificacion']) ?>
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldUsuariomodificacion" class="col-sm-2 control-label">UsuarioModificacion</label>
-    <div class="col-sm-10">
-        <?= $this->tag->textField(['usuarioModificacion', 'size' => 30, 'class' => 'form-control', 'id' => 'fieldUsuariomodificacion']) ?>
-    </div>
-</div>
-
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        <?= $this->tag->submitButton(['Search', 'class' => 'btn btn-default']) ?>
-    </div>
-</div>
-
-</form>
