@@ -3,7 +3,6 @@ use Phalcon\Forms\Form,
     Phalcon\Forms\Element\Text,
     Phalcon\Forms\Element\Submit,
     Phalcon\Forms\Element\Hidden,
-    Phalcon\Forms\Element\Select,
     Phalcon\Validation\Validator\PresenceOf,
     Phalcon\Validation\Validator\Identical;
 

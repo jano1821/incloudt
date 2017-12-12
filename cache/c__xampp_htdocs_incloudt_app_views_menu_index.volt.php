@@ -65,11 +65,6 @@
                             }
                             if ($indicadorUsuarioAdministrador=='S' || $indicadorUsuarioAdministrador=='Z'){
                                 ?>
-                                <li><?= $this->tag->linkTo(['datos_empresa/index', $this->tag->image(['img/cloud.png', 'class' => 'img-responsive'])]) ?><p>Inf. Emp.</p>
-                                <?php
-                            }
-                            if ($indicadorUsuarioAdministrador=='S' || $indicadorUsuarioAdministrador=='Z'){
-                                ?>
                                 <li><?= $this->tag->linkTo(['usuario/index', $this->tag->image(['img/usuarios2.png', 'class' => 'img-responsive'])]) ?><p>Usuarios</p>
                                 <?php
                             }

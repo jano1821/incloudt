@@ -1,8 +1,6 @@
 <?php
 
-class Empresa extends \Phalcon\Mvc\Model
-{
-
+class Empresa extends \Phalcon\Mvc\Model {
     /**
      *
      * @var integer
@@ -11,49 +9,54 @@ class Empresa extends \Phalcon\Mvc\Model
      * @Column(type="integer", length=11, nullable=false)
      */
     public $codEmpresa;
-
     /**
      *
      * @var string
      * @Column(type="string", length=500, nullable=false)
      */
     public $nombreEmpresa;
-    
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=500, nullable=true)
+     */
+    public $razonSocial;
+    /**
+     *
+     * @var int
+     * @Column(type="int", length=11, nullable=true)
+     */
+    public $limiteUsuarios;
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
     public $identificadorEmpresa;
-
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=false)
      */
     public $estadoRegistro;
-
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
     public $fechaInsercion;
-
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
     public $usuarioInsercion;
-
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
     public $fechaModificacion;
-
     /**
      *
      * @var string
@@ -67,8 +70,7 @@ class Empresa extends \Phalcon\Mvc\Model
      * @param integer $codEmpresa
      * @return $this
      */
-    public function setCodEmpresa($codEmpresa)
-    {
+    public function setCodEmpresa($codEmpresa) {
         $this->codEmpresa = $codEmpresa;
 
         return $this;
@@ -80,21 +82,43 @@ class Empresa extends \Phalcon\Mvc\Model
      * @param string $nombreEmpresa
      * @return $this
      */
-    public function setNombreEmpresa($nombreEmpresa)
-    {
+    public function setNombreEmpresa($nombreEmpresa) {
         $this->nombreEmpresa = $nombreEmpresa;
 
         return $this;
     }
     
     /**
-     * Method to set the value of field nombreEmpresa
+     * Method to set the value of field razonSocial
      *
-     * @param string $nombreEmpresa
+     * @param string $razonSocial
      * @return $this
      */
-    public function setIdentificadorEmpresa($identificadorEmpresa)
-    {
+    public function setRazonSocial($razonSocial) {
+        $this->razonSocial = $razonSocial;
+
+        return $this;
+    }
+    
+    /**
+     * Method to set the value of field razonSocial
+     *
+     * @param string $limiteUsuarios
+     * @return $this
+     */
+    public function setLimiteUsuarios($limiteUsuarios) {
+        $this->limiteUsuarios = $limiteUsuarios;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field identificadorEmpresa
+     *
+     * @param string $identificadorEmpresa
+     * @return $this
+     */
+    public function setIdentificadorEmpresa($identificadorEmpresa) {
         $this->identificadorEmpresa = $identificadorEmpresa;
 
         return $this;
@@ -106,8 +130,7 @@ class Empresa extends \Phalcon\Mvc\Model
      * @param string $estadoRegistro
      * @return $this
      */
-    public function setEstadoRegistro($estadoRegistro)
-    {
+    public function setEstadoRegistro($estadoRegistro) {
         $this->estadoRegistro = $estadoRegistro;
 
         return $this;
@@ -119,8 +142,7 @@ class Empresa extends \Phalcon\Mvc\Model
      * @param string $fechaInsercion
      * @return $this
      */
-    public function setFechaInsercion($fechaInsercion)
-    {
+    public function setFechaInsercion($fechaInsercion) {
         $this->fechaInsercion = $fechaInsercion;
 
         return $this;
@@ -132,8 +154,7 @@ class Empresa extends \Phalcon\Mvc\Model
      * @param string $usuarioInsercion
      * @return $this
      */
-    public function setUsuarioInsercion($usuarioInsercion)
-    {
+    public function setUsuarioInsercion($usuarioInsercion) {
         $this->usuarioInsercion = $usuarioInsercion;
 
         return $this;
@@ -145,8 +166,7 @@ class Empresa extends \Phalcon\Mvc\Model
      * @param string $fechaModificacion
      * @return $this
      */
-    public function setFechaModificacion($fechaModificacion)
-    {
+    public function setFechaModificacion($fechaModificacion) {
         $this->fechaModificacion = $fechaModificacion;
 
         return $this;
@@ -158,8 +178,7 @@ class Empresa extends \Phalcon\Mvc\Model
      * @param string $usuarioModificacion
      * @return $this
      */
-    public function setUsuarioModificacion($usuarioModificacion)
-    {
+    public function setUsuarioModificacion($usuarioModificacion) {
         $this->usuarioModificacion = $usuarioModificacion;
 
         return $this;
@@ -170,28 +189,43 @@ class Empresa extends \Phalcon\Mvc\Model
      *
      * @return integer
      */
-    public function getCodEmpresa()
-    {
+    public function getCodEmpresa() {
         return $this->codEmpresa;
     }
 
+    /**
+     * Returns the value of field razonSocial
+     *
+     * @return string
+     */
+    public function getLimiteUsuarios() {
+        return $this->limiteUsuarios;
+    }
+    
+    /**
+     * Returns the value of field razonSocial
+     *
+     * @return string
+     */
+    public function getRazonSocial() {
+        return $this->razonSocial;
+    }
+    
     /**
      * Returns the value of field nombreEmpresa
      *
      * @return string
      */
-    public function getNombreEmpresa()
-    {
+    public function getNombreEmpresa() {
         return $this->nombreEmpresa;
     }
-    
+
     /**
      * Returns the value of field identificadorEmpresa
      *
      * @return string
      */
-    public function getIdentificadorEmpresa()
-    {
+    public function getIdentificadorEmpresa() {
         return $this->identificadorEmpresa;
     }
 
@@ -200,8 +234,7 @@ class Empresa extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getEstadoRegistro()
-    {
+    public function getEstadoRegistro() {
         return $this->estadoRegistro;
     }
 
@@ -210,8 +243,7 @@ class Empresa extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getFechaInsercion()
-    {
+    public function getFechaInsercion() {
         return $this->fechaInsercion;
     }
 
@@ -220,8 +252,7 @@ class Empresa extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getUsuarioInsercion()
-    {
+    public function getUsuarioInsercion() {
         return $this->usuarioInsercion;
     }
 
@@ -230,8 +261,7 @@ class Empresa extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getFechaModificacion()
-    {
+    public function getFechaModificacion() {
         return $this->fechaModificacion;
     }
 
@@ -240,23 +270,36 @@ class Empresa extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getUsuarioModificacion()
-    {
+    public function getUsuarioModificacion() {
         return $this->usuarioModificacion;
     }
 
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
+    public function initialize() {
         $this->setSchema("incloudt");
         $this->setSource("empresa");
-        $this->hasMany('codEmpresa', 'DatosEmpresa', 'codEmpresa', ['alias' => 'DatosEmpresa']);
-        $this->hasMany('codEmpresa', 'EmpresaSistema', 'codEmpresa', ['alias' => 'EmpresaSistema']);
-        $this->hasMany('codEmpresa', 'ErroresSistema', 'codEmpresa', ['alias' => 'ErroresSistema']);
-        $this->hasMany('codEmpresa', 'ParametrosGenerales', 'codEmpresa', ['alias' => 'ParametrosGenerales']);
-        $this->hasMany('codEmpresa', 'Usuario', 'codEmpresa', ['alias' => 'Usuario']);
+        $this->hasMany('codEmpresa',
+                       'DatosEmpresa',
+                       'codEmpresa',
+                       ['alias' => 'DatosEmpresa']);
+        $this->hasMany('codEmpresa',
+                       'EmpresaSistema',
+                       'codEmpresa',
+                       ['alias' => 'EmpresaSistema']);
+        $this->hasMany('codEmpresa',
+                       'ErroresSistema',
+                       'codEmpresa',
+                       ['alias' => 'ErroresSistema']);
+        $this->hasMany('codEmpresa',
+                       'ParametrosGenerales',
+                       'codEmpresa',
+                       ['alias' => 'ParametrosGenerales']);
+        $this->hasMany('codEmpresa',
+                       'Usuario',
+                       'codEmpresa',
+                       ['alias' => 'Usuario']);
     }
 
     /**
@@ -265,8 +308,7 @@ class Empresa extends \Phalcon\Mvc\Model
      * @param mixed $parameters
      * @return Empresa[]|Empresa|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
-    {
+    public static function find($parameters = null) {
         return parent::find($parameters);
     }
 
@@ -276,8 +318,7 @@ class Empresa extends \Phalcon\Mvc\Model
      * @param mixed $parameters
      * @return Empresa|\Phalcon\Mvc\Model\ResultInterface
      */
-    public static function findFirst($parameters = null)
-    {
+    public static function findFirst($parameters = null) {
         return parent::findFirst($parameters);
     }
 
@@ -287,17 +328,18 @@ class Empresa extends \Phalcon\Mvc\Model
      *
      * @return array
      */
-    public function columnMap()
-    {
+    public function columnMap() {
         return [
-            'codEmpresa' => 'codEmpresa',
-            'nombreEmpresa' => 'nombreEmpresa',
-            'identificadorEmpresa' => 'identificadorEmpresa',
-            'estadoRegistro' => 'estadoRegistro',
-            'fechaInsercion' => 'fechaInsercion',
-            'usuarioInsercion' => 'usuarioInsercion',
-            'fechaModificacion' => 'fechaModificacion',
-            'usuarioModificacion' => 'usuarioModificacion'
+                        'codEmpresa' => 'codEmpresa',
+                        'nombreEmpresa' => 'nombreEmpresa',
+                        'razonSocial' => 'razonSocial',
+                        'limiteUsuarios' => 'limiteUsuarios',
+                        'identificadorEmpresa' => 'identificadorEmpresa',
+                        'estadoRegistro' => 'estadoRegistro',
+                        'fechaInsercion' => 'fechaInsercion',
+                        'usuarioInsercion' => 'usuarioInsercion',
+                        'fechaModificacion' => 'fechaModificacion',
+                        'usuarioModificacion' => 'usuarioModificacion'
         ];
     }
 
@@ -306,9 +348,7 @@ class Empresa extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getSource()
-    {
+    public function getSource() {
         return 'empresa';
     }
-
 }

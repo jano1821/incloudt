@@ -50,6 +50,13 @@ class ParametrosGeneralesController extends ControllerBase {
         $pagina = $this->request->getPost("pagina");
         $avance = $this->request->getPost("avance");
 
+        $usuarioSesion = $this->session->get("Usuario");
+        $indicadorUsuarioAdministrador = $usuarioSesion['indicadorUsuarioAdministrador'];
+        
+        if ($indicadorUsuarioAdministrador!='Z'){
+            $codEmpresa = $usuarioSesion['codEmpresa'];
+        }
+        
         if ($pagina == "") {
             $pagina = 1;
         }
@@ -62,6 +69,7 @@ class ParametrosGeneralesController extends ControllerBase {
                                           "pg.identificadorParametro," .
                                           "pg.descipcionParametro," .
                                           "pg.codEmpresa," .
+                                          "em.nombreEmpresa," .
                                           "pg.valorParametro," .
                                           "if(pg.indicadorFijo='S','Fijo','Variable') as indicadorFijo," .
                                           "if(pg.estadoRegistro='S','Vigente','No Vigente') as estado")

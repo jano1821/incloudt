@@ -65,11 +65,6 @@
                             }
                             if ($indicadorUsuarioAdministrador=='S' || $indicadorUsuarioAdministrador=='Z'){
                                 ?>
-                                <li>{{ link_to("datos_empresa/index",image('img/cloud.png', "class":"img-responsive")) }}<p>Inf. Emp.</p>
-                                <?php
-                            }
-                            if ($indicadorUsuarioAdministrador=='S' || $indicadorUsuarioAdministrador=='Z'){
-                                ?>
                                 <li>{{ link_to("usuario/index",image('img/usuarios2.png', "class":"img-responsive")) }}<p>Usuarios</p>
                                 <?php
                             }

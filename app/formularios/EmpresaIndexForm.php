@@ -14,6 +14,14 @@ class EmpresaIndexForm extends Form {
         $nombreEmpresa = new Text('nombreEmpresa',
                              array('placeholder' => 'Nombre de Empresa', 'class' => 'form-control'));
         $this->add($nombreEmpresa);
+        
+        $razonSocial = new Text('razonSocial',
+                             array('placeholder' => 'Nombre de Empresa', 'class' => 'form-control'));
+        $this->add($razonSocial);
+        
+        $limiteUsuarios = new Text('limiteUsuarios',
+                             array('placeholder' => 'Nombre de Empresa', 'class' => 'form-control'));
+        $this->add($limiteUsuarios);
 
         $estadoRegistro = new Select('estadoRegistro',
                                  array(''=>'Seleccione Estado...','S' => 'Vigente', 'N' => 'No vigente'));

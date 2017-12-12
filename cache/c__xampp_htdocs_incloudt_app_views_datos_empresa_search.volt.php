@@ -3,9 +3,9 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-<?= $this->tag->linkTo(['parametros_generales', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
-<?= $this->tag->linkTo(['parametros_generales/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nuevo Parámetro', 'class' => 'btn btn-info']) ?>
-</div>
+<?= $this->tag->linkTo(['datos_empresa', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
+<?= $this->tag->linkTo(['datos_empresa/new', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Datos de Empresa', 'class' => 'btn btn-info']) ?>
+       </div>
 <h4><i class='glyphicon glyphicon-search'></i> Resultado de Busqueda</h4>
 </div>
 
@@ -13,32 +13,28 @@
 </div>
 
 <?= $this->getContent() ?>
-<?= $this->tag->form(['parametros_generales/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
+
+<?= $this->tag->form(['datos_empresa/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 <div class="table-responsive">
 <table class="table">
 <tr  class="info">
-            <th>Empresa</th>
-            <th>ID Parametro</th>
-            <th>Desc Parametro</th>
-            <th>Valor Parametro</th>
-            <th>Indicador Fijo</th>
-            <th>Estado</th>
+                <th>Empresa</th>
+            <th>RazonSocial</th>
+            <th>LimiteUsuarios</th>
+
                 <th></th>
                 <th></th>
             </tr>
         <tbody>
         <?php if (isset($page->items)) { ?>
-        <?php foreach ($page->items as $parametros_generale) { ?>
+        <?php foreach ($page->items as $datos_empresa) { ?>
             <tr>
-            <td><?= $parametros_generale->nombreEmpresa ?></td>
-            <td><?= $parametros_generale->identificadorParametro ?></td>
-            <td><?= $parametros_generale->descipcionParametro ?></td>
-            <td><?= $parametros_generale->valorParametro ?></td>
-            <td><?= $parametros_generale->indicadorFijo ?></td>
-            <td><?= $parametros_generale->estado ?></td>
+                <td><?= $datos_empresa->nombreEmpresa ?></td>
+            <td><?= $datos_empresa->razonSocial ?></td>
+            <td><?= $datos_empresa->limiteUsuarios ?></td>
 
-                <td><?= $this->tag->linkTo(['parametros_generales/edit/' . $parametros_generale->codParametro, 'Editar']) ?></td>
-                <td><?= $this->tag->linkTo(['parametros_generales/delete/' . $parametros_generale->codParametro, 'Borrar']) ?></td>
+                <td><?= $this->tag->linkTo(['datos_empresa/edit/' . $datos_empresa->codEmpresa, 'Editar']) ?></td>
+                <td><?= $this->tag->linkTo(['datos_empresa/delete/' . $datos_empresa->codEmpresa, 'Borrar']) ?></td>
             </tr>
         <?php } ?>
         <?php } ?>

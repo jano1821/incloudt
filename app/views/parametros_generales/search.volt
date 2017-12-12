@@ -30,7 +30,7 @@
         {% if page.items is defined %}
         {% for parametros_generale in page.items %}
             <tr>
-            <td>{{ parametros_generale.codEmpresa }}</td>
+            <td>{{ parametros_generale.nombreEmpresa }}</td>
             <td>{{ parametros_generale.identificadorParametro }}</td>
             <td>{{ parametros_generale.descipcionParametro }}</td>
             <td>{{ parametros_generale.valorParametro }}</td>
