@@ -32,6 +32,28 @@
 <div class="col-md-3">
 </div>
 <div class="col-md-2">
+    <label for="fieldRazonSocial">Razón Social</label>
+</div>
+    <div class="col-md-3">
+{{ form.render('razonSocial') }}
+    </div>
+</div>
+
+<div class="form-group">
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldLimiteUsuarios">Límite de Usuarios</label>
+</div>
+    <div class="col-md-3">
+{{ form.render('limiteUsuarios') }}
+    </div>
+</div>
+
+<div class="form-group">
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
     <label for="fieldIdentificadorEmpresa" >Identificador</label>
 </div>
     <div class="col-md-3">
@@ -53,3 +75,10 @@
 </form>
 </div>
 </div>
+
+<script>
+function soloNumeros(e){
+    var key = window.Event ? e.which : e.keyCode;
+    return ((key >= 48 && key <= 57) || (key == 8));
+}
+</script>

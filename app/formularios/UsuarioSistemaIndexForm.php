@@ -6,22 +6,18 @@ use Phalcon\Forms\Form,
     Phalcon\Forms\Element\Select,
     Phalcon\Validation\Validator\Identical;
 
-class SistemaIndexForm extends Form {
+class UsuarioSistemaIndexForm extends Form {
 
     public function initialize() {
-        
-        $etiquetaSistema = new Text('etiquetaSistema',
-                             array('placeholder' => 'Etiqueta de Sistema', 'class' => 'form-control'));
-        $this->add($etiquetaSistema);
-        
-        $urlSistema = new Text('urlSistema',
-                             array('placeholder' => 'URL de Sistema', 'class' => 'form-control'));
-        $this->add($urlSistema);
-        
-        $urlIcono = new Text('urlIcono',
-                             array('placeholder' => 'Icono', 'class' => 'form-control'));
-        $this->add($urlIcono);
 
+        $codUsuario = new Text('codUsuario',
+                             array('placeholder' => 'Usuario', 'class' => 'form-control', 'disabled'=>'true'));
+        $this->add($codUsuario);
+        
+        $codSistema = new Text('codSistema',
+                             array('placeholder' => 'Sistema', 'class' => 'form-control', 'disabled'=>'true'));
+        $this->add($codSistema);
+        
         $estadoRegistro = new Select('estadoRegistro',
                                  array(''=>'Seleccione Estado...','S' => 'Vigente', 'N' => 'No vigente'));
         $this->add($estadoRegistro);

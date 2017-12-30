@@ -15,6 +15,16 @@ class EmpresaNewForm extends Form {
         $nombreEmpresa->addValidator(new PresenceOf(array('message' => 'Se Requiere Nombre de Empresa')));
         $this->add($nombreEmpresa);
         
+        $razonSocial = new Text('razonSocial',
+                             array('placeholder' => 'Razón Social', 'class' => 'form-control'));
+        $razonSocial->addValidator(new PresenceOf(array('message' => 'Se Requiere Razón Social')));
+        $this->add($razonSocial);
+        
+        $limiteUsuarios = new Text('limiteUsuarios',
+                             array('placeholder' => 'Límite de Usuarios', 'class' => 'form-control', 'onKeyPress'=>'return soloNumeros(event)', 'maxlength'=>'3'));
+        $limiteUsuarios->addValidator(new PresenceOf(array('message' => 'Se Requiere Límite de Usuarios')));
+        $this->add($limiteUsuarios);
+        
         $identificadorEmpresa = new Text('identificadorEmpresa',
                              array('placeholder' => 'Identificador de Empresa', 'class' => 'form-control'));
         $identificadorEmpresa->addValidator(new PresenceOf(array('message' => 'Se Identificador de Empresa')));

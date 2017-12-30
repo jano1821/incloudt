@@ -60,6 +60,11 @@
                             }
                             if ($indicadorUsuarioAdministrador=='Z'){
                                 ?>
+                                <li><?= $this->tag->linkTo(['usuario_sistema/index', $this->tag->image(['img/cloud.png', 'class' => 'img-responsive'])]) ?><p>Sis-Usu</p>
+                                <?php
+                            }
+                            if ($indicadorUsuarioAdministrador=='Z'){
+                                ?>
                                 <li><?= $this->tag->linkTo(['empresa/index', $this->tag->image(['img/empresa.png', 'class' => 'img-responsive'])]) ?><p>Empresas</p>
                                 <?php
                             }
@@ -85,6 +90,7 @@
                 <div class="col-sm-6 col-lg-4">
 
                     <?= $this->tag->linkTo(['', $this->tag->image(['img/almacen.jpg', 'class' => 'img-responsive caja galeria'])]) ?>
+                    <?= $this->tag->linkTo(['', $this->tag->image(['img/asistencia.jpg', 'class' => 'img-responsive caja galeria'])]) ?>
                     <?= $this->tag->linkTo(['', $this->tag->image(['img/asistencia.jpg', 'class' => 'img-responsive caja galeria'])]) ?>
 
                 </div>

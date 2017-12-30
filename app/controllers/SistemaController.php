@@ -1,6 +1,5 @@
 <?php
 
-use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use SistemaIndexForm as sistemaIndexForm;
 use SistemaNewForm as sistemaNewForm;
@@ -227,37 +226,57 @@ class SistemaController extends ControllerBase {
             return;
         }
 
-        $sistema->Etiquetasistema = $this->request->getPost("etiquetaSistema");
-        $sistema->Urlsistema = $this->request->getPost("urlSistema");
-        $sistema->Urlicono = $this->request->getPost("urlIcono");
-        $sistema->Estadoregistro = $this->request->getPost("estadoRegistro");
-        $sistema->Fechainsercion = $this->request->getPost("fechaInsercion");
-        $sistema->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
-        $sistema->Fechamodificacion = $this->request->getPost("fechaModificacion");
-        $sistema->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-
-
-        if (!$sistema->save()) {
-
-            foreach ($sistema->getMessages() as $message) {
+        $form = new sistemaEditForm();
+        if (!$this->request->isPost() || $form->isValid($this->request->getPost()) == false) {
+            foreach ($form->getMessages() as $message) {
                 $this->flash->error($message);
             }
-
             $this->dispatcher->forward([
-                            'controller' => "sistema",
-                            'action' => 'edit',
-                            'params' => [$sistema->codSistema]
+                            'controller' => "persona_usuario",
+                            'action' => 'Edit'
             ]);
 
             return;
+        }else {
+            if ($this->session->has("Usuario")) {
+                $usuario = $this->session->get("Usuario");
+                $username = $usuario['nombreUsuario'];
+            }else {
+                $this->session->destroy();
+                $this->response->redirect('index');
+            }
+
+            $sistema->Etiquetasistema = $this->request->getPost("etiquetaSistema");
+            $sistema->Urlsistema = $this->request->getPost("urlSistema");
+            $sistema->Urlicono = $this->request->getPost("urlIcono");
+            $sistema->Estadoregistro = $this->request->getPost("estadoRegistro");
+            $sistema->Fechamodificacion = strftime("%Y-%m-%d",
+                                                   time());
+            $sistema->Usuariomodificacion = $username;
+
+
+            if (!$sistema->save()) {
+
+                foreach ($sistema->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+
+                $this->dispatcher->forward([
+                                'controller' => "sistema",
+                                'action' => 'edit',
+                                'params' => [$sistema->codSistema]
+                ]);
+
+                return;
+            }
+
+            $this->flash->success("Sistema Actualizado Satisfactoriamente");
+
+            $this->dispatcher->forward([
+                            'controller' => "sistema",
+                            'action' => 'index'
+            ]);
         }
-
-        $this->flash->success("sistema was updated successfully");
-
-        $this->dispatcher->forward([
-                        'controller' => "sistema",
-                        'action' => 'index'
-        ]);
     }
 
     /**

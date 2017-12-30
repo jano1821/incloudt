@@ -60,6 +60,11 @@
                             }
                             if ($indicadorUsuarioAdministrador=='Z'){
                                 ?>
+                                <li>{{ link_to("usuario_sistema/index",image('img/cloud.png', "class":"img-responsive")) }}<p>Sis-Usu</p>
+                                <?php
+                            }
+                            if ($indicadorUsuarioAdministrador=='Z'){
+                                ?>
                                 <li>{{ link_to("empresa/index",image('img/empresa.png', "class":"img-responsive")) }}<p>Empresas</p>
                                 <?php
                             }
@@ -85,6 +90,7 @@
                 <div class="col-sm-6 col-lg-4">
 
                     {{ link_to('', image('img/almacen.jpg', "class":"img-responsive caja galeria")) }}
+                    {{ link_to('', image('img/asistencia.jpg', "class":"img-responsive caja galeria")) }}
                     {{ link_to('', image('img/asistencia.jpg', "class":"img-responsive caja galeria")) }}
 
                 </div>

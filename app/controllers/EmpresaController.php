@@ -137,6 +137,10 @@ class EmpresaController extends ControllerBase {
                                    $empresa->codEmpresa);
             $this->tag->setDefault("identificadorEmpresa",
                                    $empresa->identificadorEmpresa);
+            $this->tag->setDefault("razonSocial",
+                                   $empresa->razonSocial);
+            $this->tag->setDefault("limiteUsuarios",
+                                   $empresa->limiteUsuarios);
             $this->tag->setDefault("nombreEmpresa",
                                    $empresa->nombreEmpresa);
             $this->tag->setDefault("estadoRegistro",
@@ -151,7 +155,7 @@ class EmpresaController extends ControllerBase {
      */
     public function createAction() {
         parent::validarSession();
-        
+
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
                             'controller' => "empresa",
@@ -160,7 +164,7 @@ class EmpresaController extends ControllerBase {
 
             return;
         }
-        
+
         $form = new empresaNewForm();
         if (!$this->request->isPost() || $form->isValid($this->request->getPost()) == false) {
             foreach ($form->getMessages() as $message) {
@@ -172,60 +176,69 @@ class EmpresaController extends ControllerBase {
             ]);
 
             return;
-        } else {
-            $usuarioSesion = $this->session->get("Usuario");
-            $username = $usuarioSesion['nombreUsuario'];
-            
-            $empresa = new Empresa();
-            $empresa->Nombreempresa = $this->request->getPost("nombreEmpresa");
-            $empresa->IdentificadorEmpresa = $this->request->getPost("identificadorEmpresa");
-            $empresa->Estadoregistro = 'S';
-            $empresa->Fechainsercion = strftime("%Y-%m-%d",time());
-            $empresa->Usuarioinsercion = $username;
+        }else {
+            try {
+                $usuarioSesion = $this->session->get("Usuario");
+                $username = $usuarioSesion['nombreUsuario'];
 
-            if (!$empresa->save()) {
-                foreach ($empresa->getMessages() as $message) {
-                    $this->flash->error($message);
+                $empresa = new Empresa();
+                $empresa->NombreEmpresa = $this->request->getPost("nombreEmpresa");
+                $empresa->RazonSocial = $this->request->getPost("razonSocial");
+                $empresa->LimiteUsuarios = $this->request->getPost("limiteUsuarios");
+                $empresa->IdentificadorEmpresa = $this->request->getPost("identificadorEmpresa");
+                $empresa->Estadoregistro = 'S';
+                $empresa->Fechainsercion = strftime("%Y-%m-%d",
+                                                    time());
+                $empresa->Usuarioinsercion = $username;
+
+                if (!$empresa->save()) {
+                    foreach ($empresa->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
+
+                    $this->dispatcher->forward([
+                                    'controller' => "empresa",
+                                    'action' => 'new'
+                    ]);
+
+                    return;
                 }
+
+                $parametros_generale = new ParametrosGenerales();
+                $parametros_generale->codEmpresa = $empresa->codEmpresa;
+                $parametros_generale->Identificadorparametro = 'TIME_OUT_SESSION';
+                $parametros_generale->Descipcionparametro = 'Tiempo limite de Sesion Activa';
+                $parametros_generale->Valorparametro = '5';
+                $parametros_generale->IndicadorFijo = 'S';
+                $parametros_generale->Estadoregistro = 'S';
+                $parametros_generale->Fechainsercion = strftime("%Y-%m-%d",time());
+                $parametros_generale->Usuarioinsercion = $username;
+
+                if (!$parametros_generale->save()) {
+                    foreach ($parametros_generale->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
+
+                    $this->dispatcher->forward([
+                                    'controller' => "empresa",
+                                    'action' => 'new'
+                    ]);
+
+                    return;
+                }
+
+                $this->flash->success("Empresa Registrada Correctamente");
 
                 $this->dispatcher->forward([
                                 'controller' => "empresa",
-                                'action' => 'new'
+                                'action' => 'index'
                 ]);
-
-                return;
+            }catch (\Exception $e) {
+                echo get_class($e), ': ', $e->getMessage(), '\n';
+                echo ' Archivo=', $e->getFile(), '\n';
+                echo ' Linea=', $e->getLine(), '\n';
+                echo $e->getTraceAsString();
             }
-            
-            $parametros_generale = new ParametrosGenerales();
-            $parametros_generale->codEmpresa = $empresa->codEmpresa;
-            $parametros_generale->Identificadorparametro = 'TIME_OUT_SESSION';
-            $parametros_generale->Descipcionparametro = 'Tiempo limite de Sesion Activa';
-            $parametros_generale->Valorparametro = '5';
-            $parametros_generale->IndicadorFijo = 'S';
-            $parametros_generale->Estadoregistro = 'S';
-            $parametros_generale->Fechainsercion = strftime("%Y-%m-%d",
-                                                            time());
-            $parametros_generale->Usuarioinsercion = $username;
-            
-            if (!$parametros_generale->save()) {
-                foreach ($parametros_generale->getMessages() as $message) {
-                    $this->flash->error($message);
-                }
-
-                $this->dispatcher->forward([
-                                'controller' => "empresa",
-                                'action' => 'new'
-                ]);
-
-                return;
-            }
-            
-            $this->flash->success("Empresa Registrada Correctamente");
-
-            $this->dispatcher->forward([
-                            'controller' => "empresa",
-                            'action' => 'index'
-            ]);
         }
     }
 
@@ -248,7 +261,7 @@ class EmpresaController extends ControllerBase {
         $empresa = Empresa::findFirstBycodEmpresa($codEmpresa);
 
         if (!$empresa) {
-            $this->flash->error("empresa does not exist " . $codEmpresa);
+            $this->flash->error("No se Encontró Empresa" . $codEmpresa);
 
             $this->dispatcher->forward([
                             'controller' => "empresa",
@@ -258,35 +271,58 @@ class EmpresaController extends ControllerBase {
             return;
         }
 
-        $empresa->Nombreempresa = $this->request->getPost("nombreEmpresa");
-        $empresa->Estadoregistro = $this->request->getPost("estadoRegistro");
-        $empresa->Fechainsercion = $this->request->getPost("fechaInsercion");
-        $empresa->Usuarioinsercion = $this->request->getPost("usuarioInsercion");
-        $empresa->Fechamodificacion = $this->request->getPost("fechaModificacion");
-        $empresa->Usuariomodificacion = $this->request->getPost("usuarioModificacion");
-
-
-        if (!$empresa->save()) {
-
-            foreach ($empresa->getMessages() as $message) {
+        $form = new empresaEditForm();
+        if (!$this->request->isPost() || $form->isValid($this->request->getPost()) == false) {
+            foreach ($form->getMessages() as $message) {
                 $this->flash->error($message);
             }
-
             $this->dispatcher->forward([
-                            'controller' => "empresa",
-                            'action' => 'edit',
-                            'params' => [$empresa->codEmpresa]
+                            'controller' => "persona_usuario",
+                            'action' => 'Edit'
             ]);
 
             return;
+        }else {
+            if ($this->session->has("Usuario")) {
+                $usuario = $this->session->get("Usuario");
+                $username = $usuario['nombreUsuario'];
+            }else {
+                $this->session->destroy();
+                $this->response->redirect('index');
+            }
+
+            $empresa->Nombreempresa = $this->request->getPost("nombreEmpresa");
+            $empresa->RazonSocial = $this->request->getPost("razonSocial");
+            $empresa->LimiteUsuarios = $this->request->getPost("limiteUsuarios");
+            $empresa->IdentificadorEmpresa = $this->request->getPost("identificadorEmpresa");
+            $empresa->Estadoregistro = $this->request->getPost("estadoRegistro");
+            $empresa->Fechamodificacion = strftime("%Y-%m-%d",
+                                                   time());
+            $empresa->Usuariomodificacion = $username;
+
+
+            if (!$empresa->save()) {
+
+                foreach ($empresa->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+
+                $this->dispatcher->forward([
+                                'controller' => "empresa",
+                                'action' => 'edit',
+                                'params' => [$empresa->codEmpresa]
+                ]);
+
+                return;
+            }
+
+            $this->flash->success("Empresa Actualizada Satisfactoriamente");
+
+            $this->dispatcher->forward([
+                            'controller' => "empresa",
+                            'action' => 'index'
+            ]);
         }
-
-        $this->flash->success("empresa was updated successfully");
-
-        $this->dispatcher->forward([
-                        'controller' => "empresa",
-                        'action' => 'index'
-        ]);
     }
 
     /**
