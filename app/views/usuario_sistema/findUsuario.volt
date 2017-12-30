@@ -34,16 +34,8 @@
                                     <tr>
                                         <td>1</td>
                                         <td>xxx</td>
-                                        <td class='col-xs-1'>
-                                            <div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id=""  value="" >
-                                            </div>
-                                        </td>
-                                        <td class='col-xs-2'>
-                                            <div class="pull-right">
-                                                <input type="text" class="form-control" style="text-align:right" id=""  value="" >
-                                            </div>
-                                        </td>
+                                        <td>yyy</td>
+                                        <td>zzz</td>
                                         <td class='text-center'>
                                             <a class='btn btn-info'href="#" onclick="">
                                                 <i class="glyphicon glyphicon-plus">

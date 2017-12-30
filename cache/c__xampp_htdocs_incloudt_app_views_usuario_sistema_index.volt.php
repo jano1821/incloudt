@@ -95,7 +95,7 @@
                     function(data) {
                         $("#content").html(data.res.codigo);
                     }).fail(function() {
-                        $("#content").html("no se pudo Generar Codigo");
+                        $("#content").html("No hay Resultados");
                     })
         });
     });

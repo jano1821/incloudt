@@ -2,6 +2,7 @@
 
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+
 class UsuarioSistemaController extends ControllerBase {
 
     public function onConstruct(){
@@ -233,6 +234,8 @@ class UsuarioSistemaController extends ControllerBase {
     
     public function ajaxPostAction(){
         $this->view->disable();
+        $tabla = '';
+        $contador = 0;
 
         if ($this->request->isPost() == true) {
             if ($this->request->isAjax() == true) {
@@ -247,7 +250,7 @@ class UsuarioSistemaController extends ControllerBase {
                     $pagina = 1;
                 }*/
 
-                $usuario = $this->modelsManager->createBuilder()
+                $usuarios = $this->modelsManager->createBuilder()
                                         ->columns("em.nombreEmpresa," .
                                                   "us.nombreUsuario," .
                                                   "us.codUsuario")
@@ -258,14 +261,24 @@ class UsuarioSistemaController extends ControllerBase {
                                                     'em')
                                         ->andWhere('us.nombreUsuario like :nombreUsuario: ' ,
                                                     [
-                                                        'nombreUsuario' => "%" . $nombreUsuario . "%",
+                                                        'nombreUsuario' => "%" . $labelBusquedaUsuario . "%",
                                                     ]
                                         )
                                         ->orderBy('us.nombreUsuario')
                                         ->getQuery()
                                         ->execute();
 
-                $this->response->setJsonContent(array('res' => array("codigo" => $labelBusquedaUsuario)));
+                foreach ($usuarios as $usuario){
+                    $contador++;
+                    $tabla = $tabla."<tr><td>".$contador;
+                    $tabla = $tabla."</td><td>";
+                    $tabla = $tabla.$usuario->nombreUsuario;
+                    $tabla = $tabla."</td><td>";
+                    $tabla = $tabla.$usuario->nombreEmpresa;
+                    $tabla = $tabla."</td><td class='text-center'><a class='btn btn-info'href='#'><i class='glyphicon glyphicon-plus'></i></a></td></tr>";
+                }
+                
+                $this->response->setJsonContent(array('res' => array("codigo" => $tabla)));
                 $this->response->setStatusCode(200,
                                                "OK");
                 $this->response->send();
