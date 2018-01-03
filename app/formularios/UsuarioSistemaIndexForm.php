@@ -10,9 +10,9 @@ class UsuarioSistemaIndexForm extends Form {
 
     public function initialize() {
 
-        $codUsuario = new Text('codUsuario',
+        $nombreUsuario = new Text('nombreUsuario',
                              array('placeholder' => 'Usuario', 'class' => 'form-control', 'disabled'=>'true'));
-        $this->add($codUsuario);
+        $this->add($nombreUsuario);
         
         $codSistema = new Text('codSistema',
                              array('placeholder' => 'Sistema', 'class' => 'form-control', 'disabled'=>'true'));

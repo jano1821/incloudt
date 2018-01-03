@@ -25,7 +25,8 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-5">
-                            {{ form.render('codUsuario') }}
+                            {{ form.render('nombreUsuario') }}
+                            <input type="hidden" id="codUsuario" name="codUsuario" >
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" id="listaUsuarios">
@@ -89,7 +90,7 @@
         $('#listaUsuarios').on("click",function(e){
             e.preventDefault();
             var params = "busquedaUsuario="+$("#labelBusquedaUsuario").val();
-            $("#content").html("please wait");
+            $("#content").html("Cargando Contenido.......");
             $.post("{{ url('usuario_sistema/ajaxPost') }}", 
                     params, 
                     function(data) {
@@ -100,31 +101,6 @@
         });
     });
 
-    /*$(document).ready(function() {
-        $("#listaUsuarios").click(function(e){
-            e.preventDefault();
-            var labelBusquedaUsuario = $("#labelBusquedaUsuario").val();
-            $("#content").html("please wait");
-            datos = {"parametro":labelBusquedaUsuario};
-            $.ajax({
-		url: "ajaxPost",
-		type: "POST",
-		data: datos
-            }).done(function(respuesta){
-                if (respuesta.estado === "ok") {
-                    console.log(JSON.stringify(respuesta));
-
-                    var nombre = respuesta.nombre,
-                    apellido = respuesta.apellido,
-                    edad = respuesta.edad;
-
-                    $("#content").html("Servidor:<br><pre>"+JSON.stringify(respuesta, null, 2)+"</pre>");
-                }
-                $("#content").html(respuesta.res.codigo);
-            });
-        });
-    });*/
-
     $(document).ready(function(){
         $("#listaSistemas").click(function(){
             alert("Sistemas");
@@ -133,4 +109,6 @@
             }});*/
         });
     });
+
+    
 </script>

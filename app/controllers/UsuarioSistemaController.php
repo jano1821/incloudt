@@ -259,24 +259,49 @@ class UsuarioSistemaController extends ControllerBase {
                                         ->innerJoin('Empresa',
                                                     'us.codEmpresa = em.codEmpresa',
                                                     'em')
-                                        ->andWhere('us.nombreUsuario like :nombreUsuario: ' ,
+                                        ->andWhere('us.nombreUsuario like :nombreUsuario: AND ' .
+                                                   'us.indicadorUsuarioAdministrador = :administrador: OR '.
+                                                   'us.indicadorUsuarioAdministrador = :superAdministrador: ',
+                                                                
                                                     [
                                                         'nombreUsuario' => "%" . $labelBusquedaUsuario . "%",
+                                                        'administrador' => "S",
+                                                        'superAdministrador' => "Z",
                                                     ]
                                         )
                                         ->orderBy('us.nombreUsuario')
                                         ->getQuery()
                                         ->execute();
 
+                $tabla = '<table class="table"><tr  class="warning">
+                                    <th>N°</th>
+                                    <th>Usuario</th>
+                                    <th>Empresa</th>
+                                    <th class="text-center" style="width: 36px;">Agregar</th>
+				</tr>';
+                
                 foreach ($usuarios as $usuario){
                     $contador++;
-                    $tabla = $tabla."<tr><td>".$contador;
-                    $tabla = $tabla."</td><td>";
+                    $tabla = $tabla.'<tr><td>'.$contador;
+                    $tabla = $tabla.'</td><td>';
                     $tabla = $tabla.$usuario->nombreUsuario;
-                    $tabla = $tabla."</td><td>";
+                    $tabla = $tabla.'</td><td>';
                     $tabla = $tabla.$usuario->nombreEmpresa;
-                    $tabla = $tabla."</td><td class='text-center'><a class='btn btn-info'href='#'><i class='glyphicon glyphicon-plus'></i></a></td></tr>";
+                    $tabla = $tabla. '</td><td class="text-center"> '
+                                   . '<button type="button" class="btn btn-info" '
+                                   . 'id="listaUsuarios" '
+                                   . 'data-dismiss="modal" '
+                                   . 'onclick="agregarUsuario(\''.$usuario->codUsuario.'\', \''.$usuario->nombreUsuario.'\');"> '
+                                   . '<span class="glyphicon glyphicon-plus"></span>'
+                                   . '</button></td></tr>';
                 }
+                
+                $tabla = $tabla.'<tr>
+                            <td colspan=5><span class="pull-right">
+                                </span>
+                            </td>
+                        </tr>
+                    </table>';
                 
                 $this->response->setJsonContent(array('res' => array("codigo" => $tabla)));
                 $this->response->setStatusCode(200,
