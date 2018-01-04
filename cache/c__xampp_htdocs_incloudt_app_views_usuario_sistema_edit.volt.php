@@ -3,16 +3,16 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-        {{ link_to("usuario_sistema", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
+        <?= $this->tag->linkTo(['usuario_sistema', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
             </div>
 <h4><i class='glyphicon glyphicon-edit'></i> Editar Empresa</h4>
 </div>
 <div class="page-header">
 </div>
 
-{{ content() }}
+<?= $this->getContent() ?>
 
-{{ form("usuario_sistema/save", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<?= $this->tag->form(['usuario_sistema/save', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
 
@@ -25,8 +25,8 @@
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-5">
-                {{ form.render('nombreUsuario') }}
-                {{ form.render('codUsuario') }}
+                <?= $form->render('nombreUsuario') ?>
+                <?= $form->render('codUsuario') ?>
             </div>
             <div class="col-md-2">
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" id="listaUsuarios">
@@ -46,8 +46,8 @@
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-5">
-                {{ form.render('nombreSistema') }}
-                {{ form.render('codSistema') }}
+                <?= $form->render('nombreSistema') ?>
+                <?= $form->render('codSistema') ?>
             </div>
             <div class="col-md-2">
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalSistema" id="listaSistemas">
@@ -65,7 +65,7 @@
         <label for="fieldEstadoregistro">Estado Registro</label>
     </div>
     <div class="col-md-3">
-        {{ form.render('estadoRegistro',['class' : 'form-control']) }}
+        <?= $form->render('estadoRegistro', ['class' => 'form-control']) ?>
     </div>
 </div>
 
@@ -76,8 +76,8 @@
 <div class="col-md-2">
 </div>
 <div class="col-md-2">
-        {{ form.render('save') }}
-{{ form.render('csrf', ['value': security.getToken()]) }}
+        <?= $form->render('save') ?>
+<?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
     </div>
 </div>
 </div>

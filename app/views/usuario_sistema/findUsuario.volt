@@ -3,10 +3,9 @@
 	<div class="modal-content">
             <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title" id="myModalLabel">Buscar Usuarios</h4>
+		<h4 class="modal-title" id="myModalLabel">Buscar Usuario</h4>
             </div>
             <div class="modal-body">
-		<form class="form-horizontal">
 		  <div class="form-group">
 			<div class="col-sm-6">
 			  <input type="text" class="form-control" id="labelBusquedaUsuario" placeholder="Buscar Usuarios">
@@ -17,7 +16,6 @@
                         </button>
                         </div>
 		  </div>
-		</form>
 		<div id="loader" style="position: absolute;text-align:center;top:55px;width:100%;display:none;">
                 </div><!-- Carga gif animado -->
                 <div class="table-responsive">

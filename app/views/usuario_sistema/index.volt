@@ -13,6 +13,7 @@
 
         {{ content() }}
         {{ partial("usuario_sistema/findUsuario") }}
+        {{ partial("usuario_sistema/findSistema") }}
         {{ form("usuario_sistema/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal", "id" : "searchform") }}
         
         <div class="table">
@@ -26,7 +27,7 @@
                     <div class="row">
                         <div class="col-md-5">
                             {{ form.render('nombreUsuario') }}
-                            <input type="hidden" id="codUsuario" name="codUsuario" >
+                            {{ form.render('codUsuario') }}
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" id="listaUsuarios">
@@ -46,10 +47,11 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-5">
+                            {{ form.render('nombreSistema') }}
                             {{ form.render('codSistema') }}
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" id="listaSistemas">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalSistema" id="listaSistemas">
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>
                         </div>
@@ -74,7 +76,7 @@
                 <div class="col-md-2">
                 </div>
                 <div class="col-md-2">
-                    {{ link_to("sistema/reset", "Limpiar","class":"btn btn-default") }}   
+                    {{ link_to("usuario_sistema/reset", "Limpiar","class":"btn btn-default") }}   
                     {{ form.render('buscar') }}
                     {{ form.render('csrf', ['value': security.getToken()]) }}
                 </div>
@@ -89,9 +91,9 @@
     $(document).ready(function() {
         $('#listaUsuarios').on("click",function(e){
             e.preventDefault();
-            var params = "busquedaUsuario="+$("#labelBusquedaUsuario").val();
+            var params = "busquedaUsuario="+document.getElementById("labelBusquedaUsuario").value;
             $("#content").html("Cargando Contenido.......");
-            $.post("{{ url('usuario_sistema/ajaxPost') }}", 
+            $.post("{{ url('usuario_sistema/ajaxPostUsuario') }}", 
                     params, 
                     function(data) {
                         $("#content").html(data.res.codigo);
@@ -102,11 +104,17 @@
     });
 
     $(document).ready(function(){
-        $("#listaSistemas").click(function(){
-            alert("Sistemas");
-            /*$.ajax({url: "demo_test.txt", success: function(result){
-                $("#div1").html(result);
-            }});*/
+        $("#listaSistemas").click(function(e){
+            e.preventDefault();
+            var params = "busquedaSistema="+document.getElementById("labelBusquedaSistema").value;
+            $("#contentSistema").html("Cargando Contenido.......");
+            $.post("{{ url('usuario_sistema/ajaxPostSistema') }}", 
+                    params, 
+                    function(data) {
+                        $("#contentSistema").html(data.res.codigo);
+                    }).fail(function() {
+                        $("#contentSistema").html("No hay Resultados");
+                    })
         });
     });
 

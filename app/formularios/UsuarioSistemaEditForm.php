@@ -6,7 +6,7 @@ use Phalcon\Forms\Form,
     Phalcon\Forms\Element\Select,
     Phalcon\Validation\Validator\Identical;
 
-class UsuarioSistemaIndexForm extends Form {
+class UsuarioSistemaEditForm extends Form {
 
     public function initialize() {
 
@@ -31,8 +31,8 @@ class UsuarioSistemaIndexForm extends Form {
         $csrf->addValidator(new Identical(array('value' => $this->security->getSessionToken(), 'message' => '¡La validación CSRF ha fallado!')));
         $this->add($csrf);
 
-        $submit = new Submit('buscar',
-                             array('value' => 'Buscar','class' => 'col-sm-5 btn btn-primary'));
+        $submit = new Submit('save',
+                             array('value' => 'Guardar','class' => 'col-sm-5 btn btn-primary'));
         $this->add($submit);
     }
 }

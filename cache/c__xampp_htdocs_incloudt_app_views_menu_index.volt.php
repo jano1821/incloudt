@@ -58,7 +58,7 @@
                                 <li><?= $this->tag->linkTo(['sistema/index', $this->tag->image(['img/sistema.png', 'class' => 'img-responsive'])]) ?><p>Sistemas</p>
                                 <?php
                             }
-                            if ($indicadorUsuarioAdministrador=='Z'){
+                            if ($indicadorUsuarioAdministrador=='S' || $indicadorUsuarioAdministrador=='Z'){
                                 ?>
                                 <li><?= $this->tag->linkTo(['usuario_sistema/index', $this->tag->image(['img/cloud.png', 'class' => 'img-responsive'])]) ?><p>Sis-Usu</p>
                                 <?php

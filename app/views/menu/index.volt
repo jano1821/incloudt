@@ -58,7 +58,7 @@
                                 <li>{{ link_to("sistema/index",image('img/sistema.png', "class":"img-responsive")) }}<p>Sistemas</p>
                                 <?php
                             }
-                            if ($indicadorUsuarioAdministrador=='Z'){
+                            if ($indicadorUsuarioAdministrador=='S' || $indicadorUsuarioAdministrador=='Z'){
                                 ?>
                                 <li>{{ link_to("usuario_sistema/index",image('img/cloud.png', "class":"img-responsive")) }}<p>Sis-Usu</p>
                                 <?php

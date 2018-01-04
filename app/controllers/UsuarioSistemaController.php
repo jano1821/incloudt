@@ -1,6 +1,5 @@
 <?php
 
-use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class UsuarioSistemaController extends ControllerBase {
@@ -19,26 +18,71 @@ class UsuarioSistemaController extends ControllerBase {
      * Searches for usuario_sistema
      */
     public function searchAction() {
-        $numberPage = 1;
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di,
-                                         'UsuarioSistema',
-                                         $_POST);
-            $this->persistent->parameters = $query->getParams();
-        }else {
-            $numberPage = $this->request->getQuery("page",
-                                                   "int");
+        parent::validarSession();
+        
+        $codUsuario = $this->request->getPost("codUsuario");
+        $codSistema = $this->request->getPost("codSistema");
+        $estado = $this->request->getPost("estadoRegistro");
+        $pagina = $this->request->getPost("pagina");
+        $avance = $this->request->getPost("avance");
+
+        if ($pagina == "") {
+            $pagina = 1;
+        }
+        if ($avance == "" || $avance == "0") {
+            $pagina = 1;
         }
 
-        $parameters = $this->persistent->parameters;
-        if (!is_array($parameters)) {
-            $parameters = [];
+        $usuarioSistema = $this->modelsManager->createBuilder()
+                                ->columns("ui.codSistema, ".
+                                          "ui.codUsuario, ".
+                                          "si.etiquetaSistema, ".
+                                          "us.nombreUsuario, ".
+                                          "if(ui.estadoRegistro='S','Vigente','No Vigente') as estado ")
+                                ->addFrom('UsuarioSistema',
+                                          'ui')
+                                ->innerJoin('Usuario',
+                                                    'us.codUsuario = ui.codUsuario',
+                                                    'us')
+                                ->innerJoin('Sistema',
+                                                    'si.codSistema = ui.codSistema',
+                                                    'si')
+                                ->andWhere('ui.codUsuario like :usuario: AND ' .
+                                           'ui.codSistema like :sistema: AND ' .
+                                           'ui.estadoRegistro like :estado: ',
+                                           [
+                                                'usuario' => "%".$codUsuario."%",
+                                                'sistema' => "%".$codSistema."%",
+                                                'estado' => "%".$estado."%",
+                                           ]
+                                )
+                                            
+                                ->getQuery()
+                                ->execute();
+        
+        if ($pagina == "") {
+            $pagina = 1;
         }
-        $parameters["order"] = "codUsuario";
+        if ($avance == "" || $avance == "0") {
+            $pagina = 1;
+        }else if ($avance == 1) {
+            if ($pagina < floor(count($usuarioSistema) / 10) + 1) {
+                $pagina = $pagina + 1;
+            }else {
+                $this->flash->notice("No hay Registros Posteriores");
+            }
+        }else if ($avance == -1) {
+            if ($pagina > 1) {
+                $pagina = $pagina - 1;
+            }else {
+                $this->flash->notice("No hay Registros Anteriores");
+            }
+        }else if ($avance == 2) {
+            $pagina = floor(count($usuarioSistema) / 10) + 1;
+        }
 
-        $usuario_sistema = UsuarioSistema::find($parameters);
-        if (count($usuario_sistema) == 0) {
-            $this->flash->notice("The search did not find any usuario_sistema");
+        if (count($usuarioSistema) == 0) {
+            $this->flash->notice("La Búqueda no ha Obtenido Resultados");
 
             $this->dispatcher->forward([
                             "controller" => "usuario_sistema",
@@ -49,11 +93,13 @@ class UsuarioSistemaController extends ControllerBase {
         }
 
         $paginator = new Paginator([
-                        'data' => $usuario_sistema,
+                        'data' => $usuarioSistema,
                         'limit' => 10,
-                        'page' => $numberPage
+                        'page' => $pagina
         ]);
 
+        $this->tag->setDefault("pagina",
+                               $pagina);
         $this->view->page = $paginator->getPaginate();
     }
 
@@ -61,7 +107,9 @@ class UsuarioSistemaController extends ControllerBase {
      * Displays the creation form
      */
     public function newAction() {
-        
+        parent::validarSession();
+
+        $this->view->form = new UsuarioSistemaNewForm();
     }
 
     /**
@@ -69,12 +117,38 @@ class UsuarioSistemaController extends ControllerBase {
      *
      * @param string $codUsuario
      */
-    public function editAction($codUsuario) {
+    public function editAction($codUsuario,$codSistema) {
+        parent::validarSession();
+        
         if (!$this->request->isPost()) {
 
-            $usuario_sistema = UsuarioSistema::findFirstBycodUsuario($codUsuario);
-            if (!$usuario_sistema) {
-                $this->flash->error("usuario_sistema was not found");
+            $usuarioSistema = $this->modelsManager->createBuilder()
+                                ->columns("ui.codSistema, ".
+                                          "ui.codUsuario, ".
+                                          "si.etiquetaSistema, ".
+                                          "us.nombreUsuario, ".
+                                          "ui.estadoRegistro ")
+                                ->addFrom('UsuarioSistema',
+                                          'ui')
+                                ->innerJoin('Usuario',
+                                                    'us.codUsuario = ui.codUsuario',
+                                                    'us')
+                                ->innerJoin('Sistema',
+                                                    'si.codSistema = ui.codSistema',
+                                                    'si')
+                                ->andWhere('ui.codUsuario = :usuario: AND ' .
+                                           'ui.codSistema = :sistema: ' ,
+                                           [
+                                                'usuario' => $codUsuario,
+                                                'sistema' => $codSistema,
+                                           ]
+                                )
+                                            
+                                ->getQuery()
+                                ->execute();
+            
+            if (!$usuarioSistema) {
+                $this->flash->error("Usuario Sistema No Encontrado");
 
                 $this->dispatcher->forward([
                                 'controller' => "usuario_sistema",
@@ -83,15 +157,23 @@ class UsuarioSistemaController extends ControllerBase {
 
                 return;
             }
-
-            $this->view->codUsuario = $usuario_sistema->codUsuario;
+            foreach($usuarioSistema as $resp){
+            //$this->view->codUsuario = $usuarioSistema->codUsuario;
+            //$this->view->codSistema = $usuarioSistema->codSistema;
 
             $this->tag->setDefault("codUsuario",
-                                   $usuario_sistema->codUsuario);
+                                   $resp->codUsuario);
+            $this->tag->setDefault("nombreUsuario",
+                                   $resp->nombreUsuario);
             $this->tag->setDefault("codSistema",
-                                   $usuario_sistema->codSistema);
+                                   $resp->codSistema);
+            $this->tag->setDefault("nombreSistema",
+                                   $resp->etiquetaSistema);
             $this->tag->setDefault("estadoRegistro",
-                                   $usuario_sistema->estadoRegistro);
+                                   $resp->estadoRegistro);
+            
+            $this->view->form = new UsuarioSistemaEditForm();
+            }
         }
     }
 
@@ -108,14 +190,14 @@ class UsuarioSistemaController extends ControllerBase {
             return;
         }
 
-        $usuario_sistema = new UsuarioSistema();
-        $usuario_sistema->Codusuario = $this->request->getPost("codUsuario");
-        $usuario_sistema->Codsistema = $this->request->getPost("codSistema");
-        $usuario_sistema->Estadoregistro = $this->request->getPost("estadoRegistro");
+        $usuarioSistema = new UsuarioSistema();
+        $usuarioSistema->CodUsuario = $this->request->getPost("codUsuario");
+        $usuarioSistema->CodSistema = $this->request->getPost("codSistema");
+        $usuarioSistema->Estadoregistro = 'S';
 
 
-        if (!$usuario_sistema->save()) {
-            foreach ($usuario_sistema->getMessages() as $message) {
+        if (!$usuarioSistema->save()) {
+            foreach ($usuarioSistema->getMessages() as $message) {
                 $this->flash->error($message);
             }
 
@@ -127,12 +209,13 @@ class UsuarioSistemaController extends ControllerBase {
             return;
         }
 
-        $this->flash->success("usuario_sistema was created successfully");
+        $this->flash->success("Relación Usuario sistema Registrada Satisfactoriamente");
 
         $this->dispatcher->forward([
                         'controller' => "usuario_sistema",
                         'action' => 'index'
         ]);
+        
     }
 
     /**
@@ -149,12 +232,12 @@ class UsuarioSistemaController extends ControllerBase {
 
             return;
         }
-
         $codUsuario = $this->request->getPost("codUsuario");
-        $usuario_sistema = UsuarioSistema::findFirstBycodUsuario($codUsuario);
+        
+        $usuario_sistema = new UsuarioSistema;
 
         if (!$usuario_sistema) {
-            $this->flash->error("usuario_sistema does not exist " . $codUsuario);
+            $this->flash->error("Registro No Existe " . $codUsuario);
 
             $this->dispatcher->forward([
                             'controller' => "usuario_sistema",
@@ -184,7 +267,7 @@ class UsuarioSistemaController extends ControllerBase {
             return;
         }
 
-        $this->flash->success("usuario_sistema was updated successfully");
+        $this->flash->success("Registro Actualizado Correctamente");
 
         $this->dispatcher->forward([
                         'controller' => "usuario_sistema",
@@ -232,7 +315,7 @@ class UsuarioSistemaController extends ControllerBase {
         ]);
     }
     
-    public function ajaxPostAction(){
+    public function ajaxPostUsuarioAction(){
         $this->view->disable();
         $tabla = '';
         $contador = 0;
@@ -240,6 +323,17 @@ class UsuarioSistemaController extends ControllerBase {
         if ($this->request->isPost() == true) {
             if ($this->request->isAjax() == true) {
                 $labelBusquedaUsuario = $this->request->getPost("busquedaUsuario");
+                $usuarioSesion = $this->session->get("Usuario");
+                $indicadorUsuarioAdministrador = $usuarioSesion['indicadorUsuarioAdministrador'];
+                if ($indicadorUsuarioAdministrador!='Z'){
+                    $codEmpresa = $usuarioSesion['codEmpresa'];
+                    $codUsuario = $usuarioSesion['codUsuario'];
+                }else{
+                    $codEmpresa = "%";
+                    $codUsuario = "";
+                }
+                
+
                 //$pagina = $this->request->getPost("pagina");
                 //$avance = $this->request->getPost("avance");
 
@@ -260,13 +354,13 @@ class UsuarioSistemaController extends ControllerBase {
                                                     'us.codEmpresa = em.codEmpresa',
                                                     'em')
                                         ->andWhere('us.nombreUsuario like :nombreUsuario: AND ' .
-                                                   'us.indicadorUsuarioAdministrador = :administrador: OR '.
-                                                   'us.indicadorUsuarioAdministrador = :superAdministrador: ',
+                                                   'us.codEmpresa like :empresa: AND ' .
+                                                   'us.codUsuario <> :usuario: ' ,
                                                                 
                                                     [
                                                         'nombreUsuario' => "%" . $labelBusquedaUsuario . "%",
-                                                        'administrador' => "S",
-                                                        'superAdministrador' => "Z",
+                                                        'empresa' => $codEmpresa,
+                                                        'usuario' => $codUsuario,
                                                     ]
                                         )
                                         ->orderBy('us.nombreUsuario')
@@ -315,5 +409,146 @@ class UsuarioSistemaController extends ControllerBase {
             $this->response->setStatusCode(404,
                                            "Not Found");
         }
+    }
+    
+    public function ajaxPostSistemaAction(){
+        $this->view->disable();
+        $tabla = '';
+        $contador = 0;
+        $arraySistemas = array();
+
+        if ($this->request->isPost() == true) {
+            if ($this->request->isAjax() == true) {
+                $labelBusquedaSistema = $this->request->getPost("busquedaSistema");
+                $usuarioSesion = $this->session->get("Usuario");
+                $indicadorUsuarioAdministrador = $usuarioSesion['indicadorUsuarioAdministrador'];
+                $codUsuario = $usuarioSesion['codUsuario'];
+                $codEmpresa = $usuarioSesion['codEmpresa'];
+                
+                $sistemas = $this->modelsManager->createBuilder()
+                                ->columns("ui.codSistema ")
+                                ->addFrom('UsuarioSistema',
+                                          'ui')
+                                ->innerJoin('Usuario',
+                                            'ui.codUsuario = us.codUsuario ',
+                                            'us')
+                                ->andWhere('ui.codUsuario = :usuario: AND ' .
+                                           'us.codEmpresa = :empresa: AND ' .
+                                           'ui.estadoRegistro = :estado: ',
+                                           [
+                                                'usuario' => $codUsuario,
+                                                'empresa' => $codEmpresa,
+                                                'estado' => "S",
+                                           ]
+                                )
+                                            
+                                ->getQuery()
+                                ->execute();
+                    
+                foreach ($sistemas as $item) {
+                    array_push($arraySistemas,
+                               $item->codSistema);
+                }
+                if ($indicadorUsuarioAdministrador!='Z'){
+                    $sistema = $this->modelsManager->createBuilder()
+                                ->columns("si.codSistema, " .
+                                          "si.etiquetaSistema ")
+                                ->addFrom('Sistema',
+                                          'si')
+                                ->inWhere('si.codSistema',$arraySistemas)
+                                ->andWhere('si.etiquetaSistema like :etiquetaSistema: AND ' .
+                                            'si.estadoRegistro like :estado: ',
+                                           [
+                                                'etiquetaSistema' => "%" . $labelBusquedaSistema . "%",
+                                                'estado' => "S",
+                                                        ]
+                                )
+                                ->orderBy('si.etiquetaSistema')
+                                ->getQuery()
+                                ->execute();
+                }else{
+                    $sistema = $this->modelsManager->createBuilder()
+                                ->columns("si.codSistema, " .
+                                          "si.etiquetaSistema ")
+                                ->addFrom('Sistema',
+                                          'si')
+                                ->notInWhere('si.codSistema',$arraySistemas)
+                                ->andWhere('si.etiquetaSistema like :etiquetaSistema: AND ' .
+                                            'si.estadoRegistro like :estado: ',
+                                           [
+                                                'etiquetaSistema' => "%" . $labelBusquedaSistema . "%",
+                                                'estado' => "S",
+                                                        ]
+                                )
+                                ->orderBy('si.etiquetaSistema')
+                                ->getQuery()
+                                ->execute();
+                }
+                
+                
+                //$pagina = $this->request->getPost("pagina");
+                //$avance = $this->request->getPost("avance");
+
+                /*if ($pagina == "") {
+                    $pagina = 1;
+                }
+                if ($avance == "" || $avance == "0") {
+                    $pagina = 1;
+                }inWhere*/
+
+
+                $tabla = '<table class="table"><tr  class="warning">
+                                    <th>N°</th>
+                                    <th>Sistema</th>
+                                    <th class="text-center" style="width: 36px;">Agregar</th>
+				</tr>';
+                
+                foreach ($sistema as $item){
+                    $contador++;
+                    $tabla = $tabla.'<tr><td>'.$contador;
+                    $tabla = $tabla.'</td><td>';
+                    $tabla = $tabla.$item->etiquetaSistema;
+                    $tabla = $tabla. '</td><td class="text-center"> '
+                                   . '<button type="button" class="btn btn-info" '
+                                   . 'id="listaSistemas" '
+                                   . 'data-dismiss="modal" '
+                                   . 'onclick="agregarSistema(\''.$item->codSistema.'\', \''.$item->etiquetaSistema.'\');"> '
+                                   . '<span class="glyphicon glyphicon-plus"></span>'
+                                   . '</button></td></tr>';
+                }
+                
+                $tabla = $tabla.'<tr>
+                            <td colspan=5><span class="pull-right">
+                                </span>
+                            </td>
+                        </tr>
+                    </table>';
+                
+                $this->response->setJsonContent(array('res' => array("codigo" => $tabla)));
+                $this->response->setStatusCode(200,
+                                               "OK");
+                $this->response->send();
+            }else {
+                $this->response->setStatusCode(406,
+                                               "Not Acceptable");
+            }
+        }else {
+            $this->response->setStatusCode(404,
+                                           "Not Found");
+        }
+    }
+    
+    public function resetAction() {
+        parent::validarSession();
+
+        $form = new UsuarioSistemaIndexForm();
+        $this->view->form = $form;
+
+        $this->dispatcher->forward([
+                        'controller' => "usuario_sistema",
+                        'action' => 'index'
+        ]);
+
+        return;
     }
 }

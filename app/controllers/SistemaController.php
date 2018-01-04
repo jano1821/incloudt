@@ -216,7 +216,7 @@ class SistemaController extends ControllerBase {
         $sistema = Sistema::findFirstBycodSistema($codSistema);
 
         if (!$sistema) {
-            $this->flash->error("sistema does not exist " . $codSistema);
+            $this->flash->error("Sistema no Encontrado " . $codSistema);
 
             $this->dispatcher->forward([
                             'controller' => "sistema",
