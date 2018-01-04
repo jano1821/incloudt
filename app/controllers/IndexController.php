@@ -23,7 +23,6 @@ class IndexController extends ControllerBase {
     }
 
     public function indexAction() {
-        
         $form = new FormLogin();
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost()) == false) {

@@ -232,7 +232,7 @@ class SistemaController extends ControllerBase {
                 $this->flash->error($message);
             }
             $this->dispatcher->forward([
-                            'controller' => "persona_usuario",
+                            'controller' => "sistema",
                             'action' => 'Edit'
             ]);
 

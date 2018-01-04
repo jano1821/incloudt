@@ -85,42 +85,50 @@
 
         <div class="container">
             <div class="row">
+                <?php
+                $contador=0;
+                ?>
                 <!-- 1era Columna -->
+                <?php if (isset($menu)) { ?>
+                    <?php foreach ($menu as $items) { ?>
+                        <?php
+                        $contador++;
+                        if ($contador==1){
+                        ?>
+                        <div class="col-sm-6 col-lg-4">
 
-                <div class="col-sm-6 col-lg-4">
+                            <?= $this->tag->linkTo(['', $this->tag->image([$items->urlIcono, 'class' => 'img-responsive caja galeria'])]) ?>
 
-                    <?= $this->tag->linkTo(['', $this->tag->image(['img/almacen.jpg', 'class' => 'img-responsive caja galeria'])]) ?>
-                    <?= $this->tag->linkTo(['', $this->tag->image(['img/asistencia.jpg', 'class' => 'img-responsive caja galeria'])]) ?>
-                    <?= $this->tag->linkTo(['', $this->tag->image(['img/asistencia.jpg', 'class' => 'img-responsive caja galeria'])]) ?>
+                        </div>
+                        <?php
+                        }
+                        if ($contador==2){
+                        ?>
+                        <!-- 2da Columna -->
+                        <div class="col-xs-12 col-sm-6 col-lg-4">
 
-                </div>
-                <!-- 2da Columna -->
-                <div class="col-xs-12 col-sm-6 col-lg-4">
+                            <div class="galeria">
+                                <?= $this->tag->linkTo(['', $this->tag->image([$items->urlIcono, 'class' => 'center-block img-responsive caja'])]) ?>
+                            </div>
+                        </div>
+                        <?php
+                        }
+                        if ($contador==3){
+                        ?>
+                        <!-- 3era -->
+                        <div class="col-xs-12 col-sm-12 col-lg-4">
+                            <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
+                                <?= $this->tag->linkTo(['', $this->tag->image([$items->urlIcono, 'class' => 'img-responsive galeria padding_lt'])]) ?>
+                            </div>
 
-                    <div class="galeria">
-                        <?= $this->tag->linkTo(['', $this->tag->image(['img/especievalorada.jpg', 'class' => 'center-block img-responsive caja'])]) ?>
-                    </div>
-                </div>
-
-                <!-- 3era -->
-                <div class="col-xs-12 col-sm-12 col-lg-4">
-                    <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        <?= $this->tag->linkTo(['', $this->tag->image(['img/facturacion.jpg', 'class' => 'img-responsive galeria padding_lt'])]) ?>
-                    </div>
-
-                    <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        <?= $this->tag->linkTo(['', $this->tag->image(['img/venta.jpg', 'class' => 'img-responsive galeria padding_rt'])]) ?>
-                    </div>
-
-                    <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        <?= $this->tag->linkTo(['', $this->tag->image(['img/email.jpg', 'class' => 'img-responsive galeria padding_lb'])]) ?>
-                    </div>
-
-                    <div class="col-xs-6 col-md-6 col-lg-6 padding_0">
-                        <?= $this->tag->linkTo(['', $this->tag->image(['img/ayuda.jpg', 'class' => 'img-responsive galeria padding_rb'])]) ?>
-                    </div>
-                </div>
-
+                            
+                        </div>
+                        <?php
+                        $contador=0;
+                        }
+                        ?>
+                    <?php } ?>
+                <?php } ?>
             </div>
         </div>
         <script>
