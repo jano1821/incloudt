@@ -73,6 +73,11 @@
                                 <li>{{ link_to("usuario/index",image('img/usuarios2.png', "class":"img-responsive")) }}<p>Usuarios</p>
                                 <?php
                             }
+                            if ($indicadorUsuarioAdministrador=='Z'){
+                                ?>
+                                <li>{{ link_to("configuracion/index",image('img/settings.png', "class":"img-responsive")) }}<p>Config</p>
+                                <?php
+                            }
                             ?>
                             <li>{{ link_to("index/logout",image('img/apagar.png', "class":"img-responsive")) }}<p>Cerrar</p>
                         </ul>

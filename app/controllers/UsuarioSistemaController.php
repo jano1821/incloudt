@@ -444,10 +444,13 @@ class UsuarioSistemaController extends ControllerBase {
                                             
                                 ->getQuery()
                                 ->execute();
-                    
-                foreach ($sistemas as $item) {
-                    array_push($arraySistemas,
-                               $item->codSistema);
+                if (count($sistemas)>0){    
+                    foreach ($sistemas as $item) {
+                        array_push($arraySistemas,
+                                   $item->codSistema);
+                    }
+                }else{
+                    $arraySistemas=array(0);
                 }
                 if ($indicadorUsuarioAdministrador!='Z'){
                     $sistema = $this->modelsManager->createBuilder()

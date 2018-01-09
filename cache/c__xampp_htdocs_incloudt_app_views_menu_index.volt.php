@@ -73,6 +73,11 @@
                                 <li><?= $this->tag->linkTo(['usuario/index', $this->tag->image(['img/usuarios2.png', 'class' => 'img-responsive'])]) ?><p>Usuarios</p>
                                 <?php
                             }
+                            if ($indicadorUsuarioAdministrador=='Z'){
+                                ?>
+                                <li><?= $this->tag->linkTo(['configuracion/index', $this->tag->image(['img/settings.png', 'class' => 'img-responsive'])]) ?><p>Config</p>
+                                <?php
+                            }
                             ?>
                             <li><?= $this->tag->linkTo(['index/logout', $this->tag->image(['img/apagar.png', 'class' => 'img-responsive'])]) ?><p>Cerrar</p>
                         </ul>
