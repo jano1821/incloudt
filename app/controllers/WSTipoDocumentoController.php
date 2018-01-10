@@ -1,12 +1,8 @@
 <?php
 
-//use Phalcon\Paginator\Adapter\Model as Paginator;
-//use Phalcon\Paginator\Adapter\NativeArray as PaginatorArray;
 use BeanTipoDocumento as beanTipoDocumento;
 use WS_Tipo_DocumentoIndexForm as ws_Tipo_DocumentoIndexForm;
-//use soapclient as Soapclient;
-//use EmpresaNewForm as empresaNewForm;
-//use EmpresaEditForm as empresaEditForm;
+use WS_Tipo_DocumentoEditForm as ws_Tipo_DocumentoEditForm;
 
 class WSTipoDocumentoController extends ControllerBase {
     public function onConstruct(){
@@ -33,7 +29,7 @@ class WSTipoDocumentoController extends ControllerBase {
         if ($avance == "" || $avance == "0") {
             $pagina = 1;
         }
-        $proxy = $this->webService();
+        $proxy = $this->webService_ListarTipoDocumento();
         $tipoDocumento = $proxy->obtenerTipoDocumento($nombreEmpresas,$estado,10,(($pagina-1)*10));
 
         $listBeanTipoDocumento = array();
@@ -82,35 +78,63 @@ class WSTipoDocumentoController extends ControllerBase {
             return;
         }
 
-        /*$paginator = new PaginatorArray(
-        [
-            "data"  => $tipoDocumento,
-            "limit" => 10,
-            "page"  => $pagina,
-        ]
-);*/
-
-        
-        /*$paginator = new Paginator([
-                        'data' => $tipoDocumento,
-                        'limit' => 10,
-                        'page' => $pagina
-        ]);*/
         $this->view->listTipoDoc = $listBeanTipoDocumento;
         $this->tag->setDefault("pagina",
                                $pagina);
         $this->view->cantReg = $cantReg-1;
         $this->view->pag = $pagina;
-        //$this->view->page = $paginator->getPaginate();
     }
     
-    public function webService(){
-        include('files/nusoap.php');
-        $l_oClient = new soapclient('http://localhost:81/incloudt_clipro/WS_TipoDocumento.php?wsdl', 'wsdl');
+    
+    
+    
+    
+    public function editAction($codTipoDocumento) {
+        parent::validarSession();
+
+        if (!$this->request->isPost()) {
+
+            $proxy = $this->webService_ObtenerTipoDocumento();
+            $tipoDocumento = $proxy->obtenerTipoDocumento($codTipoDocumento);
+            if (count($tipoDocumento)<=0) {
+                $this->flash->error("Tipo de documento no Encontrado");
+
+                $this->dispatcher->forward([
+                                'controller' => "ws_tipo_documento",
+                                'action' => 'index'
+                ]);
+
+                return;
+            }
+
+            $this->view->codTipoDocumento = $tipoDocumento['codTipoDocumento'];
+
+            $this->tag->setDefault("codEmpresa",
+                                   $tipoDocumento['codTipoDocumento']);
+            $this->tag->setDefault("descripcion",
+                                   $tipoDocumento['descripcionTipoDocumento']);
+            $this->tag->setDefault("estadoRegistro",
+                                   $tipoDocumento['estadoRegistro']);
+            
+            $this->view->form = new ws_Tipo_DocumentoEditForm();
+        }
+    }
+    
+    public function webService_ListarTipoDocumento(){
+        include_once('files/nusoap.php');
+        
+        $l_oClient = new soapclient('http://localhost:81/incloudt_clipro/WS_ListarTipoDocumento.php?wsdl', 'wsdl');
         $l_oProxy  = $l_oClient->getProxy();
 
         return $l_oProxy;
-        //echo getcwd() . "\n";
+    }
+    
+    public function webService_ObtenerTipoDocumento(){
+        include_once('files/nusoap.php');
+        
+        $l_oClient = new soapclient('http://localhost:81/incloudt_clipro/WS_ObtenerTipoDocumento.php?wsdl', 'wsdl');
+        $l_oProxy  = $l_oClient->getProxy();
 
+        return $l_oProxy;
     }
 }
